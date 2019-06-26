@@ -37,7 +37,7 @@ function closeAjaxLoading(){
 
 function lazyload(obj){
     $(obj).lazyload({
-    //placeholder : "/static/img/1.jpg", //占位
+    placeholder : "/static/img/bg.jpg", //占位
     effect: "fadeIn",// effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,常用fadeIn
     threshold: 150, // 提前150px开始加载
     });
