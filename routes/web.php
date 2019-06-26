@@ -11,4 +11,8 @@
 |
 */
 Route::get('/', 'IndexController@index');
-Route::get('/index/index', 'IndexController@index');
+Route::prefix('index')->group(function () {
+    Route::get('index', 'IndexController@index');
+    Route::get('main', 'IndexController@main');
+    Route::match(['get', 'post'], 'search', 'IndexController@search');
+});
