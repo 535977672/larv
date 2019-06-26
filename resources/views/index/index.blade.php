@@ -20,10 +20,10 @@
     <div class="weui-tab">
       <div class="weui-tab__bd">
         <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
-            <iframe src="main"></iframe>
+            <iframe src="/index/main"></iframe>
         </div>
         <div id="tab2" class="weui-tab__bd-item">
-          <iframe src="search"></iframe>
+          <iframe src="/index/search"></iframe>
         </div>
         <div id="tab3" class="weui-tab__bd-item">
           <h1>开发中...</h1>
