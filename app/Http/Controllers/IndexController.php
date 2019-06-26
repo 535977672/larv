@@ -10,6 +10,11 @@ class IndexController extends Controller
     public function index()
     {
         return view('index.index');
+//        return response()
+//            ->view('index.index')
+//            ->header('Cache-Control', 'max-age=7200')
+//            ->header('Last-Modified', gmdate('D, d M Y H:i:s',time())." GMT")
+//            ->header('Expires', gmdate('D, d M Y H:i:s', time() + 30)." GMT");
     }
     
     public function main()

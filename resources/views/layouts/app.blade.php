@@ -20,6 +20,13 @@
 </head>
 
 <body>
+	<div class="weui-pull-to-refresh__layer">
+		<div class='weui-pull-to-refresh__arrow'></div>
+		<div class='weui-pull-to-refresh__preloader'></div>
+		<div class="down">下拉刷新</div>
+		<div class="up">释放刷新</div>
+		<div class="refresh">正在刷新</div>
+	</div>
     @yield('content')
     <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
@@ -29,7 +36,9 @@
         $(function() {
             FastClick.attach(document.body);
         });
-        
+        $(document.body).pullToRefresh(function () {
+			location.reload();
+		});
         lazyload("img.lazy");
     </script>
     @yield('script')
