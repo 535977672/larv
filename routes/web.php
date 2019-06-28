@@ -15,4 +15,17 @@ Route::prefix('index')->group(function () {
     Route::get('index', 'IndexController@index');
     Route::get('main', 'IndexController@main');
     Route::match(['get', 'post'], 'search', 'IndexController@search');
+    Route::get('see', 'IndexController@see');
+    Route::get('me', 'IndexController@me');
+    Route::get('detail/{id}', 'IndexController@detail');
 });
+
+
+Route::prefix('member')->group(function () {
+    Route::post('login', 'MemberController@login');
+    Route::post('register', 'MemberController@register');
+});
+
+
+Auth::routes();
+

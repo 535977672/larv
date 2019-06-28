@@ -21,13 +21,23 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
+    
+    /**
+     * /register
+     * RegistersUsers注册视图重写
+     * @return type
+     */
+    public function showRegistrationForm()
+    {
+        return view('layouts.404');
+    }
 
     /**
      * Where to redirect users after registration.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -41,22 +51,22 @@ class RegisterController extends Controller
 
     /**
      * Get a validator for an incoming registration request.
-     *
+     * 包含了应用验证新用户的规则，你可以按需要自定义该方法
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'name' => 'required|string|max:18|unique:users',
+            //'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|max:18|confirmed',
         ]);
     }
 
     /**
      * Create a new user instance after a valid registration.
-     *
+     * 使用 Eloquent ORM 在数据库中创建新的 App\User 记录。你可以根据数据库的需要自定义该方法。
      * @param  array  $data
      * @return \App\User
      */
@@ -64,7 +74,7 @@ class RegisterController extends Controller
     {
         return User::create([
             'name' => $data['name'],
-            'email' => $data['email'],
+            //'email' => '',
             'password' => bcrypt($data['password']),
         ]);
     }

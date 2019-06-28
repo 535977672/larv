@@ -8,10 +8,10 @@ class EncryptCookies extends Middleware
 {
     /**
      * The names of the cookies that should not be encrypted.
-     *
+     * 不加密cookie
      * @var array
      */
     protected $except = [
-        //
+        'userid'
     ];
 }
