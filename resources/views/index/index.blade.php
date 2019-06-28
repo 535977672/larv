@@ -68,13 +68,16 @@
     <script src="/js/main.js"></script>
     <script>
         $(function() {
+            @auth
+                loginIn();
+            @endauth
             FastClick.attach(document.body);
             $('#login').on('click', function(e){
-                @if ( !Auth::check() )
+                if(isLogin() === '0'){
                     e.preventDefault();
                     e.stopPropagation();
                     login();
-                @endif
+                }
             });
         });
     </script>

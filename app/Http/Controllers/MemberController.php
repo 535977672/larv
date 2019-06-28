@@ -15,7 +15,7 @@ class MemberController extends Controller
 //        ]);
         session(['userid'=>1]);
         $cookie = cookie('userid', 2, 2);
-        return return_ajax('success', ['name' => $request, 'se'=>session('userid')])->cookie($cookie);
+        return return_ajax(200, 'success', ['name' => $request, 'se'=>session('userid')])->cookie($cookie);
     }
     
     public function register(Request $request)
@@ -25,7 +25,7 @@ class MemberController extends Controller
 //            'pwd' => "bail|required|regex:['[0-9a-zA-z]{10,18}']",
 //        ]);
 
-        return return_ajax('success', ['name' => $request, 'se'=>session('userid')]);
+        return return_ajax(200, 'success', ['name' => $request, 'se'=>session('userid')]);
     }
     
     public function search(Request $request)

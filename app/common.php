@@ -7,7 +7,7 @@
  * 修改完成后运行 composer dumpautoload
  */
 
-function return_ajax($msg = 'success', $data = [], $status = 200){
+function return_ajax($status = 200, $msg = 'success', $data = []){
     $re = [
         'status' => $status,
         'msg' => $msg

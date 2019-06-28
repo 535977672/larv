@@ -28,4 +28,4 @@ Route::prefix('member')->group(function () {
 
 
 Auth::routes();
-
+Route::get('/home', 'IndexController@index');
