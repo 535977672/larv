@@ -19,13 +19,22 @@ class ResetPasswordController extends Controller
     */
 
     use ResetsPasswords;
+    
+    /**
+     * RegistersUsers注册视图重写
+     * @return type
+     */
+    public function showResetForm(Request $request, $token = null)
+    {
+        return view('layouts.404');
+    }
 
     /**
      * Where to redirect users after resetting their password.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
