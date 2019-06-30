@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -68,7 +69,11 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        $this->validateLogin($request);
+        $validator = $this->validateLogin($request->all());
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            return return_ajax(0, $errors[0]);
+        }
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
@@ -91,7 +96,7 @@ class LoginController extends Controller
         //登录失败次数
         $this->incrementLoginAttempts($request);
 
-        return return_ajax(0, '登录失败');
+        return return_ajax(0, '用户或密码错误');
     }
     
     /**
@@ -137,6 +142,27 @@ class LoginController extends Controller
         $request->session()->invalidate();
 
         return return_ajax(200, '退出成功');
+    }
+    
+    /**
+     * 登录验证重写
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
+    protected function validateLogin(array $data)
+    {
+        return Validator::make($data, [
+            $this->username() => "bail|required|regex:'[0-9a-zA-z]{6,18}'",
+            'password' => "bail|required|regex:'[0-9a-zA-z]{6,18}'",
+        ], [
+            'name.required' => '用户名不能为空',
+            'name.regex' => '用户名格式错误',
+            'name.unique' => '用户已被注册',
+            'password.required' => '密码不能为空',
+            'password.regex' => '密码格式错误'
+        ]);
     }
     
     
