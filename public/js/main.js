@@ -1,3 +1,10 @@
+function isEmpty(obj){
+    if(typeof obj == "undefined" || obj == null || obj == ""){
+        return true;
+    }else{
+        return false;
+    }
+}
 
 //全局登录判断
 loginOut();

@@ -19,7 +19,7 @@
 </head>
 
 <body>
-    @if(!$isWeixin)
+    @if( !is_weixin() )
     <div class="weui-pull-to-refresh__layer">
             <div class='weui-pull-to-refresh__arrow'></div>
             <div class='weui-pull-to-refresh__preloader'></div>
@@ -41,9 +41,11 @@
         $(function() {
             FastClick.attach(document.body);
         });
+        @if( !is_weixin() )
         $(document.body).pullToRefresh(function () {
             location.reload();
         });
+        @endif
         lazyload("img.lazy");
     </script>
     @yield('script')

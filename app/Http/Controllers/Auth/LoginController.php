@@ -83,7 +83,7 @@ class LoginController extends Controller
             $this->fireLockoutEvent($request);
             //限制登录
             //return $this->sendLockoutResponse($request);
-            $this->sendLockoutResponse($request);
+            return  $this->sendLockoutResponse($request);
         }
 
         if ($this->attemptLogin($request)) {

@@ -20,22 +20,18 @@
 <body ontouchstart class="scroll">
     <div class="weui-tab">
       <div class="weui-tab__bd">
-        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
-            <iframe src="/index/main"></iframe>
+        <div id="tab1" class="weui-tab__bd-item" data-url="/index/main">
         </div>
-        <div id="tab2" class="weui-tab__bd-item">
-          <iframe src="/index/search"></iframe>
+        <div id="tab2" class="weui-tab__bd-item" data-url="/index/search">
         </div>
-        <div id="tab3" class="weui-tab__bd-item">
-          <iframe src="/index/see"></iframe>
+        <div id="tab3" class="weui-tab__bd-item" data-url="/index/see">
         </div>
-        <div id="tab4" class="weui-tab__bd-item">
-          <iframe src="/index/me"></iframe>
+        <div id="tab4" class="weui-tab__bd-item" data-url="/index/me">
         </div>
       </div>
 
       <div class="weui-tabbar">
-          <a href="#tab1" class="weui-tabbar__item weui-bar__item--on">
+          <a href="#tab1" class="weui-tabbar__item">
           <div class="weui-tabbar__icon">
             <img src="/static/img/main.png" alt="">
           </div>
@@ -72,13 +68,28 @@
                 loginIn();
             @endauth
             FastClick.attach(document.body);
-            $('#login').on('click', function(e){
-                if(isLogin() === '0'){
-                    e.preventDefault();
-                    e.stopPropagation();
-                    login();
+            
+            $('.weui-tabbar__item').on('click', function(e){
+                var obj = $(this);
+                if(obj.attr('href') === '#tab4'){
+                    if(isLogin() === '0'){
+                        e.preventDefault();
+                        e.stopPropagation();
+                        login();
+                        return;
+                    }
+                }
+                var obj_bd = $('#'+obj.attr('href').substr(1));
+                if(obj_bd.find('iframe').length === 0){
+                    obj_bd.append('<iframe src="'+obj_bd.attr('data-url')+'"></iframe>');
+                    $(this).click();
                 }
             });
+            var hash = window.location.hash;
+            if(isEmpty(hash) || (hash !== '#tab1' && hash !== '#tab2' && hash !== '#tab3' && hash !== '#tab4')){
+                hash = '#tab1';
+            }
+            $('.weui-tabbar a[href="'+hash+'"]').click();
         });
     </script>
 </body>    
