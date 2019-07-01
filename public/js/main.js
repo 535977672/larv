@@ -1,4 +1,18 @@
 
+//全局登录判断
+loginOut();
+function isLogin(){
+    return sessionStorage.getItem("isLogin");
+}
+
+function loginIn(){
+    if(isLogin() === '0') sessionStorage.setItem("isLogin", 1);
+}
+
+function loginOut(){
+    sessionStorage.setItem("isLogin", 0);
+}
+
 //ajax
 $.ajaxSetup({
     headers: {
@@ -28,8 +42,8 @@ function ajax(url, data = {}, callback = '', type = 'POST', load = 1){
         error: function(xml){
             if(load === 1) closeAjaxLoading();
             loading = false;
+            console.log(xml);
             var str = '网络错误';
-            if(xml.responseJSON.message) str = xml.responseJSON.message;
             $.toast(str, "cancel");
         }
     });
@@ -44,8 +58,11 @@ function closeAjaxLoading(){
 }
 
 //刷新
-function winReload(){
-    location.reload();
+function winReload(par = 0){
+    if(par === 0)
+        location.reload();
+    else
+        parent.location.reload();
 }
 
 //图片懒加载
@@ -99,9 +116,10 @@ function login() {
                 ajax('/login', {name: name, password: pwd}, function(res){
                     if(res.status == 200){
                         //winReload();
+                        loginIn();
                         $.toast("登录成功");
                     }else{
-                        $.toast("登录失败");
+                        $.toast(res.msg, "cancel");
                     }
                 });
             }},
@@ -120,12 +138,12 @@ function register() {
     var html = '<div class="weui-cells weui-cells_form">'
                         +'<div class="weui-cell">'
                             +'<div class="weui-cell__bd">'
-                            +'<input class="weui-input" type="text" id="login-name" placeholder="账号 数字或字母10-18位">'
+                            +'<input class="weui-input" type="text" id="login-name" placeholder="账号 数字或字母6-18位">'
                             +'</div>'
                         +'</div>'
                         +'<div class="weui-cell">'
                             +'<div class="weui-cell__bd">'
-                            +'<input class="weui-input" type="password" id="login-pwd" placeholder="密码 数字或字母10-18位">'
+                            +'<input class="weui-input" type="password" id="login-pwd" placeholder="密码 数字或字母6-18位">'
                             +'</div>'
                         +'</div>'
                         +'<div class="weui-cell">'
@@ -138,13 +156,17 @@ function register() {
         title: "注册",
         text: html,
         buttons: [
-            {text: "确认", onClick: function(){
+            { text: "登录", className: "default", onClick: function(){
+                login();
+            }},
+            {text: "注册", onClick: function(){
                 var name = $('#login-name').val(), pwd = $('#login-pwd').val(), repwd = $('#password_confirmation').val();
                 ajax('/register', {name: name, password: pwd, password_confirmation: repwd}, function(res){
                     if(res.status == 200){
-                        //winReload();
+                        loginIn();
+                        $.toast("登录成功");
                     }else{
-                        $.toast("注册失败");
+                        $.toast(res.msg, "cancel");
                     }
                 });
             }},
@@ -157,7 +179,8 @@ function register() {
 
 //退出登录
 function logout() {
+    loginOut();
     ajax('/logout', {}, function(res){
-        winReload();
+        winReload(1);
     });
 }

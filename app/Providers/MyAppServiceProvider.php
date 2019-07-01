@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MyAppServiceProvider extends ServiceProvider
 {
@@ -17,7 +18,6 @@ class MyAppServiceProvider extends ServiceProvider
     {
         //数据共享给所有视图
         View::share('isWeixin', is_weixin() || is_qq());
-        View::share('isLogin', $request->cookie('userid', 0));
     }
 
     /**

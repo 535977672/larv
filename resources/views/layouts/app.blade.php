@@ -14,19 +14,19 @@
         <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
-        body{position: absolute; width: 100%; overflow-x: hidden; height: 100%; overflow-y: scroll;}
+        body{width: 100%; overflow-x: hidden;}
     </style>
 </head>
 
 <body>
-    @if (!$isWeixin)
-	<div class="weui-pull-to-refresh__layer">
-		<div class='weui-pull-to-refresh__arrow'></div>
-		<div class='weui-pull-to-refresh__preloader'></div>
-		<div class="down">下拉刷新</div>
-		<div class="up">释放刷新</div>
-		<div class="refresh">正在刷新</div>
-	</div>
+    @if(!$isWeixin)
+    <div class="weui-pull-to-refresh__layer">
+            <div class='weui-pull-to-refresh__arrow'></div>
+            <div class='weui-pull-to-refresh__preloader'></div>
+            <div class="down">下拉刷新</div>
+            <div class="up">释放刷新</div>
+            <div class="refresh">正在刷新</div>
+    </div>
     @endif
     @yield('content')
     <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
@@ -35,17 +35,18 @@
     <script src="/js/fastclick.js"></script>
     <script src="/js/main.js"></script>
     <script>
+        @auth
+            loginIn();
+        @endauth
         $(function() {
             FastClick.attach(document.body);
         });
-        @if (!$isWeixin)
         $(document.body).pullToRefresh(function () {
-			winReload();
-            $(document.body).pullToRefreshDone();
-		});
-        @endif
+            location.reload();
+        });
         lazyload("img.lazy");
     </script>
     @yield('script')
 </body>    
 </html>
+
