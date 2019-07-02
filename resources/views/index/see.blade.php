@@ -18,7 +18,7 @@
                 <span class="price">1480-3198</span>
             </span>
         </div>
-        <div class="m-cell">北欧羽绒乳胶沙发现代简约小户型可拆洗棉麻布艺沙发组合双三人位</div>
+        <div class="m-cell">北 欧羽绒乳胶沙发现代简约小户型可拆洗棉麻布艺沙发组合双三人位</div>
         <div class="module-adds" data-mod-name="detail-m/mods/module-adds/index">
             <span class="sales">月销量 333件</span>
             <span class="delivery">广东佛山</span>
