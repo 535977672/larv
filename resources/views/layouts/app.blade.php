@@ -7,7 +7,7 @@
     <title>amief - @yield('title')</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
-    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/main.css?time={{ time() }}">
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
         <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -33,7 +33,7 @@
     <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
     <script src="/js/jquery.lazyload.min.js"></script>
     <script src="/js/fastclick.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/main.js?time={{ time() }}"></script>
     <script>
         @auth
             loginIn();

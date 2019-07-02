@@ -10,28 +10,22 @@
         </div>
         <div class="swiper-pagination"></div>
     </div>
-    <div class="mt5 p5">
-        <div class="real-price">
-            <span class="icon-text">心动价</span>
-            <span class="">
-                <i class="price-symbol">¥</i>
-                <span class="price">1480-3198</span>
-            </span>
+    <div class="mt5 p5 m-goods">
+        <div class="goods-price">
+            <i class="price-symbol">¥</i>
+            <span class="price">1480-3198</span>
+            <span class="price-icon">心动价</span>
         </div>
-        <div class="m-cell">2332北欧羽绒乳胶沙发现代简约小户型可拆洗棉麻布艺沙发组合双三人位</div>
-        <div class="module-adds" data-mod-name="detail-m/mods/module-adds/index">
-            <span class="sales">月销量 333件</span>
-            <span class="delivery">广东佛山</span>
+        <div class="goods-name m-name">2332北欧羽绒乳胶沙发现代简约小户型可拆洗棉麻布艺沙发组合双三人位</div>
+        <div class="goods-adds">
+            <span>快递 0.00</span>
+            <span>月销量 333件</span>
+            <span>广东佛山</span>
         </div>
-        <div class="prom-content actBorderTop">
-            <div class="l">促销</div>
-            <div class="box mui-flex align-center">
-                <div class="ic-box" style="margin-right:-3.6999999999999997px;">
-                    <span>积分</span></div>
-                    <div class="cell">
-                        <span>购买可得740积分</span>
-                    </div>
-            </div>
+        <div class="goods-prom f-12 pt5">
+            <span class="c-888 mr5">促销</span>
+            <span class="c-red f-10">积分</span>
+            <span>购买可得740积分</span>
         </div>
         <div class="module-sku" data-mod-name="detail-m/mods/module-sku/index">
             <div class="skuText">
@@ -70,7 +64,6 @@
 $(".swiper-container").swiper({
     autoplay : 3000,
     pagination : '.swiper-pagination',
-    paginationType : 'fraction',
     paginationClickable :true,
     autoplayDisableOnInteraction : false,
     effect : 'slide'
