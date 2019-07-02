@@ -5,10 +5,9 @@
  * 不能改线上代码
  * 错误不友好
  */
-return ;
 $target = '/var/www/larv'; // 生产环境 web 目录
 //密钥
-$secret = "fjF32n";
+$secret = "fjFEWFND&*#$&nfjk32n";
 //获取 GitHub 发送的内容
 $json = file_get_contents('php://input');
 $content = json_decode($json, true);
@@ -23,7 +22,7 @@ $payloadHash = hash_hmac($algo, $json, $secret);
 // 判断签名是否匹配
 if ($hash === $payloadHash) {
     //输出和错误都写到文件
-    $cmd = "cd $target && git pull >>../hook.log 2>&1";
+    $cmd = "cd $target && git fetch --all && git reset --hard origin/master && git pull >>../hook.log 2>&1";
     //shell_exec — 通过 shell 环境执行命令，并且将完整的输出以字符串的方式返回。
     //无法通过返回值检测进程是否成功执行.
     $res = shell_exec($cmd);
