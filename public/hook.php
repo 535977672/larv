@@ -20,7 +20,7 @@ $payloadHash = hash_hmac($algo, $json, $secret);
 // 判断签名是否匹配
 if ($hash === $payloadHash) {
     //输出和错误都写到文件
-    $cmd = "cd $target && git pull >../hook.log 2>&1";
+    $cmd = "cd $target && git pull >>../hook.log 2>&1";
     //shell_exec — 通过 shell 环境执行命令，并且将完整的输出以字符串的方式返回。
     //无法通过返回值检测进程是否成功执行.
     $res = shell_exec($cmd);
