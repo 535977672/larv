@@ -5,7 +5,7 @@
  */
 $target = '/var/www/larv/public'; // 生产环境 web 目录
 //密钥
-$secret = "wqddede";
+$secret = "fjFEWFND&*#$&nfjk32n";
 //获取 GitHub 发送的内容
 $json = file_get_contents('php://input');
 $content = json_decode($json, true);
