@@ -3,7 +3,7 @@
 /* 
  * Github WebHooks代码部署
  */
-$target = '/var/www/larv/public'; // 生产环境 web 目录
+$target = '/var/www/larv'; // 生产环境 web 目录
 //密钥
 $secret = "fjFEWFND&*#$&nfjk32n";
 //获取 GitHub 发送的内容
