@@ -23,7 +23,6 @@ $payloadHash = hash_hmac($algo, $json, $secret);
 // 判断签名是否匹配
 if ($hash === $payloadHash) {
     //输出和错误都写到文件
-    shell_exec("cd $target && echo -e '" . date('Y-m-d H:i:s') . "\n" .$cmd."'".$log);
     $cmd = "cd $target && git fetch --all";
     //shell_exec — 通过 shell 环境执行命令，并且将完整的输出以字符串的方式返回。
     //无法通过返回值检测进程是否成功执行.
@@ -33,7 +32,7 @@ if ($hash === $payloadHash) {
     shell_exec("cd $target && echo -e '" . date('Y-m-d H:i:s') . "\n" .$cmd."'".$log);
     $res = shell_exec($cmd . $log);
     $cmd = "cd $target && git pull";
-    shell_exec("echo -e '" . date('Y-m-d H:i:s') . "\n" .$cmd."'".$log);
+    shell_exec("cd $target && echo -e '" . date('Y-m-d H:i:s') . "\n" .$cmd."'".$log);
     $res = shell_exec($cmd . $log);
     $res_log = 'Success:'.PHP_EOL;
     $res_log .= $content['head_commit']['author']['name'] . ' 在' . date('Y-m-d H:i:s') . '向' . $content['repository']['name'] . '项目的' . $content['ref'] . '分支 push 了' . count($content['commits']) . '个 commit：' . PHP_EOL;
