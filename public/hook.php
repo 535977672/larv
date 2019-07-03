@@ -23,13 +23,14 @@ $payloadHash = hash_hmac($algo, $json, $secret);
 // 判断签名是否匹配
 if ($hash === $payloadHash) {
     //输出和错误都写到文件
+    shell_exec("cd $target && echo -e '" . date('Y-m-d H:i:s') . "\n" .$cmd."'".$log);
     $cmd = "cd $target && git fetch --all";
     //shell_exec — 通过 shell 环境执行命令，并且将完整的输出以字符串的方式返回。
     //无法通过返回值检测进程是否成功执行.
-    shell_exec("echo -e '" . date('Y-m-d H:i:s') . "\n" .$cmd."'".$log);
+    shell_exec("cd $target && echo -e '" . date('Y-m-d H:i:s') . "\n" .$cmd."'".$log);
     $res = shell_exec($cmd . $log);
     $cmd = "cd $target && git reset --hard origin/master";
-    shell_exec("echo -e '" . date('Y-m-d H:i:s') . "\n" .$cmd."'".$log);
+    shell_exec("cd $target && echo -e '" . date('Y-m-d H:i:s') . "\n" .$cmd."'".$log);
     $res = shell_exec($cmd . $log);
     $cmd = "cd $target && git pull";
     shell_exec("echo -e '" . date('Y-m-d H:i:s') . "\n" .$cmd."'".$log);
