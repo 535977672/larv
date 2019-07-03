@@ -29,8 +29,10 @@ if ($hash === $payloadHash) {
     shell_exec("echo -e '" . date('Y-m-d H:i:s') . "\n" .$cmd."'".$log);
     $res = shell_exec($cmd . $log);
     $cmd = "cd $target && git reset --hard origin/master";
+    shell_exec("echo -e '" . date('Y-m-d H:i:s') . "\n" .$cmd."'".$log);
     $res = shell_exec($cmd . $log);
     $cmd = "cd $target && git pull";
+    shell_exec("echo -e '" . date('Y-m-d H:i:s') . "\n" .$cmd."'".$log);
     $res = shell_exec($cmd . $log);
     $res_log = 'Success:'.PHP_EOL;
     $res_log .= $content['head_commit']['author']['name'] . ' 在' . date('Y-m-d H:i:s') . '向' . $content['repository']['name'] . '项目的' . $content['ref'] . '分支 push 了' . count($content['commits']) . '个 commit：' . PHP_EOL;
