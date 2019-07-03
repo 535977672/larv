@@ -6,6 +6,7 @@
  * 错误不友好
  */
 $target = '/var/www/larv'; // 生产环境 web 目录
+$log = '>>../hook.log 2>&1';
 //密钥
 $secret = "fjFEWFND&*#$&nfjk32n";
 //获取 GitHub 发送的内容
@@ -22,9 +23,13 @@ $payloadHash = hash_hmac($algo, $json, $secret);
 // 判断签名是否匹配
 if ($hash === $payloadHash) {
     //输出和错误都写到文件
-    $cmd = "cd $target && git fetch --all && git reset --hard origin/master && git pull >>../hook.log 2>&1";
+    $cmd = "cd $target && git fetch --all $log";
     //shell_exec — 通过 shell 环境执行命令，并且将完整的输出以字符串的方式返回。
     //无法通过返回值检测进程是否成功执行.
+    $res = shell_exec($cmd);
+    $cmd = "cd $target && git reset --hard origin/master $log";
+    $res = shell_exec($cmd);
+    $cmd = "cd $target && git pull $log";
     $res = shell_exec($cmd);
     $res_log = 'Success:'.PHP_EOL;
     $res_log .= $content['head_commit']['author']['name'] . ' 在' . date('Y-m-d H:i:s') . '向' . $content['repository']['name'] . '项目的' . $content['ref'] . '分支 push 了' . count($content['commits']) . '个 commit：' . PHP_EOL;
