@@ -16,7 +16,7 @@
             <span class="price">1480-3198</span>
             <span class="price-icon">心动价</span>
         </div>
-        <div class="goods-name m-name">231 32北欧羽绒乳胶沙发现代简约小户型可拆洗棉麻布艺沙发组合双三人位</div>
+        <div class="goods-name m-name">2 31 32北欧羽绒乳胶沙发现代简约小户型可拆洗棉麻布艺沙发组合双三人位</div>
         <div class="goods-adds">
             <span>快递 0.00</span>
             <span>月销量 333件</span>
