@@ -5,19 +5,78 @@ function isEmpty(obj){
         return false;
     }
 }
-
 //全局登录判断
 loginOut();
 function isLogin(){
-    return sessionStorage.getItem("isLogin");
+    return uncompileStr(sessionStorage.getItem("isLogin"));
 }
 
 function loginIn(){
-    if(isLogin() === '0') sessionStorage.setItem("isLogin", 1);
+    if(isLogin() !== 'isLogin') sessionStorage.setItem("isLogin", compileStr('isLogin'));
 }
 
 function loginOut(){
-    sessionStorage.setItem("isLogin", 0);
+    sessionStorage.setItem("isLogin", compileStr('0'));
+}
+
+//localStorage
+function getlocalData(name){
+    return JSON.parse(localStorage.getItem(name));
+}
+
+function setlocalData(name, value){
+    var d = getlocalData(name);
+    if(d){
+         var c = value.concat(d);
+    }else{
+        var c = value;
+    }
+    localStorage.setItem(name, JSON.stringify(c));
+}
+
+function dellocalData(name){
+    localStorage.removeItem(name);
+}
+
+//sessionStorage
+function getsessionData(name){
+    var d = sessionStorage.getItem(name);
+    if(!isEmpty(d)) return JSON.parse(uncompileStr(d));
+    return false;
+}
+
+function setsessionData(name, value){
+    if(isEmpty(value)) return false;
+    var d = getsessionData(name);
+    if(!isEmpty(d)){
+         var c = value.concat(d);
+    }else{
+        var c = value;
+    }
+    sessionStorage.setItem(name, compileStr(JSON.stringify(c)));
+}
+
+function delsessionData(name){
+    sessionStorage.removeItem(name);
+}
+
+//对字符串进行加密   
+function compileStr(code){
+    var c=String.fromCharCode(code.charCodeAt(0)+code.length);  
+    for(var i=1;i<code.length;i++){        
+        c+=String.fromCharCode(code.charCodeAt(i)+code.charCodeAt(i-1));  
+    }     
+    return escape(c);
+}
+
+//字符串进行解密   
+function uncompileStr(code){
+    code = unescape(code);        
+    var c=String.fromCharCode(code.charCodeAt(0)-code.length);        
+    for(var i=1;i<code.length;i++){        
+        c+=String.fromCharCode(code.charCodeAt(i)-c.charCodeAt(i-1));        
+    }        
+    return c;
 }
 
 //ajax
@@ -27,11 +86,31 @@ $.ajaxSetup({
     }
 });
 var loading = false;
-function ajax(url, data = {}, callback = '', type = 'POST', load = 1){
+function ajax(url, data = {}, callback = '', type = 'POST', load = 1, cache = 0){
     if(loading) return;
     loading = true;
     if(load === 1) ajaxLoading();
     if(!!!type) type = 'POST';
+    
+    if(cache>0){
+        var name = compileStr(url+JSON.stringify(data)+type);
+        var d = getsessionData(name);
+        if(d){
+            if(new Date().getTime()-d[0] < 0){
+                res = d[1];
+                if(load === 1) closeAjaxLoading();
+                loading = false;
+                console.log('cache');
+                if(callback){
+                    callback(res);
+                }
+                return;
+            }else{
+                delsessionData(name);
+            }
+        }
+    }
+    
     $.ajax({
         url: url,
         dataType: 'json',
@@ -42,6 +121,12 @@ function ajax(url, data = {}, callback = '', type = 'POST', load = 1){
         success: function(res){
             if(load === 1) closeAjaxLoading();
             loading = false;
+            if(cache>0){
+                var c = [];
+                c.push(new Date().getTime()+3600000);
+                c.push(res);
+                setsessionData(name, c);
+            }
             if(callback){
                 callback(res);
             }

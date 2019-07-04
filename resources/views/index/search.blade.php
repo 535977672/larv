@@ -49,7 +49,7 @@ $(document.body).infinite(200).on("infinite", function() {
         $('.main-img').append(html+html+html+html+html+html+html+html+html+html+html+html+html+html+html+html+html+html+html+html+html+html);
         lazyload(".main-img img.lazy");
         loadings = false;
-    },'',0);
+    },'',0,1);
     //$(document.body).destroyInfinite()
 });
 

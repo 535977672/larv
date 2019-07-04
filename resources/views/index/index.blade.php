@@ -72,7 +72,7 @@
             $('.weui-tabbar__item').on('click', function(e){
                 var obj = $(this);
                 if(obj.attr('href') === '#tab4'){
-                    if(isLogin() === '0'){
+                    if(isLogin() !== 'isLogin'){
                         e.preventDefault();
                         e.stopPropagation();
                         login();
