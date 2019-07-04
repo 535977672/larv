@@ -5,6 +5,8 @@
  * 不能改线上代码
  * 错误不友好
  */
+header("Content-type: text/html; charset=utf-8");
+date_default_timezone_set("Asia/Shanghai");
 $target = '/var/www/larv'; // 生产环境 web 目录
 $log = ' >>../hook.log 2>&1';
 //密钥
