@@ -5,10 +5,10 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class RedirectIfAuthenticated
+class AuthAdmin
 {
     /**
-     * Handle an incoming request.
+     * admin
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -17,10 +17,14 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->check()) {
-            //return redirect('/home');
-            // 根据不同 guard 跳转到不同的页面   
-            return redirect($guard ? '/admin':'/'); 
+        //游客
+        if (Auth::guard('admin')->guest()) {
+            //是否ajax请求 是否json返回
+            if ($request->ajax() || $request->wantsJson()) { 
+                return return_ajax(200, '请先登录');
+            } else {
+                return redirect()->guest('admin/login'); 
+            } 
         }
 
         return $next($request);
