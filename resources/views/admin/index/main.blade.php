@@ -6,7 +6,7 @@
             <div class="layui-card">
                 <div class="layui-card-body ">
                     <blockquote class="layui-elem-quote">欢迎管理员：
-                        <span class="x-red">admin</span>！当前时间:{{ date('Y-m-d H:i:s') }}
+                        <span class="x-red">{{ $username }}</span>！当前时间:{{ date('Y-m-d H:i:s') }}
                     </blockquote>
                 </div>
             </div>

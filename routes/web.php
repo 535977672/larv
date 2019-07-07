@@ -12,7 +12,7 @@
 */
 Route::get('/', 'IndexController@index');
 Route::prefix('index')->group(function () {
-    Route::get('index', 'IndexController@index');
+    Route::get('/(index?)', 'IndexController@index');
     Route::get('main', 'IndexController@main');
     Route::match(['get', 'post'], 'search', 'IndexController@search');
     Route::get('see', 'IndexController@see');
@@ -49,6 +49,9 @@ Auth::routes();
 Route::get('/home', 'IndexController@index');
 
 
+
+
+
 Route::get('admin/login', 'Admin\LoginController@showLoginForm');
 Route::post('admin/login', 'Admin\LoginController@login');
 Route::post('admin/logout', 'Admin\LoginController@logout');
@@ -57,6 +60,11 @@ Route::prefix('admin')->group(function () {
     Route::get('main', 'Admin\IndexController@main');
     Route::prefix('index')->group(function () {
         Route::get('/{index?}', 'Admin\IndexController@index');
+    });
+    Route::prefix('g')->group(function () {
+        Route::get('c', 'Admin\GoodsController@check');
+        Route::get('cd/{id}', 'Admin\GoodsController@checkDetail');
+        Route::post('s/{id?}', 'Admin\GoodsController@save');
         
         
         
