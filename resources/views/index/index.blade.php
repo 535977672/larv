@@ -14,6 +14,7 @@
         <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
+        body{width: 100%;height: 100%; overflow: hidden;}
         .weui-tab iframe{width: 100%; height: 100%; border: none;}
     </style>
 </head>
