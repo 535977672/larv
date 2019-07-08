@@ -17,7 +17,8 @@ Route::prefix('test')->group(function () {
 
 Route::get('/', 'IndexController@index');
 Route::prefix('index')->group(function () {
-    Route::get('/(index?)', 'IndexController@index');
+    Route::get('/', 'IndexController@index');
+    Route::get('index', 'IndexController@index');
     Route::get('main', 'IndexController@main');
     Route::match(['get', 'post'], 'search', 'IndexController@search');
     Route::get('see', 'IndexController@see');

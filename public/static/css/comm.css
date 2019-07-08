@@ -91,3 +91,6 @@
 .m-fl{float: left;} 
 .m-fr{float: right;} 
 .m-cl{clear: both;}
+
+.m-hidden{display: none;}
+.m-show{display: block;}

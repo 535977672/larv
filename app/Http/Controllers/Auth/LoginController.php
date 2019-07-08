@@ -154,11 +154,11 @@ class LoginController extends Controller
     protected function validateLogin(array $data)
     {
         return Validator::make($data, [
-            $this->username() => "bail|required|regex:'[0-9a-zA-z]{6,18}'",
+            $this->username() => "bail|required|regex:'^[1][3,4,5,7,8,9][0-9]{9}$'",
             'password' => "bail|required|regex:'[0-9a-zA-z]{6,18}'",
         ], [
-            'name.required' => '用户名不能为空',
-            'name.regex' => '用户名格式错误',
+            'name.required' => '手机不能为空',
+            'name.regex' => '手机格式错误',
             'password.required' => '密码不能为空',
             'password.regex' => '密码格式错误'
         ]);

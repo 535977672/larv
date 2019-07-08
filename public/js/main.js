@@ -190,12 +190,12 @@ function login() {
     var html = '<form><div class="weui-cells weui-cells_form">'
                         +'<div class="weui-cell">'
                             +'<div class="weui-cell__bd">'
-                            +'<input class="weui-input" type="text" id="login-name" placeholder="账号">'
+                            +'<input class="weui-input" type="text" id="login-name" placeholder="手机号"  autocomplete="off">'
                             +'</div>'
                         +'</div>'
                         +'<div class="weui-cell">'
                             +'<div class="weui-cell__bd">'
-                            +'<input class="weui-input" type="password" id="login-pwd" placeholder="密码">'
+                            +'<input class="weui-input" type="password" id="login-pwd" placeholder="密码"  autocomplete="off">'
                             +'</div>'
                         +'</div>'
                 +'</div></form>';
@@ -230,17 +230,28 @@ function register() {
     var html = '<div class="weui-cells weui-cells_form">'
                         +'<div class="weui-cell">'
                             +'<div class="weui-cell__bd">'
-                            +'<input class="weui-input" type="text" id="login-name" placeholder="账号 数字或字母6-18位">'
+                            +'<input class="weui-input" type="text" id="login-name" placeholder="手机号" autocomplete="off">'
                             +'</div>'
                         +'</div>'
                         +'<div class="weui-cell">'
                             +'<div class="weui-cell__bd">'
-                            +'<input class="weui-input" type="password" id="login-pwd" placeholder="密码 数字或字母6-18位">'
+                            +'<input class="weui-input" type="password" id="login-pwd" placeholder="密码 数字或字母6-18位"  autocomplete="off">'
                             +'</div>'
                         +'</div>'
                         +'<div class="weui-cell">'
                             +'<div class="weui-cell__bd">'
-                            +'<input class="weui-input" type="password" id="password_confirmation" placeholder="重复密码">'
+                            +'<input class="weui-input" type="password" id="password_confirmation" placeholder="重复密码"  autocomplete="off">'
+                            +'</div>'
+                        +'</div>'
+                        +'<div class="weui-cell">'
+                            +'<div class="weui-cell__bd">'
+                                +'<div class="slideunlock-wrapper">'
+                                    +'<input type="hidden" id="login-veri" value="" class="slideunlock-lockable" />'
+                                    +'<div class="slideunlock-slider">'
+                                        +'<span class="slideunlock-label">&nbsp;&nbsp;》</span>'
+                                        +'<span class="slideunlock-lable-tip">Slide to unlock!</span>'
+                                    +'</div>'
+                                +'</div>'
                             +'</div>'
                         +'</div>'
                 +'</div>';
@@ -252,8 +263,8 @@ function register() {
                 login();
             }},
             {text: "注册", onClick: function(){
-                var name = $('#login-name').val(), pwd = $('#login-pwd').val(), repwd = $('#password_confirmation').val();
-                ajax('/register', {name: name, password: pwd, password_confirmation: repwd}, function(res){
+                var name = $('#login-name').val(), pwd = $('#login-pwd').val(), repwd = $('#password_confirmation').val(), veri = $('#login-veri').val();
+                ajax('/register', {name: name, password: pwd, password_confirmation: repwd, veri: veri}, function(res){
                     if(res.status == 200){
                         loginIn();
                         $.toast("登录成功");
@@ -267,6 +278,12 @@ function register() {
             }}
         ]
     });
+    var slider = new SliderUnlock(".slideunlock-slider", {
+        labelTip: "向右滑动解锁",
+        successLabelTip: "解锁成功",
+        duration: 200
+    }, function () {}, function () {});
+    slider.init();
 }
 
 //退出登录
