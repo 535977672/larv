@@ -10,6 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::prefix('test')->group(function () {
+    Route::get('index', 'TestController@index');
+});
+
 Route::get('/', 'IndexController@index');
 Route::prefix('index')->group(function () {
     Route::get('index', 'IndexController@index');
