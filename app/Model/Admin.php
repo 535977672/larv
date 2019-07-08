@@ -1,13 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Model;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class Admin extends Authenticatable
 {
     use Notifiable;
+    
+    protected $table = 'admin';//默认复数形式admins
 
     /**
      * The attributes that are mass assignable.

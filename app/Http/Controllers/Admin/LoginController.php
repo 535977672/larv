@@ -1,25 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * 手动认证用户
+ * http://www.bcty365.com/content-153-6122-1.html
+ */
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
     
     /**
@@ -28,7 +22,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('layouts.404');
+        return view('admin.login.login');
     }
 
     /**
@@ -39,7 +33,7 @@ class LoginController extends Controller
      * @var string
      */
     protected function redirectTo(){
-        return '/';
+        return '/admin';
     }
 
     /**
@@ -49,7 +43,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest:admin')->except('logout');
     }
     
     /**
@@ -154,7 +148,7 @@ class LoginController extends Controller
     protected function validateLogin(array $data)
     {
         return Validator::make($data, [
-            $this->username() => "bail|required|regex:'[0-9a-zA-z]{6,18}'",
+            $this->username() => "bail|required|regex:'[0-9]{11}'",
             'password' => "bail|required|regex:'[0-9a-zA-z]{6,18}'",
         ], [
             'name.required' => '用户名不能为空',
@@ -164,5 +158,16 @@ class LoginController extends Controller
         ]);
     }
     
+
+    /**
+     * 自定义认证驱动 
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard('admin');
+    }
     
 }
