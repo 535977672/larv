@@ -14,7 +14,6 @@
         <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
-        body{width: 100%;height: 100%; overflow: hidden;}
         .weui-tab iframe{width: 100%; height: 100%; border: none;}
     </style>
 </head>
@@ -60,10 +59,9 @@
       </div>
     </div>
 
-    <script type="text/javascript" src="/static/slideunlock/js/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
     <script src="/js/fastclick.js"></script>
-    <script type="text/javascript" src="/static/slideunlock/js/jquery.mobile.min.js"></script>
     <script type="text/javascript" src="/static/slideunlock/js/jquery.slideunlock.js"></script>
     <script src="/js/main.js?time={{ time() }}"></script>
     <script>
