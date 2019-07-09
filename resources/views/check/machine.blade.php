@@ -23,7 +23,7 @@
             background: linear-gradient(to bottom right, red,orange,yellow,green,blue,indigo,violet);
             animation-delay:2s;
             animation-timing-function: ease-in-out;
-            animation:mymove 5s;
+            animation:mymove 8s infinite;
         }
         #msg {
           width: 100%;
@@ -34,9 +34,10 @@
         @keyframes mymove
         {
             0%   {background:red; left:-100px; top:0px;transform: rotate(0deg) translateZ(0);}
-            25%  {background:yellow; left:100px; top:0px;transform: rotate(90deg) translateZ(0);}
-            50%  {background:blue; left:100px; top:200px;transform: rotate(180deg) translateZ(0);}
-            75%  {background:green; left:-100px; top:200px;transform: rotate(270deg) translateZ(0);}
+            10%  {background:yellow; left:100px; top:0px;transform: rotate(90deg) translateZ(0);}
+            20%  {background:blue; left:100px; top:200px;transform: rotate(180deg) translateZ(0);}
+            30%  {background:green; left:-100px; top:200px;transform: rotate(270deg) translateZ(0);}
+            40% {background:red; left:0px; top:0px;transform: rotate(0deg) translateZ(0);}
             100% {background:red; left:0px; top:0px;transform: rotate(0deg) translateZ(0);}
         }
     </style>
