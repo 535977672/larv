@@ -111,6 +111,7 @@ function ajax(url, data = {}, callback = '', type = 'POST', load = 1, cache = 0)
         }
     }
     
+    data.lses = sessionStorage.getItem('lses');
     $.ajax({
         url: url,
         dataType: 'json',

@@ -15,6 +15,8 @@ Route::prefix('test')->group(function () {
     Route::get('index', 'TestController@index');
 });
 
+Route::get('/cd34/3miy/qoc4m/0jmzs', 'CheckController@machine');
+Route::get('/csij/dso3/1dksl/dcns', 'CheckController@ses');
 Route::get('/', 'IndexController@index');
 Route::prefix('index')->group(function () {
     Route::get('/', 'IndexController@index');
