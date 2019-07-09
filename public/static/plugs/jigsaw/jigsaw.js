@@ -62,7 +62,7 @@ function removeClass (tag, className) {
 
 function getRandomImgSrc () {
   //return '//picsum.photos/300/150/?image=' + getRandomNumberByRange(0, 1084)
-  return 'https://picsum.photos/300/150'
+  return '/static/img/veri.jpg'
 }
 
 function draw (ctx, x, y, operation) {
