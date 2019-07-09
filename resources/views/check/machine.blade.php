@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/static/plugs/jigsaw/jigsaw.css">
     <script src="/static/plugs/jigsaw/jigsaw.min.js"></script>
     <style>
-        body{width: 100%; 
+        body{
              height: 100%;
              overflow: hidden;
              background-image: url('/static/img/x.png')
