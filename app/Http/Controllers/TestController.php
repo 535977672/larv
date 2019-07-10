@@ -7,12 +7,34 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Cache;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
+
+use App\Service\SmsSend;
+
 
 class TestController extends Controller
 {
+    public function __construct() {}
+    
     public function index()
     {
-
+        //$this->dbTest();
+       
+        //$this->redisTest();
+        
+        //$this->cacheTest();
+        
+        //$this->cacheTagsTest();
+        
+        //$this->smsTest();
+        
+        $this->fileTest();
+        
+        return return_ajax(200,'1212');
+    }
+    
+    protected function dbTest(){
         //运行原生的 SQL 语句
         DB::transaction(function () {
             
@@ -111,12 +133,6 @@ class TestController extends Controller
             
             
         //var_dump($users);
-       
-        $this->redisTest();
-        
-        $this->cacheTest();
-        
-        return return_ajax(200,'1212');
     }
     
     protected function redisTest(){
@@ -144,10 +160,11 @@ class TestController extends Controller
         $value = Cache::get('key_1', function () {
             return 232132;
         });
-                 
+
 
         $value = Cache::has('key21321312');
-  
+
+
         Cache::increment('key21321312', 2);//不存在无效
         Cache::decrement('key21321312', 1);
         
@@ -157,6 +174,91 @@ class TestController extends Controller
         $value = Cache::remember('users', 5, function () {
             return 34324;
         });
-        var_dump($value);
+
+        
+        //获取和删除
+        $value = Cache::pull('key21321312');
+
+        
+        //存储项目到缓存中
+        Cache::put('key', 'value', 1);//$minutes
+        
+        
+        //写入目前不存在的项目
+        Cache::add('key', 'value', 2);
+        
+        //永久写入项目
+        Cache::forever('key', 'value');
+        
+        //从缓存中移除项目
+        Cache::forget('key');
+        //清空所有缓存
+        //Cache::flush();
+         
+    }
+    
+    protected function cacheTagsTest(){
+        
+        //缓存标签
+        //缓存标签并不支持使用 file 或 database 的缓存驱动
+
+        Cache::store('redis')->tags(['u1', 'u2'])->put('key_tags1', '1234', 1);
+        Cache::store('redis')->tags(['u3', 'u4'])->put('key_tags2', '12345', 1);
+        Cache::store('redis')->tags(['u2', 'u3'])->put('key_tags3', '123456', 1);
+        Cache::store('redis')->tags(['u5'])->put('key_tags4', '1234567', 1);
+        Cache::store('redis')->tags(['u5'])->put('key_tags5', '1234568', 1);
+        Cache::store('redis')->tags(['u5'])->put('key_tags6', '1234569', 1);
+        
+        //错误
+        //$value = Cache::store('redis')->get('key_tags1');
+        //$value = Cache::store('redis')->tags(['u3'])->get('key_tags1');
+        
+        //获取时tags(['u1', 'u2'])要顺序一样
+        $value = Cache::store('redis')->tags(['u1', 'u2'])->get('key_tags1');
+        $value = Cache::store('redis')->tags(['u5'])->get('key_tags6');
+        
+        
+        Cache::store('redis')->tags(['u2'])->flush();
+        
+        //Cache::store('redis')->flush();
+        Cache::store('redis')->tags(['u5'])->forget('key_tags6');
+        
+    }
+    
+    protected function smsTest(){
+        $sms = new SmsSend();
+        $phone = '18';
+        $code = '422123';
+        $re = $sms->sendSms($phone, $phone, 483727, [$code, 180]);
+        var_dump($re);
+        
+        $re = $sms->sendSmsVeri($phone, $code);
+        var_dump($re);
+    }
+    
+    protected function fileTest(){
+        // 自动为文件名生成唯一的 ID...
+        //Storage::putFile('photos', new File('r/test'));
+
+        // 手动指定文件名...
+        //Storage::putFileAs('photos', new File('r/test'), 'photo.jpg');
+        
+        Storage::put('test/file.txt', 'Contents');
+        $contents = Storage::get('test/file.txt');//Contents
+        $url = Storage::url('test/file.txt');// http://test.larv.com/storage/test/file.txt
+        //echo $url;
+        
+        //可见性
+        Storage::put('test/file5.txt', 'Contents', 'public');
+        Storage::put('test/file6.txt', 'Contents', 'private');
+        Storage::put('test/file7.txt', 'Contents', 'private');
+        
+        echo Storage::getVisibility('test/file6.txt');
+        Storage::setVisibility('test/file6.txt', 'public');
+        echo Storage::getVisibility('test/file6.txt');
+        
+        //Storage::copy('test/file.txt', 'test/file2.txt');
+
+        //Storage::move('test/file2.txt', 'test2/file3.txt');
     }
 }

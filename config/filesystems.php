@@ -51,7 +51,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL').'/storage',//使用 local 驱动为存储在磁盘上的文件预定义主机
             'visibility' => 'public',
         ],
 
