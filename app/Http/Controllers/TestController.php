@@ -249,13 +249,13 @@ class TestController extends Controller
         //echo $url;
         
         //可见性
-        Storage::put('test/file5.txt', 'Contents', 'public');
-        Storage::put('test/file6.txt', 'Contents', 'private');
-        Storage::put('test/file7.txt', 'Contents', 'private');
+        Storage::put('test/file5.jpg', 'Contents', 'public');
+        Storage::put('test/file6.jpg', 'Contents', 'private');//win无效
+        Storage::put('test/file7.jpg', 'Contents', 'private');
         
-        echo Storage::getVisibility('test/file6.txt');
-        Storage::setVisibility('test/file6.txt', 'public');
-        echo Storage::getVisibility('test/file6.txt');
+        echo Storage::getVisibility('test/file6.jpg');
+        Storage::setVisibility('test/file6.jpg', 'public');
+        echo Storage::getVisibility('test/file6.jpg');
         
         //Storage::copy('test/file.txt', 'test/file2.txt');
 
