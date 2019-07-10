@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
 
+use App\Service\File as Pfile;
+
 use App\Service\SmsSend;
 
 
@@ -29,7 +31,9 @@ class TestController extends Controller
         
         //$this->smsTest();
         
-        $this->fileTest();
+        //$this->fileTest();
+        
+        //$this->pfileTest();
         
         return return_ajax(200,'1212');
     }
@@ -146,6 +150,11 @@ class TestController extends Controller
             }
         });
         
+        $redis = Redis::connection();
+        $redis->hSet('pay', 'fdfg', time());
+        $redis->hSet('pay', 'fdfg21', time());
+        $redis->hSet('pay', 'fdfg2131', time());
+        
     }
     
     
@@ -250,7 +259,7 @@ class TestController extends Controller
         
         //可见性
         Storage::put('test/file5.jpg', 'Contents', 'public');
-        Storage::put('test/file6.jpg', 'Contents', 'private');//win无效
+        Storage::put('test/file6.jpg', 'Contents', 'private');//win无效 针对系统运行用户
         Storage::put('test/file7.jpg', 'Contents', 'private');
         
         echo Storage::getVisibility('test/file6.jpg');
@@ -260,5 +269,15 @@ class TestController extends Controller
         //Storage::copy('test/file.txt', 'test/file2.txt');
 
         //Storage::move('test/file2.txt', 'test2/file3.txt');
+    }
+    
+    
+    protected function pfileTest(){
+        $file = new Pfile;
+        $re = $file->payFileCopy('111');
+        var_dump($re);
+        
+        $re = $file->payFileDel('pay5d25b4d131ea45.63988341.png');
+        var_dump($re);
     }
 }
