@@ -5,6 +5,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
+//* * * * * php /path-to-your-project/artisan schedule:run >> /dev/null 2>&1 &  //丢弃一切写入其中的数据
 class Kernel extends ConsoleKernel
 {
     /**
