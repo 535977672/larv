@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\DB;
 
 class GoodsController extends AdminController
 {
+    /**
+     * 收集数据检查
+     * @return type
+     */
     public function check()
     {
         $list = DB::select('select id,url,cover,title from tb_attr');
@@ -15,6 +19,11 @@ class GoodsController extends AdminController
         return view('admin.goods.check', ['list'=>$list]);
     }
     
+    /**
+     * 数据详情
+     * @param type $id
+     * @return type
+     */
     public function checkDetail($id = 0)
     {
         $list = DB::select('select * from tb_attr where id = :id', ['id' => $id]);
@@ -32,7 +41,11 @@ class GoodsController extends AdminController
     }
     
     
-    
+    /**
+     * 数据保存
+     * @param type $id
+     * @return type
+     */
     public function save($id = 0)
     {
         $data = $this->request->all();

@@ -9,16 +9,16 @@ class Kernel extends ConsoleKernel
 {
     /**
      * The Artisan commands provided by your application.
-     *
+     * 应用提供的 Artisan 命令
      * @var array
      */
     protected $commands = [
-        //
+        \App\Console\Commands\Order::class,
     ];
 
     /**
      * Define the application's command schedule.
-     *
+     * 定义应用的命令调度
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
@@ -26,6 +26,12 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $filePath = '/var/www/console.log';
+        $schedule->command('order:check --force')
+            ->everyThirtyMinutes() //每半小时执行一次任务
+            ->timezone('Asia/Shanghai')
+            ->withoutOverlapping() //避免任务重复
+            ->appendOutputTo($filePath);
     }
 
     /**

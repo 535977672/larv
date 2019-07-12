@@ -4,7 +4,7 @@ namespace App\Service;
 use Illuminate\Support\Facades\Redis;
 
 /**
- * 短信发送
+ * 
  */
 class File extends Service{
 
