@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Cache;
-
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
 
@@ -42,10 +42,20 @@ class TestController extends Controller
         
         //$this->city();
         
-        $this->getcity();
+        //$this->getcity();
         
         return return_ajax(200,'1212');
     }
+    
+    
+    public function http(Request $request)
+    {
+        Storage::append('http/android.txt', json_encode($request->all(), JSON_UNESCAPED_UNICODE));
+        $code = [200, 404, 500];
+        $status = [200, 0];
+        return response()->json(['status'=>$status[array_rand($status,1)], 'msg'=>'success'], $code[array_rand($code,1)]);
+    }
+    
     
     protected function dbTest(){
         //运行原生的 SQL 语句
@@ -265,6 +275,9 @@ class TestController extends Controller
         $contents = Storage::get('test/file.txt');//Contents
         $url = Storage::url('test/file.txt');// http://test.larv.com/storage/test/file.txt
         //echo $url;
+        
+        //Storage::prepend('file.log', 'Prepended Text');
+        Storage::append('test/file.txt', 'Appended Text');
         
         //可见性
         Storage::put('test/file5.jpg', 'Contents', 'public');
