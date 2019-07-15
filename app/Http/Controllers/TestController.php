@@ -42,7 +42,7 @@ class TestController extends Controller
         
         //$this->city();
         
-        $this->getcity();
+        //$this->getcity();
         
         return return_ajax(200,'1212');
     }
@@ -247,10 +247,16 @@ class TestController extends Controller
         $sms = new SmsSend();
         $phone = '18';
         $code = '422123';
-        $re = $sms->sendSms($phone, $phone, 483727, [$code, 180]);
+//        $re = $sms->sendSms($phone, $phone, 483727, [$code, 180]);
+//        var_dump($re);
+//        
+//        $re = $sms->sendSmsVeri($phone, $code);
+//        var_dump($re);
+        
+        $re = $sms->sendSmsTX($phone, 373486, [$code, 180]);
         var_dump($re);
         
-        $re = $sms->sendSmsVeri($phone, $code);
+        $re = $sms->sendSmsVeriTX($phone, $code);
         var_dump($re);
     }
     
