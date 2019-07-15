@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
         $filePath = '/var/www/console.log';
         $schedule->command('order:check')
-            ->everyThirtyMinutes() //每半小时执行一次任务
+            ->everyMinute() //每半小时执行一次任务
             ->timezone('Asia/Shanghai')
             ->withoutOverlapping() //避免任务重复
             ->appendOutputTo($filePath);
