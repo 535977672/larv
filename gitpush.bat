@@ -1,2 +1,2 @@
-@git status && @git add . && @git add . && @git add . && @git commit -m '1' && @git pull && @git push
+@echo off && git status >nul && git add . >nul && git add . >nul && git add . >nul && git commit -m '1' >nul && git pull >nul && git push >nul
 pause
