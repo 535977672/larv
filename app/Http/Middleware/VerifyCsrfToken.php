@@ -12,6 +12,6 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        'http://cr.amief.club/test/http'//取消表单验证
     ];
 }
