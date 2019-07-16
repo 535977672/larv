@@ -1,0 +1,1 @@
+cd /var/www/larv && git fetch --all && git reset --hard origin/master && git pull;
