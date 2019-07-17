@@ -16,6 +16,11 @@ Route::prefix('test')->group(function () {
     Route::match(['get', 'post'], 'http', 'TestController@http');
 });
 
+Route::prefix('comm')->group(function () {
+    //Route::post('notification', 'CommController@notification');
+    Route::match(['get', 'post'], 'notification', 'CommController@notification');
+});
+
 Route::get('/cd34/3miy/qoc4m/0jmzs', 'CheckController@machine');
 Route::get('/csij/dso3/1dksl/dcns', 'CheckController@ses');
 Route::get('/', 'IndexController@index');

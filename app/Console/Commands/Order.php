@@ -2,7 +2,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
+use App\Service\Pay;
 
 /**
  * 创建任务
@@ -43,12 +43,11 @@ class Order extends Command {
      */
     public function handle()
     {
-        $re = $this->check();
-        var_dump($re);
+        $this->check();
     }
     
     private function check() {
-        $re = DB::table('users')->first();
-        return $re;
+        $pay = new Pay();
+        return $pay->payExpireCheck();
     }
 }
