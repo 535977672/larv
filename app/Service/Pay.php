@@ -2,6 +2,7 @@
 namespace App\Service;
 
 use App\Model\PayRecord;
+use App\Model\PayCode;
 use App\Model\Order;
 use Illuminate\Support\Facades\DB;
 use \Exception;
@@ -102,6 +103,7 @@ class Pay extends Service{
     
     /**
      * 支付成功数据更新
+     * 回调成功，手动验证成功
      * @param type $id
      * @param type $o_id
      * @param type $status
@@ -117,12 +119,12 @@ class Pay extends Service{
             $payRecord->status = $status;
             $payRecord->complete_time = time();
             $payRecord->note = $payRecord->note . '--' . $note;
-            if($payRecord->save() === false){
+            if(!$payRecord->save()){
                 throw new Exception('支付状态更新失败');
             }
             $order->order_status = 1;
             $order->pay_status = 1;
-            if($order->save() === false){
+            if(!$order->save()){
                 throw new Exception('订单状态更新失败');
             }
             DB::commit();
@@ -135,7 +137,7 @@ class Pay extends Service{
     }
     
     /**
-     * 过期检查 延时60s
+     * 过期自动检查脚本 延时60s
      * @return boolean
      */
     public function payExpireCheck() {
@@ -152,5 +154,57 @@ class Pay extends Service{
             }
         }
         return true;
+    }
+    
+    /**
+     * 手动过期检查
+     * @param type array $ids
+     * @return boolean
+     */
+    public function payPersonExpireCheck($ids) {
+        $data = PayRecord::find($ids);
+        if($data->count() > 1){
+            foreach ($data as $value) {
+                $value->status = 1;
+                $value->note = $value->note . '--手动检查过期' . date('Y-m-d H:i:s', time());
+                $value->save();
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * 设置PayCode
+     * @param type $phone
+     * @param type $code
+     * @return type bool/coll
+     */
+    public function setPayCode($phone, $code) {
+        $oldCode = PayCode::where('code', $code)->get();
+        if($oldCode->isNotEmpty()){
+            $this->setErrorMsg('数据重复');
+            return false;
+        }
+        return PayCode::create([
+                'code' => $code,
+                'phone' => $phone,
+                'create_time' => time()
+            ]);
+    }
+    
+    /**
+     * 未过期金额
+     * @param type $type
+     * @return type array
+     */
+    public function getMoney($type) {
+        $time = time();
+        $data = PayRecord::where([
+                ['expiring', '>', $time],
+                ['create_time', '<', $time],
+                ['status', '=', 0],
+                ['type', '=', $type]
+            ])->pluck('money');
+        return $data->toArray();
     }
 }

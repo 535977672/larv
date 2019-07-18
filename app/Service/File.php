@@ -12,14 +12,21 @@ class File extends Service{
      * storage/app/pay文件移动到storage/app/public/pay
      * $name 不含后缀
      */
-    public function payFileCopy($name){
-        $fileName = '../storage/app/pay/pay_' . $name . '.png';
+    public function payFileCopy($name, $type = 1){
+        $baseDir = '../storage/app/pay/';
+        if($type == 1) {
+            $baseDir = $baseDir . 'a/';
+        } else {
+            $baseDir = $baseDir . 'x/';
+        }
+        $fileName = $baseDir . 'pay_' . $name . '.png';
         $uniqid = uniqid('pay', true) . '.png';
         $dirName = '../storage/app/public/pay/' . $uniqid;
         
         if(!is_file($fileName)){
-            $this->setErrorMsg('文件不存在');
-            return false; 
+            //$this->setErrorMsg('文件不存在');
+            //return false;
+            $fileName = $baseDir . 'paycomm.png';
         }
         
         if(!copy( $fileName , $dirName)){
@@ -39,7 +46,8 @@ class File extends Service{
      */
     public function payFileDel($name){
         $dirName = '../storage/app/public/pay/' . $name;
-        
+        $redis = Redis::connection();
+        $redis->hDel('pay', $name);
         if(is_file($dirName)){
             return unlink($dirName);
         }

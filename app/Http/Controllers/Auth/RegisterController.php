@@ -63,7 +63,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => "bail|required|regex:'^[1][3,4,5,7,8,9][0-9]{9}$'|unique:users",
+            'name' => "bail|required|regex:'^[1][3,4,5,6,7,8,9][0-9]{9}$'|unique:users",
             //'email' => 'required|string|email|max:255|unique:users',
             'password' => "bail|required|regex:'[0-9a-zA-z]{6,18}'|confirmed",//和password_confirmation一致
             'veri' => "bail|required|regex:'^1$'",
