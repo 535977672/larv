@@ -53,4 +53,22 @@ class File extends Service{
         }
         return false;
     }
+    
+    /**
+     * storage/app/public/pay文件删除
+     * @return boolean
+     */
+    public function payFileCheck(){
+
+        $redis = Redis::connection();
+        $file = $redis->hGetAll('pay');
+        if($file){
+            foreach ($file as $k=>$v) {
+                if(time()-$v > 300){
+                    $this->payFileDel($k);
+                }
+            }
+        }
+        return true;
+    }
 }

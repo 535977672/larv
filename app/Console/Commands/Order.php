@@ -3,6 +3,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Service\Pay;
+use App\Service\File;
 
 /**
  * 创建任务
@@ -48,6 +49,8 @@ class Order extends Command {
     
     private function check() {
         $pay = new Pay();
+        $file = new File();
+        $file->payFileCheck();
         return $pay->payExpireCheck();
     }
 }

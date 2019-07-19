@@ -31,6 +31,7 @@ class TestController extends Controller
         //$this->cacheTest();
         
         //$this->cacheTagsTest();
+        //$this->cacheTagsTest2();
         
         //$this->smsTest();
         
@@ -253,6 +254,37 @@ class TestController extends Controller
         
     }
     
+    protected function cacheTagsTest2() {
+        $t = time();
+        echo $t;
+        echo ' ';
+        echo $t+5*60;
+        $oldPrice = $newPrice = 100000;
+        $i = 5;
+        
+        echo date('Y-m-d H:i:s', $t+5*60);
+        
+        $expiresAt = \Carbon\Carbon::now()->addMinutes(5);//2019-07-19 16:09:32
+        echo ' ';
+        echo $expiresAt;
+        
+        while($i > 0){
+            if(Cache::store('redis')->tags(['payGoodsMoney'])->add($newPrice, '1', $expiresAt)){
+                $i = -1;
+            }else{
+                $newPrice = $oldPrice - $i;
+                $i--;
+            }
+        }
+        echo ' ';
+        echo $i;
+        echo ' ';
+
+//        Cache::store('redis')->tags(['payGoodsMoney'])->add($newPrice, '1', \Carbon\Carbon::parse(date('Y-m-d H:i:s', $t+5*60)));
+//        Cache::store('redis')->tags(['payGoodsMoney'])->add($newPrice+1, '1', 5);
+    }
+
+
     protected function smsTest(){
         $sms = new SmsSend();
         $phone = '18';
@@ -307,6 +339,9 @@ class TestController extends Controller
         
         $re = $file->payFileDel('pay5d25b4d131ea45.63988341.png');
         var_dump($re);
+        
+//        $re = $file->payFileCheck();
+//        var_dump($re);
     }
     
     
