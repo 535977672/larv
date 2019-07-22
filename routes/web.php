@@ -36,6 +36,10 @@ Route::prefix('index')->group(function () {
 Route::prefix('order')->group(function () {
     Route::get('add', 'OrderController@addOrder');
 });
+Route::prefix('goods')->group(function () {
+    Route::get('/', 'GoodsController@goods');
+    Route::get('detail/{id}', 'GoodsController@goodsDetail');
+});
 
 
 Route::prefix('member')->group(function () {

@@ -8,12 +8,11 @@ use App\Service\Order as OrderService;
 use App\Service\Goods;
 use App\Service\Pay;
 use App\Service\File;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Cache;
 
 class OrderController extends Controller
 {
-    public function __construct() {}
-
     /**
      * 创建order
      * @param Request $request
@@ -21,15 +20,14 @@ class OrderController extends Controller
      */
     public function addOrder(Request $request)
     {
-        $validator = $this->validateAddOrder($request->all());
-        if ($validator->fails()) {
-            $errors = $validator->errors()->all();
-            return return_ajax(0, $errors[0]);
-        }
         
+        if (true !== $validator = $this->validateAddOrder($request->all())) {
+            return $validator;
+        }
+
         $param = [];
         $goodsId = $request->post('goodsId');
-        $attrId = $request->post('attrId', 0);
+        $attrId = $request->post('attrId');
         $param['type'] = $request->post('type');
         $param['city'] = $request->post('city');
         $param['district'] = $request->post('district');
@@ -42,8 +40,8 @@ class OrderController extends Controller
             $param['u_id'] = $user->id;
             $param['mobile'] = $user->name;
         }else{
-            $param['u_id'] = FI($request->post('u_id', 0));
-            $param['mobile'] = FI($request->post('mobile', ''));
+            $param['u_id'] = FI($request->post('u_id'));
+            $param['mobile'] = FS($request->post('mobile'));
             if(!$param['mobile'] || !$param['u_id']){
                 return return_ajax(0, '参数错误');
             }
@@ -89,6 +87,7 @@ class OrderController extends Controller
         $i = 10;
         while($i > 0){
             if(Cache::store('redis')->tags(['payGoodsMoney'])->add($newPrice, '1', \Carbon\Carbon::parse(date('Y-m-d H:i:s', $exp)))){
+                $param['discount_money'] = $param['order_amount'] - $newPrice;
                 $param['order_amount'] = $newPrice;
                 $i = -1;
             }else{
@@ -103,7 +102,7 @@ class OrderController extends Controller
         $pay = new Pay();
         $money = $pay->getMoney(1);
         if(in_array($newPrice, $money)){
-            Cache::store('redis')->tags(['payGoodsMoney'])->forget($newPrice);
+            //Cache::store('redis')->tags(['payGoodsMoney'])->forget($newPrice);
             return return_ajax(0, '用户过多，请稍后重试');
         }
         
@@ -134,11 +133,11 @@ class OrderController extends Controller
             'type' => $param['type'],
             'create_time' => $param['add_time'],
             'expiring' => $exp,
-            'phone' => 0,
+            'phone' => $param['mobile'],
             'ip' => get_real_ip(),
-            'u_id' => 0,
+            'u_id' => $param['u_id'],
         ];
-        
+
         //价格已计算好
         $order = new OrderService();
         if($order->createOrder($param, $goodsParam, $payParam) === false){
@@ -154,17 +153,17 @@ class OrderController extends Controller
      */
     protected function validateAddOrder($data)
     {
-        return Validator::make($data, [
-            'goodsId' => "bail|required|integer",
-            'attrId' => "integer",
-            'type' => "bail|required|integer",
-            'city' => "bail|required|integer",
-            'district' => "bail|required|integer",
-            'province' => "bail|required|integer",
+        $validator =  Validator::make($data, [
+            'goodsId' => "bail|required|integer|min:1",
+            'attrId' => "integer|min:1",
+            'type' => "bail|required|integer|min:1",
+            'city' => "bail|required|integer|min:1",
+            'district' => "bail|required|integer|min:1",
+            'province' => "bail|required|integer|min:1",
             'address' => "bail|required|string",
             'consignee' => "bail|required|string",
             'num' => "bail|required|string",
-            'u_id' => "integer",
+            'u_id' => "integer|min:1",
             'mobile' => "regex:'^[1][3,4,5,6,7,8,9][0-9]{9}$'",
         ], [
             'goodsId.required' => '参数错误',
@@ -187,5 +186,10 @@ class OrderController extends Controller
             'num.required' => '数量错误',
             'num.integer' => '数量错误',
         ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            return return_ajax(0, $errors[0]);
+        }
+        return true;
     }
 }

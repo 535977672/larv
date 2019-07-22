@@ -9,4 +9,20 @@ class Goods extends Model
     protected $table = 'm_goods';
     protected $primaryKey = 'goods_id';
     public $timestamps = false;
+    
+    
+    public function attr()
+    {
+        return $this->hasMany('App\Model\GoodsAttr', 'goods_id', 'goods_id');
+    }
+    
+    public function color()
+    {
+        return $this->hasMany('App\Model\GoodsColor', 'goods_id', 'goods_id');
+    }
+    
+    public function ext()
+    {
+        return $this->hasOne('App\Model\GoodsExt', 'goods_id', 'goods_id');
+    }
 }

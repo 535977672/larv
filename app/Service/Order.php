@@ -19,11 +19,13 @@ class Order extends Service{
             if(!$id){
                 throw new Exception('创建订单失败，请重试');
             }
-            if(!PayRecord::insertGetId($goodsData)){
-                throw new Exception('创建支付失败，请重试');
-            }
-            if(!OrderGoods::insertGetId($payData)){
+            $goodsData['order_id'] = $id;
+            if(!OrderGoods::insertGetId($goodsData)){
                 throw new Exception('创建订单商品失败，请重试');
+            }
+            $payData['o_id'] = $id;
+            if(!PayRecord::insertGetId($payData)){
+                throw new Exception('创建支付失败，请重试');
             }
             DB::commit();
             return true;

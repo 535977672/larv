@@ -7,6 +7,13 @@
  * 修改完成后运行 composer dumpautoload
  */
 
+/**
+ * 返回
+ * @param type $status
+ * @param type $msg
+ * @param type $data
+ * @return type
+ */
 function return_ajax($status = 200, $msg = 'success', $data = []){
     $re = [
         'status' => $status,
@@ -18,6 +25,10 @@ function return_ajax($status = 200, $msg = 'success', $data = []){
     return response()->json($re);
 }
 
+/**
+ * 微信浏览器
+ * @return boolean
+ */
 function is_weixin(){
     if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
         return true;
@@ -26,6 +37,10 @@ function is_weixin(){
     }
 }
 
+/**
+ * QQ浏览器
+ * @return boolean
+ */
 function is_qq(){
     if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'QQ/') !== false ) {
         return true;
@@ -33,17 +48,21 @@ function is_qq(){
     return false;
 }
 
+/**
+ * 获取IP
+ * @return string
+ */
 function get_real_ip() {
-    if (getenv('HTTP_CLIENT_IP')){
-        $ip = getenv('HTTP_CLIENT_IP');
+    if (isset($_SERVER['HTTP_CLIENT_IP']) && $_SERVER['HTTP_CLIENT_IP']){
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
         //头是有的，只是未成标准，不一定服务器都实现了
-    } elseif (getenv('HTTP_X_FORWARDED_FOR')){
-        $ips = getenv('HTTP_X_FORWARDED_FOR');
+    } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR']){
+        $ips = $_SERVER['HTTP_X_FORWARDED_FOR'];
         $ips = explode(',', $ips);
         $ip = $ips[0];
         //反向代理 是有标准定义，用来识别经过HTTP代理后的客户端IP地址
-    } elseif (getenv('REMOTE_ADDR')){
-        $ip = getenv('REMOTE_ADDR'); 
+    } elseif (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR']){
+        $ip = $_SERVER['REMOTE_ADDR']; 
         //如果用了代理，获取到的是代理服务器ip
         //也有可能被路由伪造,因为REMOTE_ADDR 是底层的回话ip地址，路由是可以发起伪造
         //使用代理绕过 REMOTE_ADDR
@@ -53,6 +72,12 @@ function get_real_ip() {
     return $ip;
 }
 
+/**
+ * 随机字符串
+ * @param type $length
+ * @param type $type
+ * @return string
+ */
 function getRandStr($length = 6, $type = 1){
     if ($type == 1) {
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789';
@@ -69,6 +94,12 @@ function getRandStr($length = 6, $type = 1){
     return $str;
 }
 
+/**
+ * 字符串过滤
+ * @param type $str
+ * @param type $type
+ * @return type
+ */
 function F($str, $type = 1){
     if(!$str){
         return $str;
@@ -99,4 +130,13 @@ function FF($str){
 
 function FH($str){
     return F($str, 4);
+}
+
+/**
+ * 金额格式化
+ * @param type int $money
+ * @return string
+ */
+function price_format($money){
+    return !$money ? '0.00' : sprintf("%.2f",$money/100);
 }
