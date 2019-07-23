@@ -12,6 +12,14 @@ use \Exception;
  */
 class Order extends Service{
 
+    /**
+     * 
+     * @param type $data
+     * @param type $goodsData
+     * @param type $payData
+     * @return boolean
+     * @throws Exception
+     */
     public function createOrder($data, $goodsData, $payData){
         try {
             DB::beginTransaction();
@@ -28,7 +36,7 @@ class Order extends Service{
                 throw new Exception('创建支付失败，请重试');
             }
             DB::commit();
-            return true;
+            return $id;
         } catch (Exception $exc) {
             DB::rollBack();
             $this->setErrorMsg($exc->getMessage());
@@ -36,4 +44,16 @@ class Order extends Service{
         }
     }
     
+    public function getOrderDetail($id){
+        OrderModel::find($id);    
+    }
+    
+    public function getOrderList($uid, $limit = 20){
+        OrderModel::where([
+                ['u_id', '=', $uid],
+                ['deleted', '=', 0],
+            ])
+            ->select(DB::raw('goods_id,goods_name,shop_price,original_img'))
+            ->simplePaginate($limit);
+    }
 }

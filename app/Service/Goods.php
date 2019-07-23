@@ -53,7 +53,7 @@ class Goods extends Service{
                 $goods->load('attr');
             }
         }else{
-            $goods->goods = GoodsModel::whereIn('goods_id', explode(',', $goods->ids))->where('type', 1)->select($select)->get();
+            $goods->goods = GoodsModel::whereIn('goods_id', array_keys(json_decode($goods->ids, true)))->where('type', 1)->select($select)->get();
         }
         return $goods;
     }

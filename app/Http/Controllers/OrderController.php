@@ -28,7 +28,7 @@ class OrderController extends Controller
         $param = [];
         $goodsId = $request->post('goodsId');
         $attrId = $request->post('attrId');
-        $param['type'] = $request->post('type');
+
         $param['city'] = $request->post('city');
         $param['district'] = $request->post('district');
         $param['province'] = $request->post('province');
@@ -40,7 +40,7 @@ class OrderController extends Controller
             $param['u_id'] = $user->id;
             $param['mobile'] = $user->name;
         }else{
-            $param['u_id'] = FI($request->post('u_id'));
+            $param['u_id'] = FI($request->post('guestuid'));//游客id
             $param['mobile'] = FS($request->post('mobile'));
             if(!$param['mobile'] || !$param['u_id']){
                 return return_ajax(0, '参数错误');
@@ -55,7 +55,7 @@ class OrderController extends Controller
         $goodsModel = new Goods();
         $goods = $goodsModel->getGoods($goodsId);
         if(!$goods || FI($goods->is_on_sale) != 1){
-            return return_ajax(0, '商品不存在');
+            return return_ajax(0, '商品已下架');
         }
         if($goods->type == 1){
             $attr = $goodsModel->getGoodsAttr($attrId);
@@ -76,7 +76,8 @@ class OrderController extends Controller
             return return_ajax(0, '参数错误');
         }
         
-        $param['type'] = $goods['type'];
+        $param['type'] = $goods->type;
+        $param['ids'] = $goods->ids;
         $param['add_time'] = time();
         $exp = $param['add_time'] + 5*60;
         $param['goods_price'] = $price;//商品价格
@@ -122,8 +123,7 @@ class OrderController extends Controller
             'goods_price' => $param['goods_price'],
             'final_price' => $param['order_amount'],
             'arrt_id' => $attrId,
-            'spec_key' => '',
-            'spec_key_name' => '',
+            'spec_key' => $goods->type == 1 ? $attr->attr : '套餐',
             'goods_type' => $param['type'],
         ];
         
@@ -140,10 +140,25 @@ class OrderController extends Controller
 
         //价格已计算好
         $order = new OrderService();
-        if($order->createOrder($param, $goodsParam, $payParam) === false){
+        if(false === $orderId = $order->createOrder($param, $goodsParam, $payParam)){
             return return_ajax(0, $order->getErrorMsg());
         }
-        return return_ajax(200, 'success');
+        $data = [];
+        if (!$user) {
+            //返回订单信息
+            $data = [
+                'order_id' => $orderId,
+                'order_amount' => $param['order_amount'],
+                'discount_money' => $param['discount_money'],
+                'goods_name' => $goods->goods_name,
+                'goods_id' => $goods->goods_id,
+                'order_sn' => $param['order_sn'],
+                'num' => $num,
+                'original_img' => $goods->original_img,
+                'spec_key' => $goods->type == 1 ? $attr->attr : '套餐'
+            ];
+        }
+        return return_ajax(200, 'success', $data);
     }
     
     /**

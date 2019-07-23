@@ -17,6 +17,7 @@ function loginIn(){
 
 function loginOut(){
     sessionStorage.setItem("isLogin", compileStr('0'));
+    getSetId();
 }
 
 //localStorage
@@ -112,6 +113,7 @@ function ajax(url, data = {}, callback = '', type = 'POST', load = 1, cache = 0)
     }
     
     data.lses = sessionStorage.getItem('lses');
+    data.guestuid = getSetId();
     $.ajax({
         url: url,
         dataType: 'json',
@@ -293,4 +295,14 @@ function logout() {
     ajax('/logout', {}, function(res){
         winReload(1);
     });
+}
+
+//生成ID
+function getSetId(){
+    var weircxs = localStorage.getItem('WEIRCXS');
+    if(isEmpty(weircxs)){
+        weircxs = parseInt(new Date().getTime()/1000)-Math.ceil(Math.random()*56)*10000000;
+        localStorage.setItem('WEIRCXS', weircxs);
+    }
+    return parseInt(weircxs);
 }

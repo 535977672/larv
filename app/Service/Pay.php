@@ -5,6 +5,7 @@ use App\Model\PayRecord;
 use App\Model\PayCode;
 use App\Model\Order;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use \Exception;
 
 /**
@@ -127,6 +128,7 @@ class Pay extends Service{
             if(!$order->save()){
                 throw new Exception('订单状态更新失败');
             }
+            Cache::store('redis')->tags(['payGoodsMoney'])->forget($payRecord->money);
             DB::commit();
             return true;
         } catch (Exception $exc) {
