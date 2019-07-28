@@ -28,7 +28,7 @@ Route::prefix('index')->group(function () {
     Route::get('/', 'IndexController@index');
     Route::get('index', 'IndexController@index');
     Route::get('main', 'IndexController@main');
-    Route::match(['get', 'post'], 'search', 'IndexController@search');
+    Route::match(['get'], 'hot', 'IndexController@hot');
     Route::get('see', 'IndexController@see');
     Route::get('me', 'IndexController@me');
     Route::get('detail/{id}', 'IndexController@detail');
@@ -39,6 +39,7 @@ Route::prefix('order')->group(function () {
 Route::prefix('goods')->group(function () {
     Route::get('/', 'GoodsController@goods');
     Route::get('detail/{id}', 'GoodsController@goodsDetail');
+    Route::get('search', 'GoodsController@search');
 });
 
 
@@ -86,6 +87,7 @@ Route::prefix('admin')->group(function () {
         Route::get('c', 'Admin\GoodsController@check');
         Route::get('cd/{id}', 'Admin\GoodsController@checkDetail');
         Route::post('s/{id?}', 'Admin\GoodsController@save');
+        Route::post('cd/', 'Admin\GoodsController@checkDel');
         
         
         

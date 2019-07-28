@@ -23,7 +23,7 @@
       <div class="weui-tab__bd">
         <div id="tab1" class="weui-tab__bd-item" data-url="/index/main">
         </div>
-        <div id="tab2" class="weui-tab__bd-item" data-url="/index/search">
+        <div id="tab2" class="weui-tab__bd-item" data-url="/index/hot">
         </div>
         <div id="tab3" class="weui-tab__bd-item" data-url="/index/see">
         </div>

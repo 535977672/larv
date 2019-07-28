@@ -3,46 +3,45 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use App\Service\Goods;
 
 class IndexController extends Controller
 {
     public function index()
     {
         return view('index.index');
-//        return response()
-//            ->view('index.index')
-//            ->header('Cache-Control', 'max-age=7200')
-//            ->header('Last-Modified', gmdate('D, d M Y H:i:s',time())." GMT")
-//            ->header('Expires', gmdate('D, d M Y H:i:s', time() + 30)." GMT");
     }
     
     public function main()
     {
-        return view('index.main');
+        //获取商品
+        $goodsModel = new Goods();
+        $goods = $goodsModel->getGoodsList();
+        //轮播 1小时缓存
+        $swiper = Cache::store('redis')->remember('index_main_swiper', 60, function () use ($goodsModel) {
+            return $goodsModel->getGoodsHotList(5);
+        });
+        return view('index.main', ['goods' => $goods, 'swiper' => $swiper]);
     }
     
-    public function search(Request $request)
+    public function hot()
     {
-        if($request->isMethod('post')){
-            return response()->json([
-                'name' => 'Abigail',
-                'state' => 'CA'
-            ]);
-        }
-        return view('index.search');
+        $goodsModel = new Goods();
+        $goods = $goodsModel->getGoodsHotList();
+        return view('index.hot', ['goods' => $goods]);
     }
     
     
     
-    public function me(Request $request)
+    public function me()
     {
         return view('index.me');
     }
     
     
     
-    public function see(Request $request)
+    public function see()
     {
         return view('index.see');
     }

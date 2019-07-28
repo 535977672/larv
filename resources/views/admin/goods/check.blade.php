@@ -20,7 +20,7 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-header">
-                    <button class="layui-btn layui-btn-danger" onclick="delAll()">
+                    <button class="layui-btn layui-btn-danger delAll" data-url="g/cd">
                         <i class="layui-icon"></i>批量删除
                     </button>
                 </div>
@@ -37,9 +37,9 @@
                         <tbody>
                             @foreach ($list as $l)
                             <tr>
-                                <td><input type="checkbox" name="" lay-skin="primary"></td>
+                                <td><input type="checkbox" name="" lay-skin="primary" data-id="{{ $l->id }}"></td>
                                 <td><a class="c-red" href="/admin/g/cd/{{ $l->id }}">{{ $l->title }}</a></td>
-                                <td>{{ $l->url }}</td>
+                                <td><a class="c-red" target="_blank" href="{{ $l->url }}">{{ $l->url }}</a></td>
                                 <td><img src="{{ $l->cover[0]->thumb }}" alt=""></td>
                             </tr>
                             @endforeach
@@ -56,11 +56,6 @@
 layui.use(['comm', 'form'], function(){
     var form = layui.form
     ,comm = layui.comm;
-    
-    //监听提交
-    form.on('submit(login)', function(data){
-        comm.login(data.field);
-    });
 });
 </script>
 @endsection

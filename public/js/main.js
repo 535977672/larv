@@ -124,6 +124,7 @@ function ajax(url, data = {}, callback = '', type = 'POST', load = 1, cache = 0)
         success: function(res){
             if(load === 1) closeAjaxLoading();
             loading = false;
+            if(res.status == -1) winReload(1);
             if(cache>0){
                 var c = [];
                 c.push(new Date().getTime()+3600000);
