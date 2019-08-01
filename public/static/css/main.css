@@ -12,7 +12,7 @@
     -webkit-box-orient: vertical;
     word-break: break-all;
 }
-
+.svg embed{margin-bottom: -2px;}
 .m-goods>div{padding: 5px;}
 .m-goods .goods-price{color: #FF0036;}
 .m-goods .price{font-size: 24px;}
@@ -21,3 +21,4 @@
 .m-goods .goods-adds span{text-align: center;display: block;flex: 1;}
 .m-goods .goods-adds span:first-child {text-align: left;}
 .m-goods .goods-adds span:last-child {text-align: right;}
+.goods-content img{width: 100%;}

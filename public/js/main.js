@@ -1,3 +1,15 @@
+//全局登录判断
+loginOut();
+
+function historyUrl(set = ''){
+    if(!set) {
+        var hash = parent.hash;
+        if(hash) return sessionStorage.setItem("historyUrl", hash+window.location.href);
+    } else {
+        return sessionStorage.getItem("historyUrl");
+    }
+}
+
 function isEmpty(obj){
     if(typeof obj == "undefined" || obj == null || obj == ""){
         return true;
@@ -5,8 +17,7 @@ function isEmpty(obj){
         return false;
     }
 }
-//全局登录判断
-loginOut();
+
 function isLogin(){
     return uncompileStr(sessionStorage.getItem("isLogin"));
 }

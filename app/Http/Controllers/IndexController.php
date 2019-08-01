@@ -10,7 +10,8 @@ class IndexController extends Controller
 {
     public function index()
     {
-        return view('index.index');
+        $nav = $this->request->get('nav', 1);
+        return view('index.index', ['nav' => $nav]);
     }
     
     public function main()

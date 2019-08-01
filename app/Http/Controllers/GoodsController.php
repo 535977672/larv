@@ -24,6 +24,10 @@ class GoodsController extends Controller
         //获取商品
         $goodsModel = new Goods();
         $goods = $goodsModel->getGoodsDetail($id);
+        //print_r($goods->toArray());
+        if(!$goods){
+            return view('layouts.404');
+        }
         return view('goods.detail', ['goods' => $goods]);
     }
     

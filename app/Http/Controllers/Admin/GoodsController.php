@@ -85,6 +85,7 @@ class GoodsController extends AdminController
             'content' => $this->request->post('content', ''),
             'shop_price' => intval(floatval($this->request->post('shop_price', 10000))*100),
             'cost_price' => intval(floatval($this->request->post('cost_price', 0))*100),
+            'store_count' => intval($this->request->post('store_count', 10)),
         ];
         
         $attrs = $this->request->post('attr', []);

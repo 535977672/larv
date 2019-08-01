@@ -31,7 +31,7 @@ class GoodsExt extends Model
     
     public function getContentAttribute($value)
     {
-        return htmlspecialchars_decode($value);
+        return html_entity_decode($value);
     }
     
     public function setContentAttribute($value)

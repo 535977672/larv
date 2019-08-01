@@ -52,9 +52,10 @@ class Goods extends Service{
     }
     
     public function getGoodsDetail($id = 0, $field = ''){
-        if(!$field) $field = 'goods_id,goods_name,store_count,comment_count,shop_price,original_img,type,ids';
+        if(!$field) $field = 'goods_id,goods_name,store_count,comment_count,shop_price,original_img,type,ids,sales_sum,addr';
         $select = DB::raw($field);
         $goods = GoodsModel::where('goods_id', $id)->select($select)->first();
+        if(!$goods) return false;
         //普通
         if($goods->type == 1){
             $goods->load('ext');//null/coll
@@ -81,12 +82,12 @@ class Goods extends Service{
             
             $goodsModel = new GoodsModel;
             $goodsModel->goods_name = $data['goods_name'];
-            if(isset($data['brand']) && !$data['brand']) $goodsModel->brand = $data['brand'];
-            if(isset($data['store_count']) && !$data['store_count']) $goodsModel->store_count = $data['store_count'];
-            if(isset($data['market_price']) && !$data['market_price']) $goodsModel->market_price = $data['market_price'];
-            if(isset($data['shop_price']) && !$data['shop_price']) $goodsModel->shop_price = $data['shop_price'];
+            if(isset($data['brand']) && $data['brand']) $goodsModel->brand = $data['brand'];
+            if(isset($data['store_count']) && $data['store_count']) $goodsModel->store_count = $data['store_count'];
+            if(isset($data['market_price']) && $data['market_price']) $goodsModel->market_price = $data['market_price'];
+            if(isset($data['shop_price']) && $data['shop_price']) $goodsModel->shop_price = $data['shop_price'];
             
-            if(isset($data['cost_price']) && !$data['cost_price']) $goodsModel->cost_price = $data['cost_price'];
+            if(isset($data['cost_price']) && $data['cost_price']) $goodsModel->cost_price = $data['cost_price'];
             $goodsModel->original_img = $data['original_img'];
             $goodsModel->is_on_sale = $data['is_on_sale'];
             $goodsModel->sort = $data['sort'];
@@ -96,10 +97,10 @@ class Goods extends Service{
             $goodsModel->is_hot = $data['is_hot'];
             $goodsModel->give_integral = $data['give_integral'];
             $goodsModel->goods_type = $data['type'];
-            if(isset($data['limit']) && !$data['limit']) $goodsModel->limit = $data['limit'];
+            if(isset($data['limit']) && $data['limit']) $goodsModel->limit = $data['limit'];
             
-            if(isset($data['addr']) && !$data['addr']) $goodsModel->addr = $data['addr'];
-            if(isset($data['cost']) && !$data['cost']) $goodsModel->cost = $data['cost']; 
+            if(isset($data['addr']) && $data['addr']) $goodsModel->addr = $data['addr'];
+            if(isset($data['cost']) && $data['cost']) $goodsModel->cost = $data['cost']; 
             
             if(isset($data['ids']) && !$data['ids']) {
                 $goodsModel->ids = json_encode($data['ids']);
