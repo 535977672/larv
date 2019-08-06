@@ -85,15 +85,22 @@ class OrderController extends Controller
         $newPrice = $param['order_amount'] = $param['total_amount'];//支付=订单总价-积分-随机立减
         
         //redis控制价格唯一
-        $i = 10;
+        $i = 15;
+        $srand = 1;
+        $erand = 49;
+        $mark = 5;
         while($i > 0){
             if(Cache::store('redis')->tags(['payGoodsMoney'])->add($newPrice, '1', \Carbon\Carbon::parse(date('Y-m-d H:i:s', $exp)))){
                 $param['discount_money'] = $param['order_amount'] - $newPrice;
                 $param['order_amount'] = $newPrice;
                 $i = -1;
             }else{
-                $newPrice = $param['order_amount'] - $i;
+                $newPrice = $param['order_amount'] - mt_rand($srand, $erand);
                 $i--;
+            }
+            if($i < $mark && $srand < 50){
+                $srand = 50;
+                $erand = 99;
             }
         }
         if($i != -1){
@@ -172,9 +179,9 @@ class OrderController extends Controller
             'goodsId' => "bail|required|integer|min:1",
             'attrId' => "integer|min:1",
             'type' => "bail|required|integer|min:1",
-            'city' => "bail|required|integer|min:1",
-            'district' => "bail|required|integer|min:1",
-            'province' => "bail|required|integer|min:1",
+            'city' => "bail|required|string",
+            'district' => "bail|required|string",
+            'province' => "bail|required|string",
             'address' => "bail|required|string",
             'consignee' => "bail|required|string",
             'num' => "bail|required|string",
@@ -187,13 +194,9 @@ class OrderController extends Controller
             'type.required' => '参数错误',
             'type.integer' => '参数错误',
             'city.required' => '地址错误',
-            'city.integer' => '地址错误',
             'district.required' => '地址错误',
-            'district.integer' => '地址错误',
             'province.required' => '地址错误',
-            'province.integer' => '地址错误',
             'address.required' => '地址错误',
-            'address.integer' => '地址错误',
             'consignee.required' => '收货人错误',
             'consignee.integer' => '收货人错误',
             'u_id.integer' => '参数错误',
