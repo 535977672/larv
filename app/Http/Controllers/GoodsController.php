@@ -14,7 +14,8 @@ class GoodsController extends Controller
     {
         //获取商品
         $goodsModel = new Goods();
-        $goods = $goodsModel->getGoodsList();
+        if($this->request->get('hot', 0) != 1) $goods = $goodsModel->getGoodsList();
+        else $goods = $goodsModel->getGoodsHotList();
         return return_ajax(200, 'success', $goods);
     }
     
@@ -23,7 +24,24 @@ class GoodsController extends Controller
         //获取商品
         $goodsModel = new Goods();
         $goods = $goodsModel->getGoodsDetail($id);
-        return return_ajax(200, 'success', $goods);
+        //print_r($goods->toArray());
+        if(!$goods){
+            return view('layouts.404');
+        }
+        return view('goods.detail', ['goods' => $goods]);
+    }
+    
+    public function search()
+    {
+        $keywords = $this->request->get('keywords', '');
+        $where = [];
+        if($keywords) $where[] = ['goods_name', 'like', "%$keywords%"];
+        $goodsModel = new Goods();
+        $goods = $goodsModel->getGoodsList(20, $where);
+        if($this->request->ajax() || $this->request->wantsJson()){
+            return return_ajax(200, 'success', $goods);
+        }
+        return view('goods.search', ['goods' => $goods, 'keywords' => $keywords]);
     }
     
     /**

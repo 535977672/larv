@@ -7,7 +7,7 @@
     <span class="layui-breadcrumb">
         <a href="javascript:void(0);">首页</a>
         <a href="javascript:void(0);">商品管理</a>
-        <a href="javascript:void(0);">数据转移</a>
+        <a href="javascript:window.history.go(-1);">数据转移</a>
         <a>
             <cite>商品详情</cite>
         </a>
@@ -24,6 +24,7 @@
                     <div class="layui-row">
                         <div class="layui-col-md12">
                             <form class="layui-form" action="">
+                                <input type="hidden" name="tb_id" value="{{ $list->id }}">
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">商品名称</label>
                                   <div class="layui-input-block">
@@ -106,6 +107,16 @@
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
+                                    <label class="layui-form-label">本店价</label>
+                                    <div class="layui-input-inline">
+                                        <input type="number" name="shop_price" id="shop_price"  placeholder="本店价" class="layui-input" value="0">
+                                    </div>
+                                    <label class="layui-form-label">成本价</label>
+                                    <div class="layui-input-inline">
+                                        <input type="number" name="cost_price" id="cost_price"    placeholder="成本价" class="layui-input" value="0">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
                                     <label class="layui-form-label">原图</label>
                                     <div class="layui-input-block">
                                         <input type="text" name="original_img"  style="width: 80%" placeholder="原图" class="layui-input" value="{{ $list->cover[0]->preview }}">
@@ -161,7 +172,7 @@
                                                 <input type="text" name="price_spec_name[{{ $k }}][]"  placeholder="规格名" class="layui-input" value="{{ $sku->name }}">
                                             </div>
                                             <div class="layui-input-inline">
-                                                <input type="text" name="price_spec_price[{{ $k }}][]" placeholder="规格价格" class="layui-input" value="{{ $sku->price }}">
+                                                <input type="text"  name="price_spec_price[{{ $k }}][]" placeholder="规格价格" class="layui-input price_spec_price" value="{{ $sku->price }}">
                                             </div>
                                             <div class="layui-input-inline">
                                                 <input type="text" name="price_spec_count[{{ $k }}][]"  placeholder="规格数量" class="layui-input" value="{{ $sku->count }}">
@@ -170,10 +181,10 @@
                                         <div class="layui-col-md12 mt10">
                                             <label class="layui-form-label">设置价格和数量</label>
                                             <div class="layui-input-inline">
-                                                <input type="number" name="price_spec_real_price[{{ $k }}][]" placeholder="本店规格价格" class="layui-input">
+                                                <input type="number" name="price_spec_real_price[{{ $k }}][]" placeholder="本店规格价格" class="layui-input" value="{{ $sku->price+50 }}">
                                             </div>
                                             <div class="layui-input-inline">
-                                                <input type="number" name="price_spec_real_count[{{ $k }}][]"  placeholder="本店规格数量" class="layui-input">
+                                                <input type="number" name="price_spec_real_count[{{ $k }}][]"  placeholder="本店规格数量" class="layui-input" value="{{ $sku->count>10?10:$sku->count}}">
                                             </div>
                                         </div>
                                         @endforeach
@@ -214,8 +225,14 @@ layui.use(['comm', 'form','layedit','layer'], function(){
     });
     //layedit.getContent(content);
     
+    var price = 0;
+    if($('.price_spec_price').length > 0) price = $('.price_spec_price').first().val();
+    $('#cost_price').val(price);
+    $('#shop_price').val(Number(price) + 50);
+    
     //监听提交
     form.on('submit(form)', function(data){
+        data.field.content = layedit.getContent(content);
         console.log(data.field);
         comm.ajax(data.elem.dataset.url, data.field, function(res){
             if(res.status !== 200){

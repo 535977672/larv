@@ -32,7 +32,38 @@
     <script>
     layui.config({
         base: '/static/modules/'
-    }).use('comm');
+    }).use(['comm','jquery'], function(){
+        var comm = layui.comm
+        ,$ = layui.jquery
+        ,table = layui.table;
+        
+        $('.delAll').on('click', function(){
+            delAll($(this));
+        });
+        function delAll(obj){
+            var data = $(".layui-form-checked").not('.header').prev('input')
+            ,ids = '';
+            $.each(data, function(i,v){
+                ids = ids + ',' +$(v).attr('data-id');
+            });
+            ids = ids.substr(1);
+            if(comm.isEmpty(ids)) {
+                layer.msg('选择删除数据', {icon: 1});
+                return;
+            }
+            layer.confirm('确认要删除吗？',function(index){
+                comm.ajax('/admin/'+obj.attr('data-url'), {ids: ids}, function(res){
+                    if(res.status !== 200){
+                        layer.msg(res.msg, {icon: 2});
+                    }else{
+                        layer.msg('操作成功', {icon: 1});
+                        $(".layui-form-checked").not('.header').parents('tr').remove();
+                    }
+                });
+                return false;
+            });
+        }
+    });
     </script>
     @yield('script')
 </body>    

@@ -77,10 +77,12 @@
 .c-black{color: black;}
 .c-gray{color: gray;}
 .c-888{color: #888;}
+.c-ccc{color: #ccc;}
 .bgc-255{background-color: rgb(255, 255, 255);}
 
 .f-10{font-size: 10px;}
 .f-12{font-size: 12px;}
+.f-14{font-size: 14px;}
 .f-24{font-size: 24px;}
 
 .t-al{text-align: left;}

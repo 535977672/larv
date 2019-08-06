@@ -80,11 +80,11 @@ function get_real_ip() {
  */
 function getRandStr($length = 6, $type = 1){
     if ($type == 1) {
-        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789';
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ123456789';
     } else if ($type == 2) {
         $chars = 'abcdefghijklmnopqrstuvwxyz';
     } else if ($type == 3) {
-        $chars = '0123456789';
+        $chars = '123456789';
     }
     $len = strlen($chars);
     $str = '';

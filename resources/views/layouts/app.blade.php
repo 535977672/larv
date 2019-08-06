@@ -42,6 +42,7 @@
         @endauth
         $(function() {
             FastClick.attach(document.body);
+            historyUrl();
         });
         @if( !is_weixin() )
         $(document.body).pullToRefresh(function () {

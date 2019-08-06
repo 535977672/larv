@@ -21,11 +21,13 @@ class CheckMachine
         $ajax = $request->ajax() || $request->wantsJson();
         $re = '';
         if ($lsession !== 'WDN@*DS' && $ajax) {
-            $re = return_ajax(0, 'success');
+            session(['ses' => 0]);
+            $re = return_ajax(-1, 'success');
         }
         if ($msession !== 'KSDJ@*@&S'){
+            session(['ses' => 0]);
             if ($ajax) {
-                $re = return_ajax(0, 'success');
+                $re = return_ajax(-1, 'success');
             } else {
                 $re = redirect('/cd34/3miy/qoc4m/0jmzs');
             }

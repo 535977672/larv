@@ -21,9 +21,9 @@
 <body ontouchstart class="scroll">
     <div class="weui-tab">
       <div class="weui-tab__bd">
-        <div id="tab1" class="weui-tab__bd-item" data-url="/index/main">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active" data-url="/index/main">
         </div>
-        <div id="tab2" class="weui-tab__bd-item" data-url="/index/search">
+        <div id="tab2" class="weui-tab__bd-item" data-url="/index/hot">
         </div>
         <div id="tab3" class="weui-tab__bd-item" data-url="/index/see">
         </div>
@@ -32,25 +32,25 @@
       </div>
 
       <div class="weui-tabbar">
-          <a href="#tab1" class="weui-tabbar__item">
+          <a href="/" class="weui-tabbar__item @if ($nav == 1)weui-bar__item--on @endif">
           <div class="weui-tabbar__icon">
             <img src="/static/img/main.png" alt="">
           </div>
           <p class="weui-tabbar__label">首页</p>
         </a>
-        <a href="#tab2" class="weui-tabbar__item">
+        <a href="/?nav=2" class="weui-tabbar__item @if ($nav == 2)weui-bar__item--on @endif">
           <div class="weui-tabbar__icon">
             <img src="/static/img/hot.png" alt="">
           </div>
           <p class="weui-tabbar__label">热门</p>
         </a>
-        <a href="#tab3" class="weui-tabbar__item">
+        <a href="/?nav=3" class="weui-tabbar__item @if ($nav == 3)weui-bar__item--on @endif">
           <div class="weui-tabbar__icon">
             <img src="/static/img/see.png" alt="">
           </div>
           <p class="weui-tabbar__label">发现</p>
         </a>
-        <a href="#tab4" class="weui-tabbar__item" id="login">
+        <a href="/?nav=4" class="weui-tabbar__item @if ($nav == 4)weui-bar__item--on @endif" id="login">
           <div class="weui-tabbar__icon">
             <img src="/static/img/me.png" alt="">
           </div>
@@ -65,34 +65,18 @@
     <script type="text/javascript" src="/static/plugs/slideunlock/js/jquery.slideunlock.js"></script>
     <script src="/js/main.js?time={{ time() }}"></script>
     <script>
-        $(function() {
-            @auth
-                loginIn();
-            @endauth
-            FastClick.attach(document.body);
-            
-            $('.weui-tabbar__item').on('click', function(e){
-                var obj = $(this);
-                if(obj.attr('href') === '#tab4'){
-                    if(isLogin() !== 'isLogin'){
-                        e.preventDefault();
-                        e.stopPropagation();
-                        login();
-                        return;
-                    }
-                }
-                var obj_bd = $('#'+obj.attr('href').substr(1));
-                if(obj_bd.find('iframe').length === 0){
-                    obj_bd.append('<iframe src="'+obj_bd.attr('data-url')+'"></iframe>');
-                    $(this).click();
-                }
-            });
-            var hash = window.location.hash;
-            if(isEmpty(hash) || (hash !== '#tab1' && hash !== '#tab2' && hash !== '#tab3' && hash !== '#tab4')){
-                hash = '#tab1';
-            }
-            $('.weui-tabbar a[href="'+hash+'"]').click();
-        });
+        @auth
+            loginIn();
+        @endauth
+        FastClick.attach(document.body);
+        var hash = '{{ $nav }}';//必须是全局变量
+        var his = historyUrl(1), oldhash = '';
+        if(his) oldhash = his.substr(0,1);
+        if(isEmpty(hash) || (hash !== '1' && hash !== '2' && hash !== '3' && hash !== '4')){
+            hash = '1';
+        }
+        var url = oldhash == hash ? his.substr(1) : $('#tab'+hash).attr('data-url');
+        $('#tab1').append('<iframe src="'+url+'"></iframe>');
     </script>
 </body>    
 </html>
