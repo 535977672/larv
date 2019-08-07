@@ -61,13 +61,23 @@ class Goods extends Service{
             $goods->load('ext');//null/coll
             //attr预加载
             //$color = GoodsColor::with(['attr' => function ($query) {$query->select('attr_id','goods_id','color_id');}])
-            $color = GoodsColor::with('attr')->where('goods_id', $id)->get();
-            if($color->isNotEmpty()){
+            $colores = GoodsColor::with('attr')->where('goods_id', $id)->get();
+            if($colores->isNotEmpty()){
+                //$goods->color = $color;
+                $color = [];
+                $attr = [];
+                foreach ($colores as $k => $v) {
+                    $attr[] = $v->attr;
+                    unset($v->attr);
+                    $color[] = $v;
+                }
                 $goods->color = $color;
+                $goods->attr = $attr;
             }else{
                 //attr延迟预加载
                 //$goods->load('attr:color_id,goods_id,attr_id');//array
                 $goods->load('attr');
+                $goods->color = [];
             }
             
         }else{
@@ -152,28 +162,30 @@ class Goods extends Service{
                         }
                     }
                     if($v['spec']){
-                        $goodsAttr = new GoodsAttr;
-                        if($id) {
-                            if(!isset($v['spec']['attr_id']) || !$v['spec']['attr_id']) throw new Exception('商品规格ID丢失');
-                            $goodsAttr->attr_id = $v['spec']['attr_id'];
-                        }
-                        $goodsAttr->goods_id = $goodsModel->goods_id;
-                        $goodsAttr->color_id = (isset($v['price_color_thumb']) && $v['price_color_thumb'])?$goodsColor->color_id:0;
-                        $goodsAttr->realprice = $v['spec']['price_spec_price'];
-                        $goodsAttr->realnum = $v['spec']['price_spec_count'];
-                        $goodsAttr->attr_price = $v['spec']['price_spec_real_price'];
-                        $goodsAttr->num = $v['spec']['price_spec_real_count'];
-                        if(stripos($v['spec']['price_spec_name'], 'http') === false){
-                            $goodsAttr->attr = $v['spec']['price_spec_name'];
-                            $goodsAttr->attr_img = '';
-                            $goodsAttr->img = '';
-                        }else{
-                            $goodsAttr->attr = '';
-                            $goodsAttr->attr_img = $v['spec']['price_spec_name'];
-                            $goodsAttr->img = '';
-                        }
-                        if($goodsAttr->save() === false){
-                            throw new Exception('保存商品规格信息失败');
+                        foreach ($v['spec'] as $k => $va) {
+                            $goodsAttr = new GoodsAttr;
+                            if($id) {
+                                if(!isset($va['attr_id']) || !$va['attr_id']) throw new Exception('商品规格ID丢失');
+                                $goodsAttr->attr_id = $va['attr_id'];
+                            }
+                            $goodsAttr->goods_id = $goodsModel->goods_id;
+                            $goodsAttr->color_id = (isset($v['price_color_thumb']) && $v['price_color_thumb'])?$goodsColor->color_id:0;
+                            $goodsAttr->realprice = $va['price_spec_price'];
+                            $goodsAttr->realnum = $va['price_spec_count'];
+                            $goodsAttr->attr_price = $va['price_spec_real_price'];
+                            $goodsAttr->num = $va['price_spec_real_count'];
+                            if(stripos($va['price_spec_name'], 'http') === false){
+                                $goodsAttr->attr = $va['price_spec_name'];
+                                $goodsAttr->attr_img = '';
+                                $goodsAttr->img = '';
+                            }else{
+                                $goodsAttr->attr = '';
+                                $goodsAttr->attr_img = $va['price_spec_name'];
+                                $goodsAttr->img = '';
+                            }
+                            if($goodsAttr->save() === false){
+                                throw new Exception('保存商品规格信息失败');
+                            }
                         }
                     }
                 }

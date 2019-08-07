@@ -138,7 +138,7 @@ class GoodsController extends AdminController
                             $temp2['price_spec_count'] = intval($price_spec_count[$k][$s]);
                             $temp2['price_spec_real_price'] = intval(floatval($price_spec_real_price[$k][$s])*100);
                             $temp2['price_spec_real_count'] = intval($price_spec_real_count[$k][$s]);
-                            $temp['spec'] = $temp2;
+                            $temp['spec'][] = $temp2;
                         }
                     }
                     $spec[] = $temp;
@@ -157,7 +157,7 @@ class GoodsController extends AdminController
                             $temp2['price_spec_count'] = intval($price_spec_count[$k][$s]);
                             $temp2['price_spec_real_price'] = intval(floatval($price_spec_real_price[$k][$s])*100);
                             $temp2['price_spec_real_count'] = intval($price_spec_real_count[$k][$s]);
-                            $temp['spec'] = $temp2;
+                            $temp['spec'][] = $temp2;
                         }
                     }
                     $spec[] = $temp;
@@ -165,7 +165,6 @@ class GoodsController extends AdminController
             }
         }
         $datas['spec'] = $spec;
-    
         $goods = new GoodsService();
         if($goods->saveGoods($datas) === false){
             return return_ajax(0, $goods->getErrorMsg());

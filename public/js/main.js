@@ -318,3 +318,82 @@ function getSetId(){
     }
     return parseInt(weircxs);
 }
+
+
+function initOrder(){
+    $(".swiper-container").swiper({
+        autoplay : 3000,
+        pagination : '.swiper-pagination',
+        paginationClickable :true,
+        autoplayDisableOnInteraction : false,
+        effect : 'slide'
+    });
+    $('.goods-color-items').on('click', function(){
+        if($(this).hasClass('goods-spec-selected')) return false;
+        var id = $(this).attr('id');
+        $(this).siblings('.goods-spec-selected').removeClass('goods-spec-selected');
+        $(this).addClass('goods-spec-selected');
+        $('.'+id).removeClass('m-hidden').addClass('m-show');
+        $('.'+id).siblings('.m-show').removeClass('m-show').addClass('m-hidden');
+        $('.goods-attr-items').removeClass('goods-spec-selected');
+        attrSet();
+        selectNumSet(4);
+    });
+    $('.goods-attr-items').on('click', function(){
+        if($(this).hasClass('goods-spec-selected')) return false;
+        $(this).siblings('.goods-spec-selected').removeClass('goods-spec-selected');
+        $(this).addClass('goods-spec-selected');
+        attrSet();
+        selectNumSet(3);
+    });
+    $('.skuText').on('click', function(){
+        $("#skuTextPop").popup();
+    });
+    $('.skuAttr').on('click', function(){
+        $("#skuAttrPop").popup();
+    });
+    $('#select-numu').on('click', function(){
+        selectNumSet(1);
+    });
+    $('#select-numd').on('click', function(){
+        selectNumSet(2);
+    });
+}
+
+function attrSet(){
+    var colorO = $('.goods-color-items.goods-spec-selected')
+    ,attrO = $('.goods-attr-items.goods-spec-selected')
+    ,color = colorO.attr('data-color')
+    ,attr = attrO.attr('data-attr')
+    ,img = attrO.attr('data-img')
+    ,price = attrO.attr('data-price');
+    $('#color-select').text('');$('#attr-select').text('');$('#select-attr').text('');
+    if(!isEmpty(color)) $('#color-select').text(color+'-');
+    if(!isEmpty(attr)) $('#attr-select').text(attr);
+    if(!isEmpty(color) && !isEmpty(attr)) $('#select-attr').text('-');
+    if(isEmpty(img)) img = colorO.attr('data-img');
+    if(!isEmpty(img)) $('#select-img').attr('src', img);
+    if(!isEmpty(price)) {
+        $('#select-price').text(price);
+        $('#select-price').attr('data-price', price);
+    }
+}
+
+function selectNumSet(type){
+    var num = Number($('#select-num').text());
+    var price = Number($('#select-price').attr('data-price'))*100;
+    if(type === 1){
+        if(num >= 10) return false;
+        num++;
+    }else if(type === 2){
+        if(num == 1) return false;
+        num--;
+    }else if(type === 3){
+        num = 1;
+        price = Number($('#select-price').attr('data-oprice'))*100;;
+    }else if(type === 4){
+        num = 1;
+    }
+    $('#select-price').text((price*num/100).toFixed(2));
+    $('#select-num').text(num);
+}
