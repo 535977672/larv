@@ -106,7 +106,7 @@
                     @foreach ($goods->attr as $k=>$at)
                     <div class="{{ $a->goods_id }}-{{ $a->color_id }} @if($k!=0) m-hidden @else m-show @endif">
                     @foreach ($at as $k=>$a)
-                    <div class="goods-spec goods-attr-items" data-id="{{ $a->arrt_id }}" data-attr="{{ $a->attr }}" data-img="{{ $a->img }}" data-price="{{ price_format($a->attr_price) }}">
+                    <div class="goods-spec goods-attr-items" data-id="{{ $a->attr_id }}" data-attr="{{ $a->attr }}" data-img="{{ $a->img }}" data-price="{{ price_format($a->attr_price) }}">
                         @if ($a->attr_img)
                         <img src="{{ $a->attr_img }}">
                         @endif
@@ -117,10 +117,15 @@
                     @endforeach
                 </div>
                 @endif
-                <div class="m-linef m-lineb m-cl mb10 pt10">
-                    <div class="">
-                        <div>购买数量</div>
-                        <div class="m-fr"><span id="select-numd">2121ewq</span><span id="select-num">1</span><span  id="select-numu">rewrwe</span></div>
+                <div class="m-lineb m-cl mb10 pt10">
+                    <div class="select-num mb10 pt10">
+                        <div class="m-fl">购买数量</div>
+                        <div class="m-fr"><button id="select-numd">-</button><span class="pl10 pr10" id="select-num">1</span><button id="select-numu">+</button></div>
+                    </div>
+                </div>
+                <div class="m-lineb">
+                    <div class="mb10 pt10">
+                        <button id="select-buy" data-type="{{ $goods->type }}">立即购买</button>
                     </div>
                 </div>
             </div>
@@ -131,6 +136,6 @@
 @section('script')
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/swiper.min.js"></script>
 <script>
-    initOrder();
+    initDetail();
 </script>
 @endsection

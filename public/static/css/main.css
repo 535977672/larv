@@ -27,3 +27,6 @@
 .goods-spec{float: left; margin: 5px 10px 5px 0px; padding: 0px 15px; overflow: hidden; line-height: 22px; height: 22px; text-align: center; background-color:  #ececec; border-radius: 10px;}
 .goods-spec img{width: 16px; height: 16px; margin: 3px auto;}
 .goods-spec-selected{background-color:  #f43530; color: white;}
+.select-num,#select-buy{height: 32px; line-height: 32px;}
+#select-numd, #select-numu{outline: 0;width: 30px;font-size: 24px;border: 1px solid #f5f5f5;background-color: #f5f5f5;}
+#select-buy{outline: 0; width: 100%; background-color: #FF0036; color: #fff; border: none; text-align: center;}

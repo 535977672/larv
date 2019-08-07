@@ -320,7 +320,7 @@ function getSetId(){
 }
 
 
-function initOrder(){
+function initDetail(){
     $(".swiper-container").swiper({
         autoplay : 3000,
         pagination : '.swiper-pagination',
@@ -357,6 +357,9 @@ function initOrder(){
     });
     $('#select-numd').on('click', function(){
         selectNumSet(2);
+    });
+    $('#select-buy').on('click', function(){
+        selectBuy();
     });
 }
 
@@ -396,4 +399,17 @@ function selectNumSet(type){
     }
     $('#select-price').text((price*num/100).toFixed(2));
     $('#select-num').text(num);
+}
+
+function selectBuy(){
+    var attrO = $('.goods-attr-items.goods-spec-selected');
+    var num = Number($('#select-num').text());
+    var price = Number($('#select-price').attr('data-price'))*100;
+    if(attrO.length < 1){
+        $.toast('请选择商品', "cancel");return;
+    }
+    if(price <= 0){
+        $.toast('参数错误，请刷新重试', "cancel");return;
+    }
+    window.location.href = '/goods/request/'+$('#select-buy').attr('data-type')+'/'+attrO.attr('data-id')+'/'+num+'/'+price;
 }

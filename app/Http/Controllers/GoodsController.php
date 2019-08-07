@@ -31,6 +31,13 @@ class GoodsController extends Controller
         return view('goods.detail', ['goods' => $goods]);
     }
     
+    public function goodsRequest($type, $id, $num, $price)
+    {
+        
+        print_r($type);print_r($id);print_r($num);print_r($price);return;
+        //print_r($goods);return;
+    }
+    
     public function search()
     {
         $keywords = $this->request->get('keywords', '');
