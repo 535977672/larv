@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Service\Goods;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,7 +15,7 @@ class GoodsController extends Controller
         $goodsModel = new Goods();
         if($this->request->get('hot', 0) != 1) $goods = $goodsModel->getGoodsList();
         else $goods = $goodsModel->getGoodsHotList();
-        return return_ajax(200, 'success', $goods);
+        return $this->successful($goods);
     }
     
     public function goodsDetail($id)
@@ -25,17 +24,9 @@ class GoodsController extends Controller
         $goodsModel = new Goods();
         $goods = $goodsModel->getGoodsDetail($id);
         if(!$goods){
-            return view('layouts.404');
+            return $this->failed();
         }
-        //print_r($goods);return;
-        return view('goods.detail', ['goods' => $goods]);
-    }
-    
-    public function goodsRequest($type, $id, $num, $price)
-    {
-        
-        print_r($type);print_r($id);print_r($num);print_r($price);return;
-        //print_r($goods);return;
+        return $this->successful('', ['goods' => $goods]);
     }
     
     public function search()
@@ -45,10 +36,7 @@ class GoodsController extends Controller
         if($keywords) $where[] = ['goods_name', 'like', "%$keywords%"];
         $goodsModel = new Goods();
         $goods = $goodsModel->getGoodsList(20, $where);
-        if($this->request->ajax() || $this->request->wantsJson()){
-            return return_ajax(200, 'success', $goods);
-        }
-        return view('goods.search', ['goods' => $goods, 'keywords' => $keywords]);
+        return $this->successful('goods.search', ['goods' => $goods, 'keywords' => $keywords]);
     }
     
     /**

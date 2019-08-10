@@ -21,7 +21,7 @@
 </head>
 
 <body>
-    @if( !is_weixin() )
+    @if( !is_weixin() && !isset($refreshclose))
     <div class="weui-pull-to-refresh__layer">
             <div class='weui-pull-to-refresh__arrow'></div>
             <div class='weui-pull-to-refresh__preloader'></div>
@@ -44,7 +44,7 @@
             FastClick.attach(document.body);
             historyUrl();
         });
-        @if( !is_weixin() )
+        @if( !is_weixin() && !isset($refreshclose))
         $(document.body).pullToRefresh(function () {
             location.reload();
         });

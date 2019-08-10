@@ -3,29 +3,175 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Service\Order as OrderService;
 use App\Service\Goods;
 use App\Service\Pay;
 use App\Service\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Cache;
+use App\Model\UserAddress;
 
 class OrderController extends Controller
 {
+    
+    /**
+     * 确认订单
+     * @param type $type
+     * @param type $id
+     * @param type $num
+     * @param type $price
+     */
+    public function orderRequest($type, $id, $num, $price, $guestuid)
+    {
+        $time = time();
+        $exp = $time + 5*60;
+        $ip = $this->request->ip();
+        $key = md5($ip . $guestuid);
+        $randstr = getRandStr();
+        if(!Cache::store('redis')->tags(['payGoodsMoneyPerIp'])->add($key, 1, \Carbon\Carbon::parse(date('Y-m-d H:i:s', $time+10)))){
+            return $this->failed('操作频繁');
+        }
+        $param = compact("randstr", "time", "guestuid", "num");
+        
+        $goodsModel = new Goods();
+        if($type==1){
+            $attrId = $id;
+            $attr = $goodsModel->getGoodsAttr($attrId);
+            if(!$attr) return $this->failed('商品已下架');
+            if(FI($attr->num) < $num) return $this->failed('库存不足');
+            $oprice = FI($attr->attr_price);
+            $goodsId = $attr->goods_id;
+            $color = '';
+            if($attr->color_id>0){
+                $color = $goodsModel->getGoodsColor($attr->color_id);
+            }
+        }else if($type==2){
+            $goodsId = $id;
+        }else{
+            return $this->failed('参数错误');
+        }
+        $goods = $goodsModel->getGoods($goodsId);
+        if(!$goods || $goods->is_on_sale != 1) return $this->failed('商品已下架');
+        $param['goods_name'] = $goods->goods_name;
+        if($type==2){
+            if(FI($goods->store_count) < $num) return $this->failed('库存不足');
+            $oprice = FI($goods->shop_price);
+            $subgoods = $goodsModel->getSubGoodsAttr($goods->ids);
+            if(!$subgoods) return $this->failed('商品已下架');
+            
+            $attr = $colorname = $img = '';
+            $param['type'] = 2;
+            $param['img'] = $goods->original_img;
+            $param['goods_id'] = $goodsId;
+            $param['attr'] = '';
+            $param['colorname'] = '';
+            foreach ($subgoods as $v){
+                $attrname = $colorname = $img = '';
+                if($v->attrimg) $img = $v->attrimg;
+                else if($v->colorimg) $img = $v->colorimg;
+                else $img = $v->original_img;
+                if($v->attr) $attrname = $v->attr;
+                if($v->color) $colorname = $v->color;
+                $param['sub'][] = [
+                    'img' => $img,
+                    'attr' => $attrname,
+                    'colorname' => $colorname,
+                    'goods_name' => $v->goods_name
+                ];
+            }
+        }else{
+            $attrname = $colorname = $img = '';
+            if($attr->img) $img = $attr->img;
+            else if($color && $color->img) $img = $color->img;
+            else $img = $goods->original_img;
+            if($attr->attr) $attrname = $attr->attr;
+            if($color && $color->color) $colorname = $color->color;
+            $param['type'] = 1;
+            $param['attr_id'] = $id;
+            $param['img'] = $img;
+            $param['attr'] = $attrname;
+            $param['colorname'] = $colorname;
+            $param['color_id'] = $attr->color_id;
+            $param['goods_id'] = $goodsId;
+        }
+        if($num*$oprice != $price){
+            return $this->failed('非法操作');
+        }
+        $param['uaddr'] = ['consignee' => '', 'province' => '', 'city' => '', 'district' => '', 'address' => '', 'mobile' => ''];
+        $user = $this->request->user();
+        if ($user) {
+            //收货地址
+            $addr = UserAddress::where('user_id', $user->id)->first();
+            if($addr) $param['uaddr'] = $addr->toArray();
+        }
+        
+        $param['order_amount'] = $num*$oprice;//订单总价
+        $newPrice = $param['order_amount'];//支付=订单总价-积分-随机立减
+        
+        //redis控制价格唯一
+        $i = 15;
+        $srand = 1;
+        $erand = 49;
+        $mark = 5;
+        while($i > 0){
+            if(Cache::store('redis')->tags(['payGoodsMoney'])->get($newPrice)){
+                $newPrice = $param['order_amount'] - mt_rand($srand, $erand);
+                $i--;
+            }else if(Cache::store('redis')->tags(['payGoodsMoneyPer'])->add($newPrice, $key, \Carbon\Carbon::parse(date('Y-m-d H:i:s', $exp)))){
+                $param['discount_money'] = $param['order_amount'] - $newPrice;
+                $param['order_amount'] = $newPrice;
+                $i = -1;
+            }else{
+                $newPrice = $param['order_amount'] - mt_rand($srand, $erand);
+                $i--;
+            }
+            if($i < $mark && $srand < 50){
+                $srand = 50;
+                $erand = 99;
+            }
+        }
+        if($i != -1){
+            Cache::store('redis')->tags(['payGoodsMoneyPerIp'])->forget($key);
+            return $this->failed('用户过多，请稍后重试');
+        }
+        
+        $dataJson = json_encode($param);
+        $dataKey = md5($dataJson . $randstr);
+        Cache::store('redis')->tags(['payDataPer'])->add($dataKey, $dataJson, \Carbon\Carbon::parse(date('Y-m-d H:i:s', $exp)));
+        $param['datakey'] = $dataKey;
+        return $this->successful(['param' => $param, 'refreshclose' => 1]);
+    }
+    
     /**
      * 创建order
-     * @param Request $request
      * @return type
      */
-    public function addOrder(Request $request)
-    {
-        
+    public function addOrder()
+    {   return $this->failed('参数错误',$this->request->all());
+        $request = $this->request;
         if (true !== $validator = $this->validateAddOrder($request->all())) {
             return $validator;
         }
 
-        $param = [];
+        $time = time();
+        $guestuid = $request->post('guestuid', '0');
+        $randstr = $request->post('randstr', 'D#@*&U');
+        $datakey = $request->post('datakey', 'F*K$KW');
+        $oprice = FI($request->post('price','999999'));
+        $ip = $this->request->ip();
+        $key = md5($ip . $guestuid);
+        if($key != Cache::store('redis')->tags(['payGoodsMoneyPer'])->get($oprice)){
+            return $this->clearCache($oprice, $datakey);
+        }
+        $dataJson = Cache::store('redis')->tags(['payDataPer'])->get($datakey);
+        if(!$dataJson) {
+            return $this->clearCache($oprice, $datakey);
+        }
+        $dataJson = json_decode ($dataJson, true);
+        if($oprice != $dataJson['order_amount']) {
+            return $this->clearCache($oprice, $datakey);
+        }
+                
         $goodsId = $request->post('goodsId');
         $attrId = $request->post('attrId');
 
@@ -43,7 +189,7 @@ class OrderController extends Controller
             $param['u_id'] = FI($request->post('guestuid'));//游客id
             $param['mobile'] = FS($request->post('mobile'));
             if(!$param['mobile'] || !$param['u_id']){
-                return return_ajax(0, '参数错误');
+                return $this->failed('参数错误');
             }
         }
         
@@ -55,70 +201,53 @@ class OrderController extends Controller
         $goodsModel = new Goods();
         $goods = $goodsModel->getGoods($goodsId);
         if(!$goods || FI($goods->is_on_sale) != 1){
-            return return_ajax(0, '商品已下架');
+            return $this->failed('商品已下架');
         }
         if($goods->type == 1){
             $attr = $goodsModel->getGoodsAttr($attrId);
             if(!$attr || FI($attr->goods_id) != $goodsId){
-                return return_ajax(0, '参数错误');
+                return $this->failed('参数错误');
             }
             if(FI($attr->num) < $num){
-                return return_ajax(0, '库存不足');
+                return $this->failed('库存不足');
             }
             $price = FI($attr->attr_price);
         }else if($goods->type == 2){
             //套餐
             if(FI($goods->store_count) < $num){
-                return return_ajax(0, '库存不足');
+                return $this->failed('库存不足');
             }
             $price = FI($goods->shop_price);
         }else{
-            return return_ajax(0, '参数错误');
+            return $this->failed('参数错误');
         }
         
         $param['type'] = $goods->type;
         $param['ids'] = $goods->ids;
-        $param['add_time'] = time();
+        $param['add_time'] = $time;
         $exp = $param['add_time'] + 5*60;
         $param['goods_price'] = $price;//商品价格
         $param['total_amount'] = $price*$num;//订单总价
         $newPrice = $param['order_amount'] = $param['total_amount'];//支付=订单总价-积分-随机立减
+        if(abs(FI($newPrice)-$oprice) >= 100) return $this->failed('参数错误');
+        $newPrice = $oprice;
         
-        //redis控制价格唯一
-        $i = 15;
-        $srand = 1;
-        $erand = 49;
-        $mark = 5;
-        while($i > 0){
-            if(Cache::store('redis')->tags(['payGoodsMoney'])->add($newPrice, '1', \Carbon\Carbon::parse(date('Y-m-d H:i:s', $exp)))){
-                $param['discount_money'] = $param['order_amount'] - $newPrice;
-                $param['order_amount'] = $newPrice;
-                $i = -1;
-            }else{
-                $newPrice = $param['order_amount'] - mt_rand($srand, $erand);
-                $i--;
-            }
-            if($i < $mark && $srand < 50){
-                $srand = 50;
-                $erand = 99;
-            }
-        }
-        if($i != -1){
-            return return_ajax(0, '用户过多，请稍后重试');
-        }
+        if(!Cache::store('redis')->tags(['payGoodsMoney'])->add($newPrice, '1', \Carbon\Carbon::parse(date('Y-m-d H:i:s', $exp)))) return $this->failed('参数错误');
+        $param['discount_money'] = $param['order_amount'] - $newPrice;
+        $param['order_amount'] = $newPrice;
 
         $pay = new Pay();
         $money = $pay->getMoney(1);
         if(in_array($newPrice, $money)){
             //Cache::store('redis')->tags(['payGoodsMoney'])->forget($newPrice);
-            return return_ajax(0, '用户过多，请稍后重试');
+            return $this->failed('用户过多，请稍后重试');
         }
         
         //先获取二维码
         $file = new File();
         $qrcode = $file->payFileCopy($newPrice, 1);
         if(!$qrcode){
-            return return_ajax(0, '系统繁忙，请稍后重试');
+            return $this->failed('系统繁忙，请稍后重试');
         }
         
         $goodsParam = [
@@ -148,7 +277,7 @@ class OrderController extends Controller
         //价格已计算好
         $order = new OrderService();
         if(false === $orderId = $order->createOrder($param, $goodsParam, $payParam)){
-            return return_ajax(0, $order->getErrorMsg());
+            return $this->failed($order->getErrorMsg());
         }
         $data = [];
         if (!$user) {
@@ -165,7 +294,13 @@ class OrderController extends Controller
                 'spec_key' => $goods->type == 1 ? $attr->attr : '套餐'
             ];
         }
-        return return_ajax(200, 'success', $data);
+        return $this->successful($data);
+    }
+    
+    protected function clearCache($oprice, $datakey){
+        Cache::store('redis')->tags(['payGoodsMoneyPer'])->forget($oprice);
+        Cache::store('redis')->tags(['payDataPer'])->forget($datakey);
+        return $this->failed('数据过期，请刷新重试');
     }
     
     /**
@@ -206,7 +341,7 @@ class OrderController extends Controller
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
-            return return_ajax(0, $errors[0]);
+            return $this->failed($errors[0]);
         }
         return true;
     }

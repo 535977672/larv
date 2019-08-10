@@ -81,9 +81,37 @@ class Goods extends Service{
             }
             
         }else{
-            $goods->goods = GoodsModel::whereIn('goods_id', array_keys(json_decode($goods->ids, true)))->where('type', 1)->select($select)->get();
+            $goods->goods = $this->getSubGoods($goods->ids);
         }
         return $goods;
+    }
+    
+    public function getSubGoods($ids = '', $field = '') {
+        if(!$ids) return null;
+        $ids = json_decode($ids, true);
+        if(!$ids) return null;
+        if(!$field) $field = 'goods_id,goods_name,store_count,comment_count,shop_price,original_img,type,ids,sales_sum,addr';
+        $select = DB::raw($field);
+        return GoodsModel::whereIn('goods_id', array_keys($ids))->where('type', 1)->select($select)->get();
+    }
+    
+    public function getSubGoodsAttr($ids) {
+        if(!$ids) return null;
+        $ids = json_decode($ids, true);
+        if(!$ids) return null;
+        return $this->getSubGoodsAttrByAttrIds(array_values($ids));
+    }
+    
+    public function getSubGoodsAttrByAttrIds($attrids) {
+        if(!$attrids) return null;
+        $field = 'g.goods_id,g.goods_name,g.original_img,g.type,a.color_id,a.attr,a.attr_img,a.img attrimg,,c.color,c.color_img,c.img colorimg';
+        $select = DB::raw($field);
+        return GoodsAttr::alias('a')->whereIn('a.attr_id', $attrids)
+                ->where('g.type', 1)
+                ->join('m_goods as g', 'g.goods_id', '=', 'a.goods_id')
+                ->leftJoin('m_goods_color as c', 'c.color_id', '=', 'a.color_id')
+                ->select($select)
+                ->get();
     }
     
     public function saveGoods($data, $id = 0) {

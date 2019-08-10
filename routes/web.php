@@ -34,12 +34,12 @@ Route::prefix('index')->group(function () {
     Route::get('detail/{id}', 'IndexController@detail');
 });
 Route::prefix('order')->group(function () {
-    Route::get('add', 'OrderController@addOrder');
+    Route::post('add', 'OrderController@addOrder');
+    Route::get('request/{type}/{id}/{num}/{price}/{guestuid}', 'OrderController@orderRequest')->where(['type' => '[12]', 'num' => '([1-9])|(10)', 'price' => '[0-9]+', 'guestuid' => '[0-9]{10}']);
 });
 Route::prefix('goods')->group(function () {
     Route::get('/', 'GoodsController@goods');
     Route::get('detail/{id}', 'GoodsController@goodsDetail');
-    Route::get('request/{type}/{id}/{num}/{price}', 'GoodsController@goodsRequest');
     Route::get('search', 'GoodsController@search');
 });
 

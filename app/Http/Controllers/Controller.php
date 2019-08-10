@@ -22,4 +22,39 @@ class Controller extends BaseController
     protected function initialize() 
     { 
     }
+    
+    protected function failed($msg = 'fail', $data = [], $status = 0) 
+    { 
+        if(is_array($msg)){
+            $data = $msg;
+            $msg = 'fail';
+        }
+        if($this->request->ajax() || $this->request->wantsJson()){
+            return return_ajax($status, $msg, $data);
+        }else{
+            if(!isset($data['msg'])) $data['msg'] = $msg;
+            if(!isset($data['status'])) $data['status'] = $status;
+            return view('layouts.400', $data);
+        }
+    }
+    
+    protected function successful($msg = 'success', $data = [], $status = 200)
+    { 
+        if(is_array($msg)){
+            $data = $msg;
+            $msg = 'success';
+        }
+        if($this->request->ajax() || $this->request->wantsJson()){
+            return return_ajax($status, $msg, $data);
+        }else{
+            $action = $this->request->route()->getActionName();
+            list($class, $method) = explode('@', $action);
+            $class = substr(strrchr($class,'\\'),1);
+            $class = strtolower(str_replace('Controller', '', $class));
+            $methodes = preg_split('/(?=[A-Z])/', $method);
+            $method = strtolower(implode('_', $methodes));
+            $view = $class.'.'.$method;
+            return view($view, $data);
+        }
+    }
 }

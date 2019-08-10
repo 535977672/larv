@@ -1,3 +1,4 @@
+(function($){       $.fn.serializeJson=function(){         var serializeObj={};         var array=this.serializeArray();         var str=this.serialize();         $(array).each(function(){           if(serializeObj[this.name]){             if($.isArray(serializeObj[this.name])){               serializeObj[this.name].push(this.value);             }else{               serializeObj[this.name]=[serializeObj[this.name],this.value];             }           }else{             serializeObj[this.name]=this.value;           }         });         return serializeObj;       };     })(jQuery);
 //全局登录判断
 loginOut();
 
@@ -363,6 +364,17 @@ function initDetail(){
     });
 }
 
+function initRequestes(){
+    $("#city-picker").cityPicker({
+        title: "请选择收货地址"
+    });
+    
+    $('#order-buy').on('click', function(){
+        orderBuy();
+        return false;
+    });
+}
+
 function attrSet(){
     var colorO = $('.goods-color-items.goods-spec-selected')
     ,attrO = $('.goods-attr-items.goods-spec-selected')
@@ -411,5 +423,14 @@ function selectBuy(){
     if(price <= 0){
         $.toast('参数错误，请刷新重试', "cancel");return;
     }
-    window.location.href = '/goods/request/'+$('#select-buy').attr('data-type')+'/'+attrO.attr('data-id')+'/'+num+'/'+price;
+    window.location.href = '/order/request/'+$('#select-buy').attr('data-type')+'/'+attrO.attr('data-id')+'/'+num+'/'+price+'/'+getSetId();
+}
+
+function orderBuy(){
+    ajax('/order/add', $('#myform').serializeJson(), function(res){
+        if(res.status !== 200){
+            $.toast(res.msg, "cancel");
+            return;
+        }
+    });
 }

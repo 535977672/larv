@@ -46,7 +46,6 @@ $(document.body).infinite(200).on("infinite", function() {
     if(loadings || isEmpty(next_page_url)) return;
     loadings = true;
     ajax(next_page_url,{}, function(res){
-        console.log(res);
         if(res.status !== 200){
             loadings = false;
             $.toast(res.msg, "cancel");
