@@ -60,9 +60,22 @@
             </div>
         </div>
     </div>
-    <input name="order_amount" type="hidden" value="{{ $param['order_amount'] }}">
+    <input name="price" type="hidden" value="{{ $param['order_amount'] }}">
+    <input name="randstr" type="hidden" value="{{ $param['randstr'] }}">
+    <input name="datakey" type="hidden" value="{{ $param['datakey'] }}">
     </form>
-    <button id="order-buy"><span class="mr10" id="money">¥{{ price_format($param['order_amount']) }}</span> 提交订单</button>
+    <button id="order-buy" data-clock="0"><span class="mr10" id="money">¥{{ price_format($param['order_amount']) }}</span> 提交订单</button>
+</div>
+
+<div id="payTextPop" class="weui-popup__container">
+    <div class="weui-popup__overlay"></div>
+    <div class="weui-popup__modal">
+        <div class="m-popup-pay">
+            <div class="mt10 mr10 ml10 mb10">
+                <img id="payImg" src="">
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 @section('script')

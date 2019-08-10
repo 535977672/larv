@@ -18,7 +18,7 @@ class OrderController extends Controller
      * 确认订单
      * @param type $type
      * @param type $id
-     * @param type $num
+     * @param type $num 1-10
      * @param type $price
      */
     public function orderRequest($type, $id, $num, $price, $guestuid)
@@ -65,6 +65,7 @@ class OrderController extends Controller
             $param['goods_id'] = $goodsId;
             $param['attr'] = '';
             $param['colorname'] = '';
+            $param['attr_id'] = 0;
             foreach ($subgoods as $v){
                 $attrname = $colorname = $img = '';
                 if($v->attrimg) $img = $v->attrimg;
@@ -147,7 +148,7 @@ class OrderController extends Controller
      * @return type
      */
     public function addOrder()
-    {   return $this->failed('参数错误',$this->request->all());
+    {   
         $request = $this->request;
         if (true !== $validator = $this->validateAddOrder($request->all())) {
             return $validator;
@@ -171,20 +172,23 @@ class OrderController extends Controller
         if($oprice != $dataJson['order_amount']) {
             return $this->clearCache($oprice, $datakey);
         }
-                
-        $goodsId = $request->post('goodsId');
-        $attrId = $request->post('attrId');
+        
+        $goodsId = $dataJson['goods_id'];
+        $attrId = $dataJson['attr_id'];
+        $num = $dataJson['num'];
 
-        $param['city'] = $request->post('city');
-        $param['district'] = $request->post('district');
-        $param['province'] = $request->post('province');
+        $uaddr = $request->post('uaddr', '');
+        $uaddr = explode(' ', $uaddr);
+        if(!$uaddr[0] || !$uaddr[1] || !$uaddr[2]) return $this->failed('地址选择错误');
+        $param['city'] = $uaddr[1];
+        $param['district'] = $uaddr[2];
+        $param['province'] = $uaddr[0];
         $param['address'] = $request->post('address');
         $param['consignee'] = $request->post('consignee');
-        $num = $request->post('num');
         $user = $request->user();
         if ($user) {
             $param['u_id'] = $user->id;
-            $param['mobile'] = $user->name;
+            $param['mobile'] = FS($request->post('mobile'));
         }else{
             $param['u_id'] = FI($request->post('guestuid'));//游客id
             $param['mobile'] = FS($request->post('mobile'));
@@ -232,7 +236,7 @@ class OrderController extends Controller
         if(abs(FI($newPrice)-$oprice) >= 100) return $this->failed('参数错误');
         $newPrice = $oprice;
         
-        if(!Cache::store('redis')->tags(['payGoodsMoney'])->add($newPrice, '1', \Carbon\Carbon::parse(date('Y-m-d H:i:s', $exp)))) return $this->failed('参数错误');
+        if(!Cache::store('redis')->tags(['payGoodsMoney'])->add($newPrice, '1', \Carbon\Carbon::parse(date('Y-m-d H:i:s', $exp)))) return $this->failed('参数错误，请刷新重试', [], 400);
         $param['discount_money'] = $param['order_amount'] - $newPrice;
         $param['order_amount'] = $newPrice;
 
@@ -240,14 +244,14 @@ class OrderController extends Controller
         $money = $pay->getMoney(1);
         if(in_array($newPrice, $money)){
             //Cache::store('redis')->tags(['payGoodsMoney'])->forget($newPrice);
-            return $this->failed('用户过多，请稍后重试');
+            return $this->failed('用户过多，请刷新重试', [], 400);
         }
         
         //先获取二维码
         $file = new File();
         $qrcode = $file->payFileCopy($newPrice, 1);
         if(!$qrcode){
-            return $this->failed('系统繁忙，请稍后重试');
+            return $this->failed('系统繁忙，请刷新重试', [], 400);
         }
         
         $goodsParam = [
@@ -277,12 +281,13 @@ class OrderController extends Controller
         //价格已计算好
         $order = new OrderService();
         if(false === $orderId = $order->createOrder($param, $goodsParam, $payParam)){
-            return $this->failed($order->getErrorMsg());
+            return $this->failed($order->getErrorMsg(), [], 400);
         }
-        $data = [];
+        $data = ['qrcode' => $qrcode];
         if (!$user) {
             //返回订单信息
             $data = [
+                'qrcode' => $qrcode,
                 'order_id' => $orderId,
                 'order_amount' => $param['order_amount'],
                 'discount_money' => $param['discount_money'],
@@ -294,13 +299,14 @@ class OrderController extends Controller
                 'spec_key' => $goods->type == 1 ? $attr->attr : '套餐'
             ];
         }
+        $this->clearCache($oprice, $datakey);
         return $this->successful($data);
     }
     
     protected function clearCache($oprice, $datakey){
         Cache::store('redis')->tags(['payGoodsMoneyPer'])->forget($oprice);
         Cache::store('redis')->tags(['payDataPer'])->forget($datakey);
-        return $this->failed('数据过期，请刷新重试');
+        return $this->failed('数据过期，请刷新重试', [], 400);
     }
     
     /**
@@ -311,33 +317,20 @@ class OrderController extends Controller
     protected function validateAddOrder($data)
     {
         $validator =  Validator::make($data, [
-            'goodsId' => "bail|required|integer|min:1",
-            'attrId' => "integer|min:1",
-            'type' => "bail|required|integer|min:1",
-            'city' => "bail|required|string",
-            'district' => "bail|required|string",
-            'province' => "bail|required|string",
             'address' => "bail|required|string",
+            'uaddr' => "bail|required|string",
             'consignee' => "bail|required|string",
-            'num' => "bail|required|string",
-            'u_id' => "integer|min:1",
-            'mobile' => "regex:'^[1][3,4,5,6,7,8,9][0-9]{9}$'",
+            'mobile' => "bail|required|regex:'^[1][3,4,5,6,7,8,9][0-9]{9}$'",
+            'price' => "bail|required|integer",
+            'guestuid' =>  "bail|required|integer",
+            'randstr' => "bail|required|string",
+            'datakey' => "bail|required|string",
         ], [
-            'goodsId.required' => '参数错误',
-            'goodsId.integer' => '参数错误',
-            'attrId.integer' => '参数错误',
-            'type.required' => '参数错误',
-            'type.integer' => '参数错误',
-            'city.required' => '地址错误',
-            'district.required' => '地址错误',
-            'province.required' => '地址错误',
             'address.required' => '地址错误',
+            'uaddr.required' => '地址错误',
             'consignee.required' => '收货人错误',
             'consignee.integer' => '收货人错误',
-            'u_id.integer' => '参数错误',
             'mobile.regex' => '手机错误',
-            'num.required' => '数量错误',
-            'num.integer' => '数量错误',
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors()->all();

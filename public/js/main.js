@@ -369,7 +369,14 @@ function initRequestes(){
         title: "请选择收货地址"
     });
     
+    $('#city-picker').on('click', function(){
+        $('.weui-input').blur();
+    });
+    
     $('#order-buy').on('click', function(){
+        if($(this).attr('data-clock') == '1'){
+            $("#payTextPop").popup();return false;
+        }
         orderBuy();
         return false;
     });
@@ -430,7 +437,12 @@ function orderBuy(){
     ajax('/order/add', $('#myform').serializeJson(), function(res){
         if(res.status !== 200){
             $.toast(res.msg, "cancel");
+            if(res.status === 400) winReload();
             return;
         }
+        var data = res.data;
+        $('#order-buy').attr('data-clock', '1');
+        $('#payImg').attr('src', data.qrcode);
+        $("#payTextPop").popup();
     });
 }
