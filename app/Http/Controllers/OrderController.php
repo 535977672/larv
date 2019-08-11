@@ -95,7 +95,7 @@ class OrderController extends Controller
             $param['color_id'] = $attr->color_id;
             $param['goods_id'] = $goodsId;
         }
-        if($num*$oprice != $price){
+        if($oprice != $price){
             return $this->failed('非法操作');
         }
         $param['uaddr'] = ['consignee' => '', 'province' => '', 'city' => '', 'district' => '', 'address' => '', 'mobile' => ''];

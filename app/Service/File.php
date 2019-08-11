@@ -19,14 +19,14 @@ class File extends Service{
         } else {
             $baseDir = $baseDir . 'x/';
         }
-        $fileName = $baseDir . 'pay_' . $name . '.png';
-        $uniqid = uniqid('pay', true) . '.png';
+        $fileName = $baseDir . 'pay_' . $name . '.jpg';
+        $uniqid = uniqid('pay', true) . '.jpg';
         $dirName = '../storage/app/public/pay/' . $uniqid;
         
         if(!is_file($fileName)){
             //$this->setErrorMsg('文件不存在');
             //return false;
-            $fileName = $baseDir . 'paycomm.png';
+            $fileName = $baseDir . 'paycomm.jpg';
         }
         
         if(!copy( $fileName , $dirName)){
