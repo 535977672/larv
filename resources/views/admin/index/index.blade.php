@@ -42,6 +42,28 @@
                     </li>
                 </ul>
             </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="订单管理">&#xe723;</i>
+                    <cite>订单管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                    <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('订单列表','/admin/order/orderlist')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>订单列表</cite>
+                        </a>
+                        <a onclick="xadmin.add_tab('商品列表','/admin/order/ordergoodslist')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>商品列表</cite>
+                        </a>
+                        <a onclick="xadmin.add_tab('支付记录','/admin/order/paylist')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>支付记录</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </div>
 </div>

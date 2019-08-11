@@ -18,6 +18,7 @@ class MyAppServiceProvider extends ServiceProvider
     {
         //数据共享给所有视图
         View::share('isWeixin', is_weixin() || is_qq());
+        View::share('requestes', $request->all());
     }
 
     /**

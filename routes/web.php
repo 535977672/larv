@@ -75,10 +75,12 @@ Route::get('/home', 'IndexController@index');
 
 
 
-Route::get('admin/login', 'Admin\LoginController@showLoginForm');
-Route::post('admin/login', 'Admin\LoginController@login');
-Route::post('admin/logout', 'Admin\LoginController@logout');
+
 Route::prefix('admin')->group(function () {
+    Route::get('login', 'Admin\LoginController@showLoginForm');
+    Route::post('login', 'Admin\LoginController@login');
+    Route::post('logout', 'Admin\LoginController@logout');
+    
     Route::get('/', 'Admin\IndexController@index');
     Route::get('main', 'Admin\IndexController@main');
     Route::prefix('index')->group(function () {
@@ -89,8 +91,12 @@ Route::prefix('admin')->group(function () {
         Route::get('cd/{id}', 'Admin\GoodsController@checkDetail');
         Route::post('s/{id?}', 'Admin\GoodsController@save');
         Route::post('cd/', 'Admin\GoodsController@checkDel');
-        
-        
-        
+    });
+    Route::prefix('order')->group(function () {
+        Route::match(['get', 'post'], 'orderlist', 'Admin\OrderController@orderList');
+        Route::post('orderdel', 'Admin\OrderController@orderDel');
+        Route::get('detail/{id}', 'Admin\OrderController@detail');
+        Route::get('ordergoodslist', 'Admin\OrderController@orderGoodsList');
+        Route::get('paylist', 'Admin\OrderController@payList');
     });
 });

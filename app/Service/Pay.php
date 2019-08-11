@@ -209,4 +209,17 @@ class Pay extends Service{
             ])->pluck('money');
         return $data->toArray();
     }
+    
+    public function aList($data, $limit = 20, $field = '*'){
+        $where = [];
+        isset($data['status']) && $data['status'] >=0 && $where[] = ['status', '=', $data['status']];
+        isset($data['type']) && $data['type']  && $where[] = ['type', '=', $data['type']];
+        isset($data['start']) && $data['start'] && $where[] = ['create_time', '>=', strtotime($data['start'] . ' 00:00:00')];
+        isset($data['end']) && $data['end'] && $where[] = ['create_time', '<=', strtotime($data['end'] . ' 23:59:59')];
+        $list = PayRecord::where($where)
+            ->orderBy('id', 'desc')
+            ->select(DB::raw($field))
+            ->paginate($limit);
+        return $list;
+    }
 }

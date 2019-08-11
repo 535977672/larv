@@ -54,6 +54,7 @@ class Controller extends BaseController
             $methodes = preg_split('/(?=[A-Z])/', $method);
             $method = strtolower(implode('_', $methodes));
             $view = $class.'.'.$method;
+            if(strpos($action, '\\Controllers\\Admin\\')) $view = 'admin.'.$view;
             return view($view, $data);
         }
     }

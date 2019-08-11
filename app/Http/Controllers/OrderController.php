@@ -226,6 +226,7 @@ class OrderController extends Controller
             return $this->failed('参数错误');
         }
         
+        $param['paytype'] = 1;
         $param['type'] = $goods->type;
         $param['ids'] = $goods->ids;
         $param['add_time'] = $time;
@@ -249,11 +250,19 @@ class OrderController extends Controller
         
         //先获取二维码
         $file = new File();
-        $qrcode = $file->payFileCopy($newPrice, 1);
+        $qrcode = $file->payFileCopy($newPrice, $param['paytype']);
         if(!$qrcode){
             return $this->failed('系统繁忙，请刷新重试', [], 400);
         }
+        $spec_key = '';
+        if($goods->type == 1){
+            if($dataJson['colorname'] && $dataJson['attr']) $spec_key = $dataJson['colorname'].'-'.$dataJson['attr'];
+            else $spec_key = $dataJson['colorname']?:$dataJson['attr'];
+        }else{
+            $spec_key = '套餐';
+        }
         
+        $ourl = $goodsModel->getGoodsExt($goodsId)->original_url;
         $goodsParam = [
             'order_id' => 0,
             'goods_id' => $goods->goods_id,
@@ -263,14 +272,15 @@ class OrderController extends Controller
             'goods_price' => $param['goods_price'],
             'final_price' => $param['order_amount'],
             'arrt_id' => $attrId,
-            'spec_key' => $goods->type == 1 ? $attr->attr : '套餐',
+            'spec_key' => $spec_key,
             'goods_type' => $param['type'],
+            'o_url' => $ourl,
         ];
         
         $payParam = [
             'o_id' => 0,
             'money' => $param['order_amount'],
-            'type' => $param['type'],
+            'type' => $param['paytype'],
             'create_time' => $param['add_time'],
             'expiring' => $exp,
             'phone' => $param['mobile'],

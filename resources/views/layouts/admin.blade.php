@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="/static/admin/css/xadmin.css">
     <link rel="stylesheet" href="/static/css/admin.css?time={{ time() }}">
     <link rel="stylesheet" href="/static/css/comm.css?time={{ time() }}">
+    <style>
+        .table-over{overflow: scroll; height: 500px;}
+    </style>
     <!-- <link rel="stylesheet" href="/static/admin/css/theme5.css"> -->
     @yield('head')
     <!--<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>-->
