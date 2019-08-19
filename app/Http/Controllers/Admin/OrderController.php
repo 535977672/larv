@@ -8,9 +8,14 @@ use App\Service\Pay;
 
 class OrderController extends AdminController
 {
+    protected function initialize() 
+    { 
+        parent::initialize();
+        $this->orderServer = new OrderServer;
+    }
+    
     public function orderList(){
-        $orderServer = new OrderServer;
-        return $this->successful(['list' => $orderServer->aOrderList($this->request->all())]);
+        return $this->successful(['list' => $this->orderServer->aOrderList($this->request->all())]);
     }
     
     /**
@@ -27,14 +32,12 @@ class OrderController extends AdminController
     
     public function detail($id)
     {
-        $orderServer = new OrderServer;
-        return $this->successful(['list' => $orderServer->aOrderList(['order_id' => $id, 'first' => 1])]);
+        return $this->successful(['list' => $this->orderServer->aOrderList(['order_id' => $id, 'first' => 1])]);
     }
     
     public function orderGoodsList()
     {
-        $orderServer = new OrderServer;
-        return $this->successful(['list' => $orderServer->aOrderGoodsList($this->request->all())]);
+        return $this->successful(['list' => $this->orderServer->aOrderGoodsList($this->request->all())]);
     }
     
     public function payList()
