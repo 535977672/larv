@@ -92,7 +92,7 @@
                     @foreach ($goods->color as $a)
                     <div class="goods-spec goods-color-items" id="{{ $a->goods_id }}-{{ $a->color_id }}" data-color="{{ $a->color }}" data-img="{{ $a->img }}">
                         @if ($a->color_img)
-                        <img src="{{ $a->color_img }}">
+                        <img class="m-fl" src="{{ $a->color_img }}">
                         @endif
                         {{ $a->color }}
                     </div>
@@ -109,7 +109,7 @@
                             @foreach ($at as $k=>$a)
                             <div class="goods-spec goods-attr-items" data-id="{{ $a->attr_id }}" data-attr="{{ $a->attr }}" data-img="{{ $a->img }}" data-price="{{ price_format($a->attr_price) }}">
                                 @if ($a->attr_img)
-                                <img src="{{ $a->attr_img }}">
+                                <img class="m-fl" src="{{ $a->attr_img }}">
                                 @endif
                                 {{ $a->attr }}
                             </div>
@@ -120,7 +120,7 @@
                         @foreach ($goods->attr as $k=>$a)
                             <div class="goods-spec goods-attr-items" data-id="{{ $a->attr_id }}" data-attr="{{ $a->attr }}" data-img="{{ $a->img }}" data-price="{{ price_format($a->attr_price) }}">
                                 @if ($a->attr_img)
-                                <img src="{{ $a->attr_img }}">
+                                <img class="m-fl" src="{{ $a->attr_img }}">
                                 @endif
                                 {{ $a->attr }}
                             </div>

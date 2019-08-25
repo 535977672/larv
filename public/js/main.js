@@ -137,7 +137,7 @@ function ajax(url, data = {}, callback = '', type = 'POST', load = 1, cache = 0)
             if(load === 1) closeAjaxLoading();
             loading = false;
             if(res.status == -1) winReload(1);
-            if(cache>0){
+            if(cache>0 && res.data.data.length>0){
                 var c = [];
                 c.push(new Date().getTime()+3600000);
                 c.push(res);
@@ -338,14 +338,14 @@ function initDetail(){
         $('.'+id).siblings('.m-show').removeClass('m-show').addClass('m-hidden');
         $('.goods-attr-items').removeClass('goods-spec-selected');
         attrSet();
-        selectNumSet(4);
+        selectNumSet(3);
     });
     $('.goods-attr-items').on('click', function(){
         if($(this).hasClass('goods-spec-selected')) return false;
         $(this).siblings('.goods-spec-selected').removeClass('goods-spec-selected');
         $(this).addClass('goods-spec-selected');
         attrSet();
-        selectNumSet(3);
+        selectNumSet(4);
     });
     $('.skuText').on('click', function(){
         $("#skuTextPop").popup();
@@ -390,7 +390,7 @@ function attrSet(){
     ,img = attrO.attr('data-img')
     ,price = attrO.attr('data-price');
     $('#color-select').text('');$('#attr-select').text('');$('#select-attr').text('');
-    if(!isEmpty(color)) $('#color-select').text(color+'-');
+    if(!isEmpty(color)) $('#color-select').text(color);
     if(!isEmpty(attr)) $('#attr-select').text(attr);
     if(!isEmpty(color) && !isEmpty(attr)) $('#select-attr').text('-');
     if(isEmpty(img)) img = colorO.attr('data-img');
@@ -403,7 +403,7 @@ function attrSet(){
 
 function selectNumSet(type){
     var num = Number($('#select-num').text());
-    var price = Number($('#select-price').attr('data-price'))*100;
+    var price = (Number($('#select-price').attr('data-price'))*100).toFixed();
     if(type === 1){
         if(num >= 10) return false;
         num++;
@@ -412,7 +412,7 @@ function selectNumSet(type){
         num--;
     }else if(type === 3){
         num = 1;
-        price = Number($('#select-price').attr('data-oprice'))*100;;
+        price = (Number($('#select-price').attr('data-oprice'))*100).toFixed();
     }else if(type === 4){
         num = 1;
     }
@@ -423,7 +423,7 @@ function selectNumSet(type){
 function selectBuy(){
     var attrO = $('.goods-attr-items.goods-spec-selected');
     var num = Number($('#select-num').text());
-    var price = Number($('#select-price').attr('data-price'))*100;
+    var price = (Number($('#select-price').attr('data-price'))*100).toFixed();
     if(attrO.length < 1){
         $.toast('请选择商品', "cancel");return;
     }
