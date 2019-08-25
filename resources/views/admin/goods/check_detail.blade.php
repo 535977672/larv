@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 @section('head')
-<link rel="stylesheet" href="/static/admin/css/login.css">
+<style>
+    .spec .layui-input-inline{width:100px;}
+</style>
 @endsection
 @section('content')
 <div class="x-nav">
@@ -127,7 +129,7 @@
                                     <label class="layui-form-label">封面</label>
                                     <div class="layui-col-md10">
                                         @foreach ($list->cover as $k => $cover)
-                                        <div class="layui-col-md12 mt10">
+                                        <div class="layui-col-md12 mt10 spec">
                                             <label class="layui-form-label">缩略</label>
                                             <div class="layui-input-inline">
                                                 <input type="text" name="cover_thumb[]"  placeholder="封面" class="layui-input" value="{{ $cover->thumb }}">
@@ -138,6 +140,9 @@
                                             </div>
                                             <div class="layui-input-inline">
                                                 <img src="{{ $cover->thumb }}" width="60" height="60" alt="" style="border: 1px #FD482C solid;">
+                                            </div>
+                                            <div class="layui-input-inline">
+                                                <a class="layui-btn cancel1">删除</a>
                                             </div>
                                         </div>
                                         @endforeach
@@ -150,7 +155,7 @@
                                         @foreach ($list->price as $k => $price)
                                         <hr class="layui-bg-orange">
                                         @isset($price->preview)
-                                        <div class="layui-col-md12 mt10">
+                                        <div class="layui-col-md12 mt10 spec">
                                             <label class="layui-form-label">颜色</label>
                                             <div class="layui-input-inline">
                                                 <input type="text" name="price_color_thumb[]"  placeholder="颜色" class="layui-input" value="{{ $price->thumb }}">
@@ -159,6 +164,10 @@
                                             <div class="layui-input-inline">
                                                 <input type="text" name="price_color_preview[]"  placeholder="颜色" class="layui-input" value="{{ $price->preview }}">
                                             </div>
+                                            <label class="layui-form-label">颜色名</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="price_color_alt[]"  placeholder="颜色名" class="layui-input" value="{{ $price->alt }}">
+                                            </div>
                                             <div class="layui-input-inline">
                                                 <img src="{{ $price->thumb }}" width="60" height="60" alt="" style="border: 1px #FD482C solid;">
                                             </div>
@@ -166,10 +175,13 @@
                                         @endisset
                                         @foreach ($price->sku as  $sku)
                                         <hr class="layui-bg-gray">
-                                        <div class="layui-col-md12 mt10">
+                                        <div class="layui-col-md12 mt10 spec">
                                             <label class="layui-form-label">规格</label>
                                             <div class="layui-input-inline">
                                                 <input type="text" name="price_spec_name[{{ $k }}][]"  placeholder="规格名" class="layui-input" value="{{ $sku->name }}">
+                                            </div>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="price_spec_alt[{{ $k }}][]"  placeholder="规格名alt" class="layui-input" value="{{ $sku->alt }}">
                                             </div>
                                             <div class="layui-input-inline">
                                                 <input type="text"  name="price_spec_price[{{ $k }}][]" placeholder="规格价格" class="layui-input price_spec_price" value="{{ $sku->price }}">
@@ -239,9 +251,14 @@ layui.use(['comm', 'form','layedit','layer'], function(){
                 layer.msg(res.msg, {icon: 2});
             }else{
                 window.history.go(-1);
+                window.location.reload();
             }
         });
         return false;
+    });
+    
+    $('.cancel1').on('click', function(){
+        $(this).parent().parent().remove();
     });
 });
 </script>

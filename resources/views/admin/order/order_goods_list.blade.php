@@ -1,7 +1,4 @@
 @extends('layouts.admin')
-@section('head')
-<link rel="stylesheet" href="/static/admin/css/login.css">
-@endsection
 @section('content')
 <div class="x-nav">
     <span class="layui-breadcrumb">

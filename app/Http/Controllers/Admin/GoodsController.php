@@ -117,7 +117,9 @@ class GoodsController extends AdminController
         
         $price_color_thumb = $this->request->post('price_color_thumb', '');
         $price_color_preview = $this->request->post('price_color_preview', '');
+        $price_color_alt = $this->request->post('price_color_alt', '');
         $price_spec_name = $this->request->post('price_spec_name', '');
+        $price_spec_alt = $this->request->post('price_spec_alt', '');
         $price_spec_price = $this->request->post('price_spec_price', '');
         $price_spec_count = $this->request->post('price_spec_count', '');
         $price_spec_real_price = $this->request->post('price_spec_real_price', '');
@@ -130,11 +132,13 @@ class GoodsController extends AdminController
                     $temp = [];
                     $temp['price_color_thumb'] = $color;
                     $temp['price_color_preview'] = $price_color_preview[$k];
+                    $temp['price_color_alt'] = $price_color_alt[$k];
                     foreach ($price_spec_name[$k] as $s=>$p){
                         if($p){
                             $temp2 = [];
                             $temp2['price_spec_name'] = $price_spec_name[$k][$s];//name/img
                             $temp2['price_spec_price'] = intval(floatval($price_spec_price[$k][$s])*100);
+                            $temp2['price_spec_alt'] = $price_spec_alt[$k][$s];
                             $temp2['price_spec_count'] = intval($price_spec_count[$k][$s]);
                             $temp2['price_spec_real_price'] = intval(floatval($price_spec_real_price[$k][$s])*100);
                             $temp2['price_spec_real_count'] = intval($price_spec_real_count[$k][$s]);
@@ -154,6 +158,7 @@ class GoodsController extends AdminController
                             $temp2 = [];
                             $temp2['price_spec_name'] = $price_spec_name[$k][$s];//name/img
                             $temp2['price_spec_price'] = intval(floatval($price_spec_price[$k][$s])*100);
+                            $temp2['price_spec_alt'] = $price_spec_alt[$k][$s];
                             $temp2['price_spec_count'] = intval($price_spec_count[$k][$s]);
                             $temp2['price_spec_real_price'] = intval(floatval($price_spec_real_price[$k][$s])*100);
                             $temp2['price_spec_real_count'] = intval($price_spec_real_count[$k][$s]);
