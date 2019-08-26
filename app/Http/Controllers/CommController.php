@@ -28,7 +28,9 @@ class CommController extends Controller
         $pay = new Pay;
         $re = $pay->notification($pkg, $title, $content, $type);
         if($re === false) {
-            NotifyLog::create(['status' => 2, 'create_time' => $time, 'pid' => $log->id, 'content' => $pay->getErrorMsg()]);
+            $log->status = 2;
+            $log->res = $pay->getErrorMsg();
+            $log->save();
             return return_ajax(0, $pay->getErrorMsg(), ['params' => $request->all()]);
         }
         return return_ajax(200,'success');
