@@ -25,7 +25,7 @@ class Controller extends BaseController
     
     protected function failed($msg = 'fail', $data = [], $status = 0) 
     { 
-        if(is_array($msg)){
+        if(is_array($msg) || is_object($msg)){
             $data = $msg;
             $msg = 'fail';
         }
@@ -40,7 +40,7 @@ class Controller extends BaseController
     
     protected function successful($msg = 'success', $data = [], $status = 200)
     { 
-        if(is_array($msg)){
+        if(is_array($msg) || is_object($msg)){
             $data = $msg;
             $msg = 'success';
         }

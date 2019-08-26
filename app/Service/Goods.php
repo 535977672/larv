@@ -181,7 +181,7 @@ class Goods extends Service{
                             $goodsColor->color_img = '';
                             $goodsColor->img = '';
                         }else{
-                            $goodsColor->color = '';
+                            $goodsColor->color = $v['price_color_alt'];
                             $goodsColor->color_img = $v['price_color_thumb'];
                             $goodsColor->img = $v['price_color_preview'];
                         }
@@ -207,9 +207,9 @@ class Goods extends Service{
                                 $goodsAttr->attr_img = '';
                                 $goodsAttr->img = '';
                             }else{
-                                $goodsAttr->attr = '';
+                                $goodsAttr->attr = $va['price_spec_alt'];
                                 $goodsAttr->attr_img = $va['price_spec_name'];
-                                $goodsAttr->img = '';
+                                $goodsAttr->img = $va['price_spec_name'];
                             }
                             if($goodsAttr->save() === false){
                                 throw new Exception('保存商品规格信息失败');
