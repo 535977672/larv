@@ -19,6 +19,7 @@
     <div class="main-img mt5 p5">
         开发中...{{ route('login') }}  {{ route('register') }}   {{ route('password.request') }} {{ route('password.email') }} {{ route('logout') }}
     </div>
+    <a id="keep" href="https://m.kuaidi100.com/app/query/?com=&nu=YT4053234734099&coname=meizu&callbackurl=http://test.test.com/test/kuaidi.html">快递查询</a>
     <div id="logout">
         退出
     </div>
