@@ -39,6 +39,11 @@ class GoodsController extends Controller
         return $this->successful('goods.search', ['goods' => $goods, 'keywords' => $keywords]);
     }
     
+    public function goodsComment($id)
+    {
+        return $this->successful();
+    }
+    
     /**
      * 验证
      * @param type $data

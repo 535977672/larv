@@ -370,7 +370,7 @@ function initRequestes(){
     });
     
     $('#city-picker').on('click', function(){
-        $('.weui-input').blur();
+        $('.blurs').blur();
     });
     
     $('#order-buy').on('click', function(){
@@ -452,7 +452,6 @@ function orderBuy(){
 
 function initPay(){
     var myTimer;
-    var time = 15000;
     var check = false;
     var intDiff= Math.floor(parseInt($('#money').attr('data-exp')) - parseInt(new Date().getTime()/1000));
     
@@ -498,13 +497,15 @@ function initPay(){
                     }, 3000);
                 }
             }, 'POST', 0);
-        }, time);
-        if(time == 15000) time = 3000;
+        }, 3000);
     }
 
     function qrcode_timeout(){
         $('#show_qrcode').attr("src","/static/img/qrcode_timeout.png");
         $('#msg').html("<h1>支付页面已过期</h1>");
+        setTimeout(function(){
+            history.go(-3);
+        }, 3000);
     }
     $().ready(function(){
         goTimer();

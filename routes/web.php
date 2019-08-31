@@ -42,6 +42,7 @@ Route::prefix('order')->group(function () {
 Route::prefix('goods')->group(function () {
     Route::get('/', 'GoodsController@goods');
     Route::get('detail/{id}', 'GoodsController@goodsDetail');
+    Route::get('comment/{id}', 'GoodsController@goodsComment');
     Route::get('search', 'GoodsController@search');
 });
 

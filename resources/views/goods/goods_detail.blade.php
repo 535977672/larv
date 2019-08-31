@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'index')
+@section('title', '详情')
 @section('content')
 <div class="container">
     <div class="swiper-container mt2">
@@ -16,11 +16,13 @@
             <span class="price">{{ price_format($goods->shop_price) }}</span>
             <span class="price-icon">心动价</span>
         </div>
-        <div class="goods-items goods-name m-name">{{ $goods->goods_name }}</div>
-        <div class="goods-items goods-adds">
-            <span>快递 0.00</span>
-            <span>月销量 {{ $goods->sales_sum }}件</span>
-            <span>{{ $goods->addr }}</span>
+        <div class="goods-items">
+            <div class="goods-name m-name">{{ $goods->goods_name }}</div>
+            <div class="goods-adds mt10">
+                <span>快递 0.00</span>
+                <span>月销量 {{ $goods->sales_sum }}件</span>
+                <span>{{ $goods->addr }}</span>
+            </div>
         </div>
         @if ($goods->give_integral > 0)
         <div class="goods-items goods-prom pt5  f-12">
@@ -29,7 +31,7 @@
             <span>会员购买可得{{ $goods->give_integral }}积分</span>
         </div>
         @endif
-        <div class="goods-items goods-sku  f-12">
+        <div class="goods-items goods-sku">
             <div class="skuText">
                 <span class="c-888 mr5">选择</span>
                 <span class="mr5">请选择参数</span>
@@ -41,14 +43,14 @@
                 <span class="m-fr svg"><embed src="/static/img/jt.svg" type="image/svg+xml" /></span>
             </div>
         </div>
-        <div class="goods-items  f-12">
+        <div class="goods-items">
             <div class="goods-comment">
               商品评价 ({{ $goods->comment_count }})
-                <div class="m-fr c-ccc">查看全部<span class="svg"><embed src="/static/img/jt.svg" type="image/svg+xml" /></span></div>
+              <div class="m-fr c-ccc"><a href="/goods/comment/{{ $goods->goods_id }}">查看全部<span class="svg"><embed src="/static/img/jt.svg" type="image/svg+xml" /></span></a></div>
             </div>
         </div>
         <div class="goods-items ">
-            <div class="c-888 t-ac f-10 mb10">
+            <div class="c-888 t-ac mb10">
               商品详情
             </div>
             <div class="goods-content f-14">

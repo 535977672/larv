@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'index')
+@section('title', '首页')
 @section('content')
 <div class="container">
     <div class="weui-search-bar" id="searchBar">

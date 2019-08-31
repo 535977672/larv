@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'index')
+@section('title', '订单确认')
 @section('content')
 <div class="container">
     <div class="weui-panel weui-panel_access">
@@ -38,12 +38,12 @@
     <div class="weui-cells_form">
         <div class="weui-cell">
             <div class="weui-cell__bd">
-                <input class="weui-input" name="consignee" type="text" placeholder="收货人姓名" value="{{ $param['uaddr']['consignee'] }}">
+                <input class="weui-input blurs" name="consignee" type="text" placeholder="收货人姓名" value="{{ $param['uaddr']['consignee'] }}">
             </div>
         </div>
         <div class="weui-cell">
             <div class="weui-cell__bd">
-                <input class="weui-input" name="mobile" type="text" placeholder="手机号码" value="{{ $param['uaddr']['mobile'] }}">
+                <input class="weui-input blurs" name="mobile" type="text" placeholder="手机号码" value="{{ $param['uaddr']['mobile'] }}">
             </div>
         </div>
         <div class="weui-cell weui-cell_select weui-cell_select-after" style="padding: 10px 15px;">
@@ -56,7 +56,7 @@
         </div>
         <div class="weui-cell">
             <div class="weui-cell__bd">
-                <input class="weui-input" name="address" type="text" placeholder="详细地址" value="{{ $param['uaddr']['address'] }}">
+                <input class="weui-input blurs" name="address" type="text" placeholder="详细地址" value="{{ $param['uaddr']['address'] }}">
             </div>
         </div>
     </div>
