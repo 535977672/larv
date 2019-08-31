@@ -286,6 +286,7 @@ class OrderController extends Controller
             'phone' => $param['mobile'],
             'ip' => get_real_ip(),
             'u_id' => $param['u_id'],
+            'qrcode' => $qrcode,
         ];
 
         //价格已计算好
@@ -293,11 +294,10 @@ class OrderController extends Controller
         if(false === $orderId = $order->createOrder($param, $goodsParam, $payParam)){
             return $this->failed($order->getErrorMsg(), [], 400);
         }
-        $data = ['qrcode' => $qrcode];
+        $data = ['order_id' => $orderId];
         if (!$user) {
             //返回订单信息
             $data = [
-                'qrcode' => $qrcode,
                 'order_id' => $orderId,
                 'order_amount' => $param['order_amount'],
                 'discount_money' => $param['discount_money'],
@@ -311,6 +311,37 @@ class OrderController extends Controller
         }
         $this->clearCache($oprice, $datakey);
         return $this->successful($data);
+    }
+    
+    /**
+     * 显示支付信息
+     */
+    public function payOrder($id)
+    {
+        $pay = new \App\Service\Pay;
+        $record = $pay->getPayRecordByoId($id);
+        if(!$record) return $this->failed('订单信息不存在');
+        $type = $record->type;
+        $exp = $record->expiring;
+        $qrcode = $record->qrcode;
+        $money = price_format($record->money);
+        $oid = $record->o_id;
+        $code = \App\Model\Order::find($id)->order_sn;
+        $d = $exp - time();
+        //if($d > 300 || $d < 0) return $this->failed('请求已过期');
+        return $this->successful(compact('qrcode', 'type', 'exp', 'money', 'oid', 'code'));
+    }
+    
+    /**
+     * 显示支付信息
+     */
+    public function payCheck()
+    {
+        $id = $this->request->post('oid', 0);
+        $pay = new \App\Service\Pay;
+        $record = $pay->getPayRecordByoId($id);
+        if(!$record || !in_array($record->status, [3,4,5])) return $this->failed();
+        return $this->successful();
     }
     
     protected function clearCache($oprice, $datakey){

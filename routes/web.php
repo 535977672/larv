@@ -35,6 +35,8 @@ Route::prefix('index')->group(function () {
 });
 Route::prefix('order')->group(function () {
     Route::post('add', 'OrderController@addOrder');
+    Route::get('pay/{id}', 'OrderController@payOrder');
+    Route::post('paycheck', 'OrderController@payCheck');
     Route::get('request/{type}/{id}/{num}/{price}/{guestuid}', 'OrderController@orderRequest')->where(['type' => '[12]', 'num' => '([1-9])|(10)', 'price' => '[0-9]+', 'guestuid' => '[0-9]{10}']);
 });
 Route::prefix('goods')->group(function () {

@@ -18,6 +18,7 @@
         body{width: 100%; overflow-x: hidden;}
         .container{padding-bottom: 53px;}
     </style>
+    @yield('head')
 </head>
 
 <body>

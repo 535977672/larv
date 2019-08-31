@@ -375,7 +375,8 @@ function initRequestes(){
     
     $('#order-buy').on('click', function(){
         if($(this).attr('data-clock') == '1'){
-            $("#payTextPop").popup();return false;
+            window.location.href = '/order/pay/'+$('#order-buy').attr('data-oid');
+            return false;
         }
         orderBuy();
         return false;
@@ -442,7 +443,70 @@ function orderBuy(){
         }
         var data = res.data;
         $('#order-buy').attr('data-clock', '1');
-        $('#payImg').attr('src', data.qrcode);
-        $("#payTextPop").popup();
+        $('#order-buy').attr('data-oid', data.order_id);
+        window.location.href = '/order/pay/'+data.order_id;
+    });
+}
+
+
+
+function initPay(){
+    var myTimer;
+    var time = 15000;
+    var check = false;
+    var intDiff= Math.floor(parseInt($('#money').attr('data-exp')) - parseInt(new Date().getTime()/1000));
+    
+    function goTimer() {
+        myTimer = window.setInterval(function () {
+            var day = 0,
+                hour = 0,
+                minute = 0,
+                second = 0;
+            if (intDiff > 0) {
+                day = Math.floor(intDiff / (60 * 60 * 24));
+                hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+                minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+                second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+            }
+            if (minute <= 9) minute = '0' + minute;
+            if (second <= 9) second = '0' + second;
+            $('#hour_show').html('<s id="h"></s>' + hour + '时');
+            $('#minute_show').html('<s></s>' + minute + '分');
+            $('#second_show').html('<s></s>' + second + '秒');
+            if (hour <= 0 && minute <= 0 && second <= 0) {
+                qrcode_timeout();
+                clearInterval(myTimer);
+            }
+            intDiff--;
+            checkdata();
+        }, 1000);
+    }
+
+    function checkdata(){
+        if(check) return;
+        check = true;
+        setTimeout(function(){
+            ajax('/order/paycheck', {oid : $('#money').attr('data-id')}, function(res){
+                check = false;
+                if (res.status === 200){
+                    window.clearInterval(myTimer);
+                    $("#show_qrcode").attr("src","/static/img/pay_ok.png");
+                    $("#money").text("支付成功");
+                    $("#msg").html("<h1>即将返回首页</h1>");
+                    setTimeout(function(){
+                        //location.replace('/');
+                    }, 3000);
+                }
+            }, 'POST', 0);
+        }, time);
+        if(time == 15000) time = 3000;
+    }
+
+    function qrcode_timeout(){
+        $('#show_qrcode').attr("src","/static/img/qrcode_timeout.png");
+        $('#msg').html("<h1>支付页面已过期</h1>");
+    }
+    $().ready(function(){
+        goTimer();
     });
 }

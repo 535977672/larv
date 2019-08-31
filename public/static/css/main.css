@@ -32,3 +32,84 @@
 .select-num,#select-buy{height: 32px; line-height: 32px;}
 #select-numd, #select-numu{outline: 0;width: 30px;font-size: 24px;border: 1px solid #f5f5f5;background-color: #f5f5f5;}
 #select-buy,#order-buy{outline: 0; width: 100%; background-color: #FF0036; color: #fff; border: none; text-align: center;height: 36px; line-height: 36px;}
+
+.mod-title {
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    background: #fff;
+}
+.ico_log {
+    display: inline-block;
+    width: 130px;
+    height: 38px;
+    vertical-align: middle;
+    margin-right: 7px;
+}
+.ico-1 {
+    background: url(/static/img/logo_alipay.jpg) no-repeat;
+    background-size: cover;
+}
+.ico-2 {
+    background: url(/static/img/logo_weixin.jpg) no-repeat;
+    background-size: cover;
+}
+
+.mod-ct {
+    margin: 0 auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    background: #fff url(/static/img/wave.png) top center repeat-x;
+    text-align: center;
+    color: #333;
+    border: 1px solid #e5e5e5;
+    border-top: none;
+}
+
+.mod-ct h1{
+    font-size: 15px;
+}
+.mod-ct .amount {
+    font-size: 42px;
+    margin-top: 10px;
+}
+.mod-ct .order {
+    font-size: 20px;
+    padding-top: 10px;
+}
+.time-item strong {
+    background: #3ec742;
+    color: #fff;
+    line-height: 25px;
+    font-size: 15px;
+    font-family: Arial;
+    padding: 0 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+.mod-ct .tip {
+    margin-top: 20px;
+    border-top: 1px dashed #e5e5e5;
+    padding: 10px 0;
+    position: relative;
+}
+.mod-ct .tip .ico-scan {
+    display: inline-block;
+    width: 56px;
+    height: 55px;
+    background: url(/static/img/wechat-pay.png) 0 0 no-repeat;
+    vertical-align: middle;
+}
+.mod-ct .tip .tip-text {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+    margin-left: 23px;
+    font-size: 16px;
+    line-height: 28px;
+}
+
+

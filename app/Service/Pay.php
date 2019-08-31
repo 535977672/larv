@@ -222,4 +222,8 @@ class Pay extends Service{
             ->paginate($limit);
         return $list;
     }
+    
+    public function getPayRecordByoId($oid){
+        return PayRecord::where('o_id', $oid)->first();
+    }
 }
