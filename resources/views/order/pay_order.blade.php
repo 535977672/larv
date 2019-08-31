@@ -23,10 +23,11 @@
         </div>             
         <div class="time-item">      
             <div class="time-item" id="msg" style="color:red"><h1>1.请在订单有效期支付<br>2.请勿重复支付，一律不到账<br>3.请输入正确的金额，否则一律不到账</h1></div>
-            <div class="time-item"><h1>订单:{{ $code }}</h1> </div>
+            <div class="time-item"><h1>订单号:{{ $code }}</h1> </div>
+            <div class="time-item"><h1>有效期:{{ date('Y-m-d H:i:s', $exp) }}</h1> </div>
             <strong id="hour_show"><s id="h"></s>0时</strong>
-            <strong id="minute_show"><s></s>01分</strong>
-            <strong id="second_show"><s></s>24秒</strong>
+            <strong id="minute_show"><s></s>05分</strong>
+            <strong id="second_show"><s></s>58秒</strong>
         </div>
         <div class="tip">
             <div class="ico-scan"></div>

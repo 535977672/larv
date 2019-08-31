@@ -328,7 +328,7 @@ class OrderController extends Controller
         $oid = $record->o_id;
         $code = \App\Model\Order::find($id)->order_sn;
         $d = $exp - time();
-        //if($d > 300 || $d < 0) return $this->failed('请求已过期');
+        if($d > 300 || $d < 0) return $this->failed('请求已过期');
         return $this->successful(compact('qrcode', 'type', 'exp', 'money', 'oid', 'code'));
     }
     

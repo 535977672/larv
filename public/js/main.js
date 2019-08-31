@@ -494,7 +494,7 @@ function initPay(){
                     $("#money").text("支付成功");
                     $("#msg").html("<h1>即将返回首页</h1>");
                     setTimeout(function(){
-                        //location.replace('/');
+                        history.go(-3);
                     }, 3000);
                 }
             }, 'POST', 0);
