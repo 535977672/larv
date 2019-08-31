@@ -560,7 +560,9 @@ function privewImg(obj, src = 'src'){
 }
 
 function privewImgComment(){
-    $('.m-photos-thumb li').on('click', function(){
+    var obj = $('.m-photos-thumb li');
+    obj.unbind('click');
+    obj.on('click', function(){
         privewImg($(this).parent().find('li'), 'data-src').open();
     });
 }
