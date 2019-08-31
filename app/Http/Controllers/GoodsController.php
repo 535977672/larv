@@ -30,7 +30,7 @@ class GoodsController extends Controller
         if(!$goods){
             return $this->failed();
         }
-        return $this->successful('', ['list' => $goods]);
+        return $this->successful('', ['goods' => $goods]);
     }
     
     public function search()

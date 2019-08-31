@@ -17,8 +17,8 @@
         <a href="javascript:" class="weui-search-bar__cancel-btn c-gray" id="searchCancel">取消</a>
     </div>
     <div class="main-img mt5 p5">
-        @if (count($goods) > 0)
-        @foreach ($goods as $g)
+        @if (count($list) > 0)
+        @foreach ($list as $g)
         <div class="m-fl"><div><a href="/goods/detail/{{ $g->goods_id }}"><img  class="lazy" src="/static/img/bg.jpg" data-original="{{ $g->original_img }}" alt=""><p class="m-name">{{ $g->goods_name }}</p></a></div></div>
         @endforeach
         @endif

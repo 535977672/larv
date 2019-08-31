@@ -30,7 +30,7 @@ class IndexController extends Controller
     {
         $goodsModel = new Goods();
         $goods = $goodsModel->getGoodsHotList();
-        return view('index.hot', ['goods' => $goods]);
+        return view('index.hot', ['list' => $goods]);
     }
     
     
