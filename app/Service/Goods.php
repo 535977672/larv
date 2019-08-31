@@ -5,6 +5,7 @@ use App\Model\Goods as GoodsModel;
 use App\Model\GoodsAttr;
 use App\Model\GoodsColor;
 use App\Model\GoodsExt;
+use App\Model\GoodsComment;
 use Illuminate\Support\Facades\DB;
 use \Exception;
 
@@ -230,6 +231,17 @@ class Goods extends Service{
             $this->setErrorMsg($exc->getMessage());
             return false;
         }
+    }
+    
+    /**
+     * 评论列表
+     * @param type $limit
+     * @param type $where
+     * @return type
+     */
+    public function getGoodsCommentList($where = [], $limit = 20){
+        return GoodsComment::where($where)
+            ->simplePaginate($limit);
     }
     
 }

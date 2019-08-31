@@ -99,7 +99,7 @@ $.ajaxSetup({
     }
 });
 var loading = false;
-function ajax(url, data = {}, callback = '', type = 'POST', load = 1, cache = 0){
+function ajax(url, data = {}, callback = '', type = 'POST', load = 1, cache = 0, exp = 2){
     if(loading) return;
     loading = true;
     if(load === 1) ajaxLoading();
@@ -137,9 +137,9 @@ function ajax(url, data = {}, callback = '', type = 'POST', load = 1, cache = 0)
             if(load === 1) closeAjaxLoading();
             loading = false;
             if(res.status == -1) winReload(1);
-            if(cache>0 && res.data.data.length>0){
+            if(cache>0 && res.data.list.data.length>0){
                 var c = [];
-                c.push(new Date().getTime()+3600000);
+                c.push(new Date().getTime()+exp*3600000);
                 c.push(res);
                 setsessionData(name, c);
             }
@@ -509,5 +509,30 @@ function initPay(){
     }
     $().ready(function(){
         goTimer();
+    });
+}
+
+function loadData(url, data = {}, callback = ''){
+    var loadings = false;
+    var next_page_url = url+'?page=2';
+    $(document.body).infinite(200).on("infinite", function() {
+        if(loadings || isEmpty(next_page_url)) return;
+        loadings = true;
+        ajax(next_page_url,data, function(res){
+            if(res.status !== 200){
+                loadings = false;
+                $.toast(res.msg, "cancel");
+                return;
+            }
+            var list = res.data.list.data;
+            if(list.length < 1 || isEmpty(next_page_url)){
+                $(document.body).destroyInfinite();
+            }
+            next_page_url = res.data.list.next_page_url;
+            loadings = false;
+            if(callback){
+                callback(list);
+            }
+        },'GET', 0, 1, 24);
     });
 }

@@ -19,7 +19,7 @@
     <div class="main-img mt5 p5">
         @if (count($goods) > 0)
         @foreach ($goods as $g)
-        <div class="m-fl"><div><a href="/goods/detail/{{ $g->goods_id }}"><img  class="lazy" src="/static/img/bg.jpg" data-original="{{ $g->original_img }}" alt=""><p class="m-name">{{ $g->goods_name }}</p></a></a></div></div>
+        <div class="m-fl"><div><a href="/goods/detail/{{ $g->goods_id }}"><img  class="lazy" src="/static/img/bg.jpg" data-original="{{ $g->original_img }}" alt=""><p class="m-name">{{ $g->goods_name }}</p></a></div></div>
         @endforeach
         @endif
     </div>
@@ -28,32 +28,14 @@
 
 @endsection
 @section('script')
-<script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/swiper.min.js"></script>
 <script>
-var loadings = false;
-var next_page_url = '/goods/search?page=2';
-$(document.body).infinite(200).on("infinite", function() {
-    if(loadings || isEmpty(next_page_url)) return;
-    loadings = true;
-    ajax(next_page_url,{keywords: '{{ $keywords }}'}, function(res){
-        if(res.status !== 200){
-            loadings = false;
-            $.toast(res.msg, "cancel");
-            return;
-        }
-        var goods = res.data.data;
-        if(goods.length < 1 || isEmpty(next_page_url)){
-            $(document.body).destroyInfinite();
-        }
-        next_page_url = res.data.next_page_url;
-        var html = '';
-        $.each(goods, function(i, g){
-            html = html + '<div class="m-fl"><div><a href="/goods/detail/'+g.goods_id+'"><img  class="lazy" src="/static/img/bg.jpg" data-original="'+g.original_img+'" alt=""><p class="m-name">'+g.goods_name+'</p></a></a></div></div>';
-        });
-        $('.main-img').append(html);
-        lazyload(".main-img img.lazy");
-        loadings = false;
-    },'GET', 0, 1);
+loadData('/goods/search', {keywords: '{{ $keywords }}'}, function(goods){
+    var html = '';
+    $.each(goods, function(i, g){
+        html = html + '<div class="m-fl"><div><a href="/goods/detail/'+g.goods_id+'"><img  class="lazy" src="/static/img/bg.jpg" data-original="'+g.original_img+'" alt=""><p class="m-name">'+g.goods_name+'</p></a></div></div>';
+    });
+    $('.main-img').append(html);
+    lazyload(".main-img img.lazy");
 });
 </script>
 @endsection

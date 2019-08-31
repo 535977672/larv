@@ -17,11 +17,9 @@
 function return_ajax($status = 200, $msg = 'success', $data = []){
     $re = [
         'status' => $status,
-        'msg' => $msg
+        'msg' => $msg,
+        'data' => $data
     ];
-    if($data){
-       $re['data'] =  $data;
-    }
     return response()->json($re);
 }
 

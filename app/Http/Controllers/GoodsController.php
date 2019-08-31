@@ -8,25 +8,29 @@ use Illuminate\Support\Facades\Validator;
 
 class GoodsController extends Controller
 {
+    private $goodsModel = '';
+
+    protected function initialize() 
+    { 
+        $this->goodsModel = new Goods();
+    }
     
     public function goods()
     {
         //获取商品
-        $goodsModel = new Goods();
-        if($this->request->get('hot', 0) != 1) $goods = $goodsModel->getGoodsList();
-        else $goods = $goodsModel->getGoodsHotList();
-        return $this->successful($goods);
+        if($this->request->get('hot', 0) != 1) $goods = $this->goodsModel->getGoodsList();
+        else $goods = $this->goodsModel->getGoodsHotList();
+        return $this->successful('', ['list' => $goods]);
     }
     
     public function goodsDetail($id)
     {
         //获取商品
-        $goodsModel = new Goods();
-        $goods = $goodsModel->getGoodsDetail($id);
+        $goods = $this->goodsModel->getGoodsDetail($id);
         if(!$goods){
             return $this->failed();
         }
-        return $this->successful('', ['goods' => $goods]);
+        return $this->successful('', ['list' => $goods]);
     }
     
     public function search()
@@ -34,14 +38,13 @@ class GoodsController extends Controller
         $keywords = $this->request->get('keywords', '');
         $where = [];
         if($keywords) $where[] = ['goods_name', 'like', "%$keywords%"];
-        $goodsModel = new Goods();
-        $goods = $goodsModel->getGoodsList(20, $where);
-        return $this->successful('goods.search', ['goods' => $goods, 'keywords' => $keywords]);
+        $goods = $this->goodsModel->getGoodsList(20, $where);
+        return $this->successful('goods.search', ['list' => $goods, 'keywords' => $keywords]);
     }
     
     public function goodsComment($id)
     {
-        return $this->successful();
+        return $this->successful('', ['list' => $this->goodsModel->getGoodsCommentList(['gid' => $id]), 'id' => $id]);
     }
     
     /**
