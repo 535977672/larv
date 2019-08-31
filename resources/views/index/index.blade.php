@@ -68,6 +68,7 @@
         @auth
             loginIn();
         @endauth
+        checkCache();
         FastClick.attach(document.body);
         var hash = '{{ $nav }}';//必须是全局变量
         var his = historyUrl(1), oldhash = '';

@@ -33,6 +33,7 @@
 </div>
 @endsection
 @section('script')
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/swiper.min.js"></script>
 <script>
 loadData('/goods/comment/{{ $id }}', {}, function(list){
     var html = '';
@@ -53,6 +54,8 @@ loadData('/goods/comment/{{ $id }}', {}, function(list){
         html += '</div><div class="weui-cell__ft">'+l.date+'</div></div>';
     });
     $('.weui-cells').append(html);
+    privewImgComment();
 });
+privewImgComment();
 </script>
 @endsection

@@ -2,6 +2,17 @@
 //全局登录判断
 loginOut();
 
+function checkCache(){
+    var len = 4194304;
+    var l1 = JSON.stringify(localStorage).length;
+    var l2 = JSON.stringify(sessionStorage).length;
+    if(l1 > len || l2 > len){
+        localStorage.clear();
+        sessionStorage.clear();
+        winReload();
+    }
+}
+
 function historyUrl(set = ''){
     if(!set) {
         var hash = parent.hash;
@@ -534,5 +545,22 @@ function loadData(url, data = {}, callback = ''){
                 callback(list);
             }
         },'GET', 0, 1, 24);
+    });
+}
+
+function privewImg(obj, src = 'src'){
+    var items = [];
+    $.each(obj, function(i, m){
+        items.push($(m).attr(src));
+    });
+    var pb = $.photoBrowser({
+        items: items
+    });
+    return pb;
+}
+
+function privewImgComment(){
+    $('.m-photos-thumb li').on('click', function(){
+        privewImg($(this).parent().find('li'), 'data-src').open();
     });
 }
