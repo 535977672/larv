@@ -1,6 +1,12 @@
 (function($){       $.fn.serializeJson=function(){         var serializeObj={};         var array=this.serializeArray();         var str=this.serialize();         $(array).each(function(){           if(serializeObj[this.name]){             if($.isArray(serializeObj[this.name])){               serializeObj[this.name].push(this.value);             }else{               serializeObj[this.name]=[serializeObj[this.name],this.value];             }           }else{             serializeObj[this.name]=this.value;           }         });         return serializeObj;       };     })(jQuery);
-//全局登录判断
-loginOut();
+
+initMain();
+
+function initMain(){
+    //全局登录判断
+    loginOut();
+    checkTop();
+}
 
 function checkCache(){
     var len = 4194304;
@@ -11,6 +17,27 @@ function checkCache(){
         sessionStorage.clear();
         winReload();
     }
+}
+
+function checkTop(){
+    var wH = $(window).height()
+    ,wW = $(window).width();
+    if($('#m-top').length == 0) return;
+    $('#m-top').on('click', function(){
+        $(document).scrollTop(0);
+    });
+    $('#m-top').on('touchmove', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        var touch = e.targetTouches[0];
+        var x = wW - touch.clientX-24
+        ,y = wH - touch.clientY-24;
+        if(x<10) x = 10;
+        else if(x+58>wW) x = wW-58;
+        if(y<63) y = 63;
+        else if(y+58>wH) y = wH-58;
+        $('#m-top').css({right: x, bottom:y});
+    });
 }
 
 function historyUrl(set = ''){
@@ -31,15 +58,15 @@ function isEmpty(obj){
 }
 
 function isLogin(){
-    return uncompileStr(sessionStorage.getItem("isLogin"));
+    return uncompileStr(localStorage.getItem("isLogin"));
 }
 
 function loginIn(){
-    if(isLogin() !== 'isLogin') sessionStorage.setItem("isLogin", compileStr('isLogin'));
+    if(isLogin() !== 'isLogin') localStorage.setItem("isLogin", compileStr('isLogin'));
 }
 
 function loginOut(){
-    sessionStorage.setItem("isLogin", compileStr('0'));
+    localStorage.setItem("isLogin", compileStr('0'));
     getSetId();
 }
 
@@ -135,7 +162,7 @@ function ajax(url, data = {}, callback = '', type = 'POST', load = 1, cache = 0,
         }
     }
     
-    data.lses = sessionStorage.getItem('lses');
+    data.lses = localStorage.getItem('lses');
     data.guestuid = getSetId();
     $.ajax({
         url: url,
@@ -194,23 +221,23 @@ function lazyload(obj){
 }
 
 //cookie
-var cookie = {
-    set: function(cname,cvalue,exdays){
-        var d = new Date();
-        d.setTime(d.getTime()+(exdays*24*60*60*1000));
-        var expires = "expires="+d.toGMTString();
-        document.cookie = cname+"="+cvalue+"; "+expires;
-    },
-    get: function(cname){
-        var name = cname + "=";
-        var ca = document.cookie.split(';');
-        for(var i=0; i<ca.length; i++) {
-            var c = ca[i].trim();
-            if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
-        }
-        return null;
-    }
-};
+//var cookie = {
+//    set: function(cname,cvalue,exdays){
+//        var d = new Date();
+//        d.setTime(d.getTime()+(exdays*24*60*60*1000));
+//        var expires = "expires="+d.toGMTString();
+//        document.cookie = cname+"="+cvalue+"; "+expires;
+//    },
+//    get: function(cname){
+//        var name = cname + "=";
+//        var ca = document.cookie.split(';');
+//        for(var i=0; i<ca.length; i++) {
+//            var c = ca[i].trim();
+//            if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+//        }
+//        return null;
+//    }
+//};
 
 //登录
 function login() { 
@@ -325,7 +352,7 @@ function logout() {
 function getSetId(){
     var weircxs = localStorage.getItem('WEIRCXS');
     if(isEmpty(weircxs)){
-        weircxs = parseInt(new Date().getTime()/1000)-Math.ceil(Math.random()*56)*10000000;
+        weircxs = parseInt(new Date().getTime()/1000)+Math.ceil((Math.random()+1.5)*1000000000);
         localStorage.setItem('WEIRCXS', weircxs);
     }
     return parseInt(weircxs);

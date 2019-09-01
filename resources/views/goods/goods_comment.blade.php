@@ -1,11 +1,12 @@
 @extends('layouts.app')
-@section('title', '评论')
+@section('title', '评价')
 @section('content')
 <div class="container">
     @if (count($list) > 0)
+    <div id="m-top"></div>
     <div class="weui-cell">
         <div class="weui-cell__bd">
-            <p>商品评论</p>
+            <p class="t-ac">商品评价</p>
         </div>
     </div>
     <div class="weui-cells mt2">
@@ -18,16 +19,22 @@
                     <ul class="m-photos-thumb">
                     @foreach ($l->img as $g)
                         <li data-src="{{ $g['osrc'] }}">
-                            <img src="{{ $g['tsrc'] }}" alt="">
+                            <img src="{{ $g['osrc'] }}" alt="">
                         </li>
                     @endforeach
                     </ul>
                 </div>
                 @endif
             </div>
-            <div class="weui-cell__ft">{{ $l->date }}</div>
         </div>
     @endforeach
+    </div>
+    @else
+    <div class="weui-msg">
+        <div class="weui-msg__text-area mt100">
+            <img src="/static/img/empty.png" alt="没有数据">
+            <p class="weui-msg__desc">没有数据</p>
+        </div>
     </div>
     @endif
 </div>
@@ -51,7 +58,7 @@ loadData('/goods/comment/{{ $id }}', {}, function(list){
             });
             html += '</div>';
         }
-        html += '</div><div class="weui-cell__ft">'+l.date+'</div></div>';
+        html += '</div></div>';
     });
     $('.weui-cells').append(html);
     privewImgComment();

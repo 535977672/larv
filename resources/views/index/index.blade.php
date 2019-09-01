@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8"/> 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}"> 
-    <title>amief</title>
+    <title>优甜缘</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
     <link rel="stylesheet" type="text/css" href="/static/plugs/slideunlock/css/slideunlock.css">

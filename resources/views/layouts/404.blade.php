@@ -1,12 +1,22 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta http-equiv="content-type" content="text/html;charset=utf-8"/> 
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>amief - 404</title>
-</head>
-
-<body>
-    <h1>404页面未找到</h1>
-</body>    
-</html>
+@extends('layouts.app')
+@section('title', '消息提示')
+@section('content')
+<div class="weui-msg">
+    <div class="weui-msg__icon-area"><i class="weui-icon-info weui-icon_msg"></i></div>
+    <div class="weui-msg__text-area">
+        <h2 class="weui-msg__title">404</h2>
+        <p class="weui-msg__desc">页面未找到</p>
+    </div>
+    <div class="weui-msg__opr-area">
+        <p class="weui-btn-area">
+            <a href="javascript:history.go(-1);" class="weui-btn weui-btn_primary">确认</a>
+            <a href="javascript:history.go(-1);" class="weui-btn weui-btn_default">返回</a>
+        </p>
+    </div>
+    <div class="weui-msg__extra-area">
+        <div class="weui-footer">
+            <p class="weui-footer__text">优甜缘</p>
+        </div>
+    </div>
+</div>
+@endsection

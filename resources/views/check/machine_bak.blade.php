@@ -55,7 +55,7 @@
         jigsaw.init({
             el: document.getElementById('captcha'),
             onSuccess: function() {
-                sessionStorage.setItem("lses", 'WDN@*DS');
+                localStorage.setItem("lses", 'WDN@*DS');
                 document.getElementById('msg').innerHTML = '验证成功';
                 setTimeout(function(){
                     location.href = '/csij/dso3/1dksl/dcns';

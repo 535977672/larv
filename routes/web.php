@@ -48,8 +48,7 @@ Route::prefix('goods')->group(function () {
 
 
 Route::prefix('member')->group(function () {
-    Route::post('login', 'MemberController@login');
-    Route::post('register', 'MemberController@register');
+    Route::get('index', 'MemberController@index');
 });
 
 
