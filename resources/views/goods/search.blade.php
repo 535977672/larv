@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', '搜索')
 @section('content')
-<div class="container">
+<div class="container m-top">
     <div class="weui-search-bar" id="searchBar">
         <form class="weui-search-bar__form" method="get" action="/goods/search">
             <div class="weui-search-bar__box">
@@ -25,7 +25,6 @@
     </div>
     <div class="m-cl"></div>
 </div>
-<div id="m-top"></div>
 @endsection
 @section('script')
 <script>

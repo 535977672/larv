@@ -3,8 +3,7 @@
 @section('content')
 <div class="container">
     @if (count($list) > 0)
-    <div id="m-top"></div>
-    <div class="weui-cell">
+    <div class="weui-cell m-top">
         <div class="weui-cell__bd">
             <p class="t-ac">商品评价</p>
         </div>

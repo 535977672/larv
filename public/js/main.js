@@ -20,9 +20,10 @@ function checkCache(){
 }
 
 function checkTop(){
+    if($('.m-top').length == 0) return;
     var wH = $(window).height()
     ,wW = $(window).width();
-    if($('#m-top').length == 0) return;
+    $('body').append('<div id="m-top"></div>');
     $('#m-top').on('click', function(){
         $(document).scrollTop(0);
     });
