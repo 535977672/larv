@@ -47,14 +47,18 @@ class Controller extends BaseController
         if($this->request->ajax() || $this->request->wantsJson()){
             return return_ajax($status, $msg, $data);
         }else{
+            if(!$msg || $msg == 'success'){
             $action = $this->request->route()->getActionName();
             list($class, $method) = explode('@', $action);
             $class = substr(strrchr($class,'\\'),1);
-            $class = strtolower(str_replace('Controller', '', $class));
-            $methodes = preg_split('/(?=[A-Z])/', $method);
-            $method = strtolower(implode('_', $methodes));
-            $view = $class.'.'.$method;
-            if(strpos($action, '\\Controllers\\Admin\\')) $view = 'admin.'.$view;
+                $class = strtolower(str_replace('Controller', '', $class));
+                $methodes = preg_split('/(?=[A-Z])/', $method);
+                $method = strtolower(implode('_', $methodes));
+                $view = $class.'.'.$method;
+                if(strpos($action, '\\Controllers\\Admin\\')) $view = 'admin.'.$view;
+            }else{
+                $view = $msg;
+            }
             return view($view, $data);
         }
     }

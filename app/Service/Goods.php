@@ -105,12 +105,12 @@ class Goods extends Service{
     
     public function getSubGoodsAttrByAttrIds($attrids) {
         if(!$attrids) return null;
-        $field = 'g.goods_id,g.goods_name,g.original_img,g.type,a.color_id,a.attr,a.attr_img,a.img attrimg,,c.color,c.color_img,c.img colorimg';
+        $field = 'm_goods.goods_id,m_goods.goods_name,m_goods.original_img,m_goods.type,m_goods_attr.color_id,m_goods_attr.attr,m_goods_attr.attr_img,m_goods_attr.img attrimg,m_goods_color.color,m_goods_color.color_img,m_goods_color.img colorimg';
         $select = DB::raw($field);
-        return GoodsAttr::alias('a')->whereIn('a.attr_id', $attrids)
-                ->where('g.type', 1)
-                ->join('m_goods as g', 'g.goods_id', '=', 'a.goods_id')
-                ->leftJoin('m_goods_color as c', 'c.color_id', '=', 'a.color_id')
+        return GoodsAttr::whereIn('m_goods_attr.attr_id', $attrids)
+                ->where('m_goods.type', 1)
+                ->join('m_goods', 'm_goods_attr.goods_id', '=', 'm_goods.goods_id')
+                ->leftJoin('m_goods_color', 'm_goods_attr.color_id', '=', 'm_goods_color.color_id')
                 ->select($select)
                 ->get();
     }

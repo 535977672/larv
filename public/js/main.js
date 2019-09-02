@@ -224,6 +224,10 @@ function winReload(par = 0){
         parent.location.reload();
 }
 
+function winHref(url){
+    window.location.href = url;
+}
+
 //图片懒加载
 function lazyload(obj){
     $(obj).lazyload({
@@ -426,7 +430,7 @@ function initRequestes(){
     
     $('#order-buy').on('click', function(){
         if($(this).attr('data-clock') == '1'){
-            window.location.href = '/order/pay/'+$('#order-buy').attr('data-oid');
+            winHref('/order/pay/'+$('#order-buy').attr('data-oid'));
             return false;
         }
         orderBuy();
@@ -473,16 +477,19 @@ function selectNumSet(type){
 }
 
 function selectBuy(){
-    var attrO = $('.goods-attr-items.goods-spec-selected');
-    var num = Number($('#select-num').text());
-    var price = (Number($('#select-price').attr('data-price'))*100).toFixed();
+    var type = $('#select-buy').attr('data-type')
+    ,attrO = ''
+    ,num = Number($('#select-num').text())
+    ,price = (Number($('#select-price').attr('data-price'))*100).toFixed();
+    if(type === '1') attrO = $('.goods-attr-items.goods-spec-selected');
+    else attrO = $('#select-buy');
     if(attrO.length < 1){
         showMsg('请选择商品');return;
     }
     if(price <= 0){
         showMsg('参数错误，请刷新重试');return;
     }
-    window.location.href = '/order/request/'+$('#select-buy').attr('data-type')+'/'+attrO.attr('data-id')+'/'+num+'/'+price+'/'+getSetId();
+    winHref('/order/request/'+type+'/'+attrO.attr('data-id')+'/'+num+'/'+price+'/'+getSetId());
 }
 
 function orderBuy(){
@@ -495,7 +502,7 @@ function orderBuy(){
         var data = res.data;
         $('#order-buy').attr('data-clock', '1');
         $('#order-buy').attr('data-oid', data.order_id);
-        window.location.href = '/order/pay/'+data.order_id;
+        winHref('/order/pay/'+data.order_id);
     });
 }
 

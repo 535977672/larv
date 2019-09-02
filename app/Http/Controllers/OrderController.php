@@ -258,11 +258,12 @@ class OrderController extends Controller
         if($goods->type == 1){
             if($dataJson['colorname'] && $dataJson['attr']) $spec_key = $dataJson['colorname'].'-'.$dataJson['attr'];
             else $spec_key = $dataJson['colorname']?:$dataJson['attr'];
+            $ourl = $goodsModel->getGoodsExt($goodsId)->original_url;
         }else{
             $spec_key = '套餐';
+            $ourl = '';
         }
         
-        $ourl = $goodsModel->getGoodsExt($goodsId)->original_url;
         $goodsParam = [
             'order_id' => 0,
             'goods_id' => $goods->goods_id,
@@ -363,7 +364,7 @@ class OrderController extends Controller
             'consignee' => "bail|required|string",
             'mobile' => "bail|required|regex:'^[1][3,4,5,6,7,8,9][0-9]{9}$'",
             'price' => "bail|required|integer",
-            'guestuid' =>  "bail|required|integer",
+            'guestuid' =>  "bail|required|regex:'[0-9]{10}'",
             'randstr' => "bail|required|string",
             'datakey' => "bail|required|string",
         ], [

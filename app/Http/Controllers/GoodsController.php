@@ -30,6 +30,7 @@ class GoodsController extends Controller
         if(!$goods){
             return $this->failed();
         }
+        if($goods->type == 2) return $this->successful('goods.goods_detail_2', ['goods' => $goods]);
         return $this->successful('', ['goods' => $goods]);
     }
     
