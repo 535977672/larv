@@ -191,17 +191,29 @@ function ajax(url, data = {}, callback = '', type = 'POST', load = 1, cache = 0,
             loading = false;
             console.log(xml);
             var str = '网络错误';
-            $.toast(str, "cancel");
+            showMsg(str);
         }
     });
 };
 
 function ajaxLoading(){
-    $.showLoading("数据加载中");
+    layer.open({
+        type: 2
+        ,shadeClose: false
+        ,content: '数据加载中'
+    });
 }
 
 function closeAjaxLoading(){
-    $.hideLoading();
+    layer.closeAll();
+}
+
+function showMsg(msg, time = 2){
+    layer.open({
+        content: msg
+        ,skin: 'msg'
+        ,time: time
+    });
 }
 
 //刷新
@@ -264,9 +276,9 @@ function login() {
                     if(res.status == 200){
                         //winReload();
                         loginIn();
-                        $.toast("登录成功");
+                        showMsg("登录成功");
                     }else{
-                        $.toast(res.msg, "cancel");
+                        showMsg(res.msg);
                     }
                 });
             }},
@@ -322,9 +334,9 @@ function register() {
                 ajax('/register', {name: name, password: pwd, password_confirmation: repwd, veri: veri}, function(res){
                     if(res.status == 200){
                         loginIn();
-                        $.toast("登录成功");
+                        showMsg("登录成功");
                     }else{
-                        $.toast(res.msg, "cancel");
+                        showMsg(res.msg);
                     }
                 });
             }},
@@ -465,10 +477,10 @@ function selectBuy(){
     var num = Number($('#select-num').text());
     var price = (Number($('#select-price').attr('data-price'))*100).toFixed();
     if(attrO.length < 1){
-        $.toast('请选择商品', "cancel");return;
+        showMsg('请选择商品');return;
     }
     if(price <= 0){
-        $.toast('参数错误，请刷新重试', "cancel");return;
+        showMsg('参数错误，请刷新重试');return;
     }
     window.location.href = '/order/request/'+$('#select-buy').attr('data-type')+'/'+attrO.attr('data-id')+'/'+num+'/'+price+'/'+getSetId();
 }
@@ -476,7 +488,7 @@ function selectBuy(){
 function orderBuy(){
     ajax('/order/add', $('#myform').serializeJson(), function(res){
         if(res.status !== 200){
-            $.toast(res.msg, "cancel");
+            showMsg(res.msg);
             if(res.status === 400) winReload();
             return;
         }
@@ -560,7 +572,7 @@ function loadData(url, data = {}, callback = ''){
         ajax(next_page_url,data, function(res){
             if(res.status !== 200){
                 loadings = false;
-                $.toast(res.msg, "cancel");
+                showMsg(res.msg);
                 return;
             }
             var list = res.data.list.data;

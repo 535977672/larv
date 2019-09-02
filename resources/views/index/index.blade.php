@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
     <link rel="stylesheet" type="text/css" href="/static/plugs/slideunlock/css/slideunlock.css">
+    <link rel="stylesheet" href="/static/layer_mobile/need/layer.css">
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
         <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -61,6 +62,7 @@
 
     <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+    <script src="/static/layer_mobile/layer.js"></script>
     <script src="/js/fastclick.js"></script>
     <script type="text/javascript" src="/static/plugs/slideunlock/js/jquery.slideunlock.js"></script>
     <script src="/js/main.js?time={{ time() }}"></script>
