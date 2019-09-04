@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('head')
+<link rel="stylesheet" href="/static/plugs/pubuliu/css/component.css">
+@endsection
 @section('title', '搜索')
 @section('content')
 <div class="container m-top">
@@ -17,24 +20,24 @@
         <a href="javascript:" class="weui-search-bar__cancel-btn c-gray" id="searchCancel">取消</a>
     </div>
     <div class="main-img mt5 p5">
+        <ul class="grid" id="grid"> 
         @if (count($list) > 0)
         @foreach ($list as $g)
-        <div class="m-fl"><div><a href="/goods/detail/{{ $g->goods_id }}"><img  class="lazy" src="/static/img/bg.jpg" data-original="{{ $g->original_img }}" alt=""><p class="m-name">{{ $g->goods_name }}</p></a></div></div>
+        <li><div><a href="/goods/detail/{{ $g->goods_id }}"><img  src="{{ $g->original_img }}" alt=""><p class="goods-name m-name">{{ $g->goods_name }}</p></a></div></li>
         @endforeach
         @endif
+        </ul>
     </div>
     <div class="m-cl"></div>
 </div>
 @endsection
 @section('script')
+<script src="/static/plugs/pubuliu/js/modernizr.custom.js"></script>
+<script src="/static/plugs/pubuliu/js/masonry.pkgd.min.js"></script>
+<script src="/static/plugs/pubuliu/js/imagesloaded.js"></script>
+<script src="/static/plugs/pubuliu/js/classie.js"></script>
+<script src="/static/plugs/pubuliu/js/AnimOnScroll.js"></script>
 <script>
-loadData('/goods/search', {keywords: '{{ $keywords }}'}, function(goods){
-    var html = '';
-    $.each(goods, function(i, g){
-        html = html + '<div class="m-fl"><div><a href="/goods/detail/'+g.goods_id+'"><img  class="lazy" src="/static/img/bg.jpg" data-original="'+g.original_img+'" alt=""><p class="m-name">'+g.goods_name+'</p></a></div></div>';
-    });
-    $('.main-img').append(html);
-    lazyload(".main-img img.lazy");
-});
+loadDataMain();
 </script>
 @endsection

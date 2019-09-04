@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('head')
+<link rel="stylesheet" href="/static/plugs/pubuliu/css/component.css">
+@endsection
 @section('title', '首页')
 @section('content')
 <div class="container m-top">
@@ -27,27 +30,25 @@
     </div>
     @endif
     <div class="main-img mt5 p5">
+        <ul class="grid" id="grid">        
         @if (count($goods) > 0)
         @foreach ($goods as $g)
-        <div class="m-fl"><div><a href="/goods/detail/{{ $g->goods_id }}"><img  class="lazy" src="/static/img/bg.jpg" data-original="{{ $g->original_img }}" alt=""><p class="m-name">{{ $g->goods_name }}</p></a></div></div>
+        <li><div><a href="/goods/detail/{{ $g->goods_id }}"><img  src="{{ $g->original_img }}" alt=""><p class="goods-name m-name">{{ $g->goods_name }}</p></a></div></li>
         @endforeach
         @endif
+        </ul>
     </div>
     <div class="m-cl"></div>
 </div>
 @endsection
 @section('script')
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/swiper.min.js"></script>
+<script src="/static/plugs/pubuliu/js/modernizr.custom.js"></script>
+<script src="/static/plugs/pubuliu/js/masonry.pkgd.min.js"></script>
+<script src="/static/plugs/pubuliu/js/imagesloaded.js"></script>
+<script src="/static/plugs/pubuliu/js/classie.js"></script>
+<script src="/static/plugs/pubuliu/js/AnimOnScroll.js"></script>
 <script>
-loadData('/goods', {}, function(goods){
-    var html = '';
-    $.each(goods, function(i, g){
-        html = html + '<div class="m-fl"><div><a href="/goods/detail/'+g.goods_id+'"><img  class="lazy" src="/static/img/bg.jpg" data-original="'+g.original_img+'" alt=""><p class="m-name">'+g.goods_name+'</p></a></div></div>';
-    });
-    $('.main-img').append(html);
-    lazyload(".main-img img.lazy");
-});
-
 var effect = ['slide','cube', 'coverflow', 'flip'];
 $(".swiper-container").swiper({
     autoplay : 3000,
@@ -56,5 +57,6 @@ $(".swiper-container").swiper({
     autoplayDisableOnInteraction : false,
     effect : effect[Math.floor(Math.random()*effect.length)]
 });
+loadDataMain();
 </script>
 @endsection

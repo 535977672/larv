@@ -230,10 +230,34 @@ function winHref(url){
 
 //图片懒加载
 function lazyload(obj){
+    return;
     $(obj).lazyload({
     //placeholder : "/static/img/bg.jpg", //占位
     effect: "fadeIn",// effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,常用fadeIn
     threshold: 150, // 提前150px开始加载
+    });
+}
+
+function animOnScrollLoad(id){
+    if($('#'+id+' li').length < 1) return;
+    new AnimOnScroll(document.getElementById(id), {
+        minDuration : 0.4,
+        maxDuration : 0.7,
+        viewportFactor : 0.2
+    });
+}
+
+function loadDataMain(){
+    if($('#grid li').length < 1) return;
+    $('#grid').addClass('effect-'+(Math.ceil(Math.random()*7)+1));
+    animOnScrollLoad('grid');
+    loadData('/goods', {}, function(goods){
+        var html = '';
+        $.each(goods, function(i, g){
+            html = html + '<li><div><a href="/goods/detail/'+g.goods_id+'"><img  class="'+g.original_img+'" alt=""><p class="goods-name m-name">'+g.goods_name+'</p></a></div></li>';
+        });
+        $('.main-img').append(html);
+        animOnScrollLoad('grid');
     });
 }
 

@@ -36,7 +36,6 @@
     <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
     <script src="/static/layer_mobile/layer.js"></script>
-    <script src="/js/jquery.lazyload.min.js"></script>
     <script src="/js/fastclick.js"></script>
     <script src="/js/main.js?time={{ time() }}"></script>
     <script>
@@ -52,7 +51,6 @@
             location.reload();
         });
         @endif
-        lazyload("img.lazy");
     </script>
     @yield('script')
 </body>    
