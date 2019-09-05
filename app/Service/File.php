@@ -100,7 +100,7 @@ class File extends Service{
         $w = $img->width();
         $h = $img->height();
         $color = $type == 1?'#2275da':'#0d8609';
-        $ttf = strtoupper(substr(PHP_OS,0,3))==='WIN'?'C:/Windows/Fonts/STXINWEI.TTF':'/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf';
+        $ttf = strtoupper(substr(PHP_OS,0,3))==='WIN'?'C:/Windows/Fonts/STXINWEI.TTF':'/usr/share/fonts/dejavu/STXINWEI.TTF';//DejaVuSans-Bold.ttf
         $img->resizeCanvas($w, $h+60, 'center', false, '#f8f8f8')
         ->resizeCanvas($w, $h+90, 'bottom', false, '#f8f8f8')
         ->text('￥'. price_format($name), $w/2, 10, function($font) use ($ttf) {
