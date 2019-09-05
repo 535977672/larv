@@ -102,22 +102,22 @@ class File extends Service{
         $color = $type == 1?'#2275da':'#0d8609';
         $ttf = strtoupper(substr(PHP_OS,0,3))==='WIN'?'C:/Windows/Fonts/STXINWEI.TTF':'/usr/share/fonts/win/fangzheng.TTF';//DejaVuSans-Bold.ttf
         $img->resizeCanvas($w, $h+32, 'center', false, '#ffffff')
-        ->resizeCanvas($w, $h+52, 'bottom', false, '#ffffff')
-        ->text('￥'. price_format($name), $w/2, 1, function($font) use ($ttf) {
+        ->resizeCanvas($w, $h+62, 'bottom', false, '#ffffff')
+        ->text('￥'. price_format($name), $w/2, 5, function($font) use ($ttf) {
                 $font->file($ttf);
                 $font->size(42);
                 $font->color('#f44336');
                 $font->align('center');
                 $font->valign('top');
             })
-        ->text('过期后请勿支付', $w/2, 32, function($font) use ($color, $ttf) {
+        ->text('过期后请勿支付', $w/2, 42, function($font) use ($color, $ttf) {
                 $font->file($ttf);
                 $font->size(16);
                 $font->color($color);
                 $font->align('center');
                 $font->valign('top');
             })
-        ->text('过期时间 '.date('Y-m-d H:i:s', $exp), $w/2, $h+47, function($font) use ($color, $ttf) {
+        ->text('过期时间 '.date('Y-m-d H:i:s', $exp), $w/2, $h+57, function($font) use ($color, $ttf) {
                 $font->file($ttf);
                 $font->size(16);
                 $font->color($color);
