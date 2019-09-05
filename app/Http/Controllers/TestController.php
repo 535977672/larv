@@ -348,7 +348,7 @@ class TestController extends Controller
 //        var_dump($re);
         
         
-        $re = $file->payFileWaterMark(98712, time()+300, 2);
+        $re = $file->payFileWaterMark(98712, time()+300, 1);
         var_dump($re);
         
     }
