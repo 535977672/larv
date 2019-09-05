@@ -2,6 +2,8 @@
 namespace App\Service;
 
 use Illuminate\Support\Facades\Redis;
+use Image;
+//use Intervention\Image\ImageManagerStatic as Image;
 
 /**
  * 
@@ -70,5 +72,61 @@ class File extends Service{
             }
         }
         return true;
+    }
+    
+    /**
+     * 水印二维码
+     * storage/app/pay文件移动到storage/app/public/pay
+     * $name 不含后缀
+     */
+    public function payFileWaterMark($name, $exp, $type = 1) {
+        $baseDir = storage_path('app/pay/');
+        if($type == 1) {
+            $baseDir = $baseDir . 'a/';
+        } else {
+            $baseDir = $baseDir . 'x/';
+        }
+        $fileName = $baseDir . 'pay_' . $name . '.jpg';
+        $uniqid = uniqid('pay', true) . '.jpg';
+        $dirName = storage_path('app/public/pay/') . $uniqid;
+        
+        if(!is_file($fileName)){
+            //$this->setErrorMsg('文件不存在');
+            //return false;
+            $fileName = $baseDir . 'paycomm.jpg';
+        }
+        
+        $img = Image::make($fileName);
+        $w = $img->width();
+        $h = $img->height();
+        $color = $type == 1?'#2275da':'#0d8609';
+        $ttf = strtoupper(substr(PHP_OS,0,3))==='WIN'?'C:/Windows/Fonts/STXINWEI.TTF':'/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf';
+        $img->resizeCanvas($w, $h+60, 'center', false, '#f8f8f8')
+        ->resizeCanvas($w, $h+90, 'bottom', false, '#f8f8f8')
+        ->text('￥'. price_format($name), $w/2, 10, function($font) use ($ttf) {
+                $font->file($ttf);
+                $font->size(18);
+                $font->color('#f44336');
+                $font->align('center');
+                $font->valign('top');
+            })
+        ->text('过期后请勿支付', $w/2, 40, function($font) use ($color, $ttf) {
+                $font->file($ttf);
+                $font->size(16);
+                $font->color($color);
+                $font->align('center');
+                $font->valign('top');
+            })
+        ->text('过期时间 '.date('Y-m-d H:i:s', $exp), $w/2, $h+80, function($font) use ($color, $ttf) {
+                $font->file($ttf);
+                $font->size(16);
+                $font->color($color);
+                $font->align('center');
+            })
+        ->save($dirName);
+        
+        $redis = Redis::connection();
+        $redis->hSet('pay', $uniqid, time());
+        return env('APP_URL').'/storage/pay/' . $uniqid;
     }
 }

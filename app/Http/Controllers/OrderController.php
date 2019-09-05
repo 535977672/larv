@@ -250,7 +250,7 @@ class OrderController extends Controller
         
         //先获取二维码
         $file = new File();
-        $qrcode = $file->payFileCopy($newPrice, $param['paytype']);
+        $qrcode = $file->payFileWaterMark($newPrice, $exp, $param['paytype']);
         if(!$qrcode){
             return $this->failed('系统繁忙，请刷新重试', [], 400);
         }

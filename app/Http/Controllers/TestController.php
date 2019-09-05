@@ -17,6 +17,8 @@ use App\Service\City;
 
 use App\Service\SmsSend;
 
+//use Image;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class TestController extends Controller
 {
@@ -44,6 +46,8 @@ class TestController extends Controller
         //$this->city();
         
         //$this->getcity();
+        
+        //$this->image2();
         
         return return_ajax(200,'1212');
     }
@@ -334,14 +338,19 @@ class TestController extends Controller
     
     protected function pfileTest(){
         $file = new Pfile;
-        $re = $file->payFileCopy('111');
-        var_dump($re);
+        //$re = $file->payFileCopy('111');
+        //var_dump($re);
         
-        $re = $file->payFileDel('pay5d25b4d131ea45.63988341.png');
-        var_dump($re);
+        //$re = $file->payFileDel('pay5d25b4d131ea45.63988341.png');
+        //var_dump($re);
         
 //        $re = $file->payFileCheck();
 //        var_dump($re);
+        
+        
+        $re = $file->payFileWaterMark(1000, time()+300, 2);
+        var_dump($re);
+        
     }
     
     
@@ -537,5 +546,71 @@ class TestController extends Controller
         
         //var_dump($city->reDelCity(130224));
         //var_dump($city->getCityStr());//string(143852)
+    }
+    
+    protected function image() {
+       //echo public_path();
+       //echo storage_path('app/public/pay/') . 'tt.png';
+//        // 修改指定图片的大小
+//        $img = Image::make('../storage/app/public/pay/tt.png')->resize(200, 200);
+//
+//        // 插入水印, 水印位置在原图片的右下角, 距离下边距 10 像素, 距离右边距 15 像素
+//        $img->insert('fsdff', 'bottom-right', 15, 10);
+//
+//        // 将处理后的图片重新保存到其他路径
+//        $img->save('../storage/app/public/test/tt.png');
+
+        /* 上面的逻辑可以通过链式表达式搞定 */
+        
+        $img = Image::make(storage_path('app/public/pay/') . 'tt2.png')
+            //->resize(500, 500)
+            
+            //图片水印
+            //->insert(storage_path('app/public/pay/') . 'tt2.png', 'bottom-right', 15, 10)
+            
+            //文字水印
+            //text(string $text, int $x = 0, int $y = 0, \Closure $callback = null)  
+            ->text('而微微的地方￥的地方', 250, 10, function($font) {
+                $font->file('C:/Windows/Fonts/simsun.ttc');
+                $font->size(24);
+                $font->color('#239bf0');
+                $font->align('center');
+                $font->valign('top');
+                //$font->angle(45);
+            })
+            ->text('而微微的', 250, 490, function($font) {
+                $font->file('C:/Windows/Fonts/simsun.ttc');
+                $font->size(24);
+                $font->color('#239bf0');
+                $font->align('center');
+                //$font->angle(45);
+            })
+            
+            ->save(storage_path('app/public/test/') . 'tt.png');
+        
+        
+    }
+    
+    protected function image_1() {
+        
+        $img = Image::make(storage_path('app/public/pay/') . 'tt2.png');
+        $w = $img->width();
+        $h = $img->height();
+        $img->resizeCanvas($w, $h+60, 'center', false, '#f8f8f8')
+        ->text('而微微的地方￥的地方', $w/2, 10, function($font) {
+                $font->file('C:/Windows/Fonts/simsun.ttc');
+                $font->size(24);
+                $font->color('#239bf0');
+                $font->align('center');
+                $font->valign('top');
+            })
+        ->text('而微微的', $w/2, $h+40, function($font) {
+                $font->file('C:/Windows/Fonts/simsun.ttc');
+                $font->size(24);
+                $font->color('#239bf0');
+                $font->align('center');
+            })
+            
+        ->save(storage_path('app/public/test/') . 'tt.png');
     }
 }
