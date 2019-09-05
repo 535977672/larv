@@ -39,7 +39,7 @@ class TestController extends Controller
         
         //$this->fileTest();
         
-        //$this->pfileTest();
+        $this->pfileTest();
         
         //$this->modelTest();
         
@@ -348,7 +348,7 @@ class TestController extends Controller
 //        var_dump($re);
         
         
-        $re = $file->payFileWaterMark(1000, time()+300, 2);
+        $re = $file->payFileWaterMark(98712, time()+300, 2);
         var_dump($re);
         
     }
