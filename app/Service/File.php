@@ -103,14 +103,14 @@ class File extends Service{
         $ttf = strtoupper(substr(PHP_OS,0,3))==='WIN'?'C:/Windows/Fonts/STXINWEI.TTF':'/usr/share/fonts/win/simhei.ttf';//DejaVuSans-Bold.ttf
         $img->resizeCanvas($w, $h+32, 'center', false, '#ffffff')
         ->resizeCanvas($w, $h+50, 'bottom', false, '#ffffff')
-        ->text('￥'. price_format($name), $w/2, 10, function($font) use ($ttf) {
+        ->text('￥'. price_format($name), $w/2, 5, function($font) use ($ttf) {
                 $font->file($ttf);
                 $font->size(32);
                 $font->color('#f44336');
                 $font->align('center');
                 $font->valign('top');
             })
-        ->text('过期后请勿支付', $w/2, 5, function($font) use ($color, $ttf) {
+        ->text('过期后请勿支付', $w/2, 22, function($font) use ($color, $ttf) {
                 $font->file($ttf);
                 $font->size(16);
                 $font->color($color);
