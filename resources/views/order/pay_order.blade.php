@@ -17,7 +17,7 @@
             <div data-role="qrPayImg" class="qrcode-img-area">
                 <div class="ui-loading qrcode-loading" data-role="qrPayImgLoading"></div>
                 <div style="position: relative;display: inline-block;">
-                    <img id="show_qrcode" width="300" height="300" src="{{ $qrcode }}" title="" style="display: block;">
+                    <img id="show_qrcode" width="300" src="{{ $qrcode }}" title="" style="display: block;">
                 </div>
             </div>
         </div>             
