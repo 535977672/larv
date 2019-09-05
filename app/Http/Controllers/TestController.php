@@ -39,7 +39,7 @@ class TestController extends Controller
         
         //$this->fileTest();
         
-        //$this->pfileTest();
+        $this->pfileTest();
         
         //$this->modelTest();
         

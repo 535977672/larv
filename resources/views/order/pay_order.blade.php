@@ -12,7 +12,7 @@
     </h1>
     <div class="mod-ct">
         <div class="order"></div>
-        <div class="amount" id="money" data-id="{{ $oid }}" data-exp="{{ $exp }}">￥{{ $money }}</div>
+        <div class="amount" id="money" data-id="{{ $oid }}" data-exp="{{ $exp }}"></div>
         <div class="qrcode-img-wrapper" data-role="qrPayImgWrapper">
             <div data-role="qrPayImg" class="qrcode-img-area">
                 <div class="ui-loading qrcode-loading" data-role="qrPayImgLoading"></div>
