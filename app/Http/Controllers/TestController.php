@@ -619,7 +619,7 @@ class TestController extends Controller
     }
     
     protected function image3() {
-        $t = storage_path('app/pay/a/') . 'paycomm.'.$t;
+        $t = storage_path('app/pay/a/') . 'paycomm.jpg';
         try {
             $core = new \Imagick;
             $core->readImage($t);  
