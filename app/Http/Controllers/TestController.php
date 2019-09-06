@@ -52,7 +52,7 @@ class TestController extends Controller
         
         //$this->image3
         
-        $this->pay();
+        $this->pays();
         
         return return_ajax(200,'1212');
     }
