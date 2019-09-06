@@ -36,8 +36,8 @@ class File extends Service{
             return false;
         }
         
-        $redis = Redis::connection();
-        $redis->hSet('pay', $uniqid, time());
+        //$redis = Redis::connection();
+        //$redis->hSet('pay', $uniqid, time());
         return env('APP_URL').'/storage/pay/' . $uniqid;
     }
     
@@ -48,12 +48,17 @@ class File extends Service{
      */
     public function payFileDel($name){
         $dirName = '../storage/app/public/pay/' . $name;
-        $redis = Redis::connection();
-        $redis->hDel('pay', $name);
+        //$redis = Redis::connection();
+        //$redis->hDel('pay', $name);
         if(is_file($dirName)){
             return unlink($dirName);
         }
         return false;
+    }
+    
+    public function payFileDelUrl($url){
+        ///storage/pay/pay5d7271f0464b88.57694164.jpg
+        return $this->payFileDel(substr($url, 13));
     }
     
     /**

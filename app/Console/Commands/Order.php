@@ -49,8 +49,6 @@ class Order extends Command {
     
     private function check() {
         $pay = new Pay();
-        $file = new File();
-        $file->payFileCheck();
         return $pay->payExpireCheck();
     }
 }

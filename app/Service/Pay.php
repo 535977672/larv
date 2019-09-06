@@ -4,6 +4,7 @@ namespace App\Service;
 use App\Model\PayRecord;
 use App\Model\PayCode;
 use App\Model\Order;
+use App\Service\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use \Exception;
@@ -149,10 +150,12 @@ class Pay extends Service{
                 ['status', '=', 0]
             ])->get();
         if($data->count() > 1){
+            $file = new File();
             foreach ($data as $value) {
                 $value->status = 2;
                 $value->note = $value->note . '--自动检查过期' . date('Y-m-d H:i:s', $time+60);
                 $value->save();
+                $file->payFileDelUrl($value->qrcode);
             }
         }
         return true;
@@ -199,13 +202,12 @@ class Pay extends Service{
      * @param type $type
      * @return type array
      */
-    public function getMoney($type) {
+    public function getMoney() {
         $time = time();
         $data = PayRecord::where([
                 ['expiring', '>', $time],
                 ['create_time', '<', $time],
                 ['status', '=', 0],
-                ['type', '=', $type]
             ])->pluck('money');
         return $data->toArray();
     }
