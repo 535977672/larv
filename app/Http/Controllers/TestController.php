@@ -39,7 +39,7 @@ class TestController extends Controller
         
         //$this->fileTest();
         
-        //$this->pfileTest();
+        $this->pfileTest();
         
         //$this->modelTest();
         
@@ -47,7 +47,7 @@ class TestController extends Controller
         
         //$this->getcity();
         
-        $this->image2();
+        //$this->image2();
         
         //$this->image3();
         
