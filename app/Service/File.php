@@ -110,7 +110,7 @@ class File extends Service{
                 $font->align('center');
                 $font->valign('top');
             })
-        ->text('过期后请勿支付', $w/2, 84, function($font) use ($color, $ttf) {
+        ->text('过期后请勿支付', $w/2, 80, function($font) use ($color, $ttf) {
                 $font->file($ttf);
                 $font->size(32);
                 $font->color($color);
