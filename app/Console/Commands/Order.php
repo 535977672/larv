@@ -18,7 +18,7 @@ class Order extends Command {
      * $schedule->command($signature)->everyMinute();
      * @var string
      */
-    protected $signature = 'order:check';
+    protected $signature = 'order:check2';
 
     /**
      * The console command description.

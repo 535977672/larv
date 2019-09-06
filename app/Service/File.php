@@ -102,7 +102,7 @@ class File extends Service{
             //return false;
             $fileName = $baseDir . 'paycomm.jpg';
         }
-        
+        Image::configure(array('driver' => strtoupper(substr(PHP_OS,0,3))==='WIN'?'gd':'imagick'));
         $img = Image::make($fileName);
         $w = $img->width();
         $h = $img->height();

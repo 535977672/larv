@@ -14,6 +14,7 @@ use App\Model\Test;
 
 use App\Service\File as Pfile;
 use App\Service\City;
+use App\Service\Pay;
 
 use App\Service\SmsSend;
 
@@ -39,7 +40,7 @@ class TestController extends Controller
         
         //$this->fileTest();
         
-        $this->pfileTest();
+        //$this->pfileTest();
         
         //$this->modelTest();
         
@@ -49,7 +50,9 @@ class TestController extends Controller
         
         //$this->image2();
         
-        //$this->image3();
+        //$this->image3
+        
+        $this->pay();
         
         return return_ajax(200,'1212');
     }
@@ -562,7 +565,7 @@ class TestController extends Controller
 //        $img->save('../storage/app/public/test/tt.png');
 
         /* 上面的逻辑可以通过链式表达式搞定 */
-        
+        Image::configure(array('driver' => strtoupper(substr(PHP_OS,0,3))==='WIN'?'gd':'imagick'));
         $img = Image::make(storage_path('app/public/pay/') . 'tt2.png')
             //->resize(500, 500)
             
@@ -596,7 +599,7 @@ class TestController extends Controller
         $t = 'png';
         $t = 'jpg';
         
-        Image::configure(array('driver' => 'gd'));
+        Image::configure(array('driver' => strtoupper(substr(PHP_OS,0,3))==='WIN'?'gd':'imagick'));
         $img = Image::make(storage_path('app/pay/a/') . 'paycomm.'.$t);
         $w = $img->width();
         $h = $img->height();
@@ -616,27 +619,6 @@ class TestController extends Controller
             })
             
         ->save(storage_path('app/public/test/') . 'tt1.'.$t);
-		
-		Image::configure(array('driver' => 'imagick'));
-        $img = Image::make(storage_path('app/pay/a/') . 'paycomm.'.$t);
-        $w = $img->width();
-        $h = $img->height();
-        $img->resizeCanvas($w, $h+60, 'center', false, '#f8f8f8')
-        ->text('而微微的地方￥的地方', $w/2, 100, function($font) {
-                $font->file(strtoupper(substr(PHP_OS,0,3))==='WIN'?'C:/Windows/Fonts/STXINWEI.TTF':'/usr/share/fonts/win/fangzheng.TTF');
-                $font->size(96);
-                $font->color('#239bf0');
-                $font->align('center');
-                $font->valign('top');
-            })
-        ->text('而微微的', $w/2, $h-40, function($font) {
-                $font->file(strtoupper(substr(PHP_OS,0,3))==='WIN'?'C:/Windows/Fonts/STXINWEI.TTF':'/usr/share/fonts/win/fangzheng.TTF');
-                $font->size(96);
-                $font->color('#239bf0');
-                $font->align('center');
-            })
-            
-        ->save(storage_path('app/public/test/') . 'tt2.'.$t);
     }
     
     protected function image3() {
@@ -648,5 +630,10 @@ class TestController extends Controller
         } catch (\ImagickException $e) {
             var_dump($e->getMessage());
         }
+    }
+    
+    public function pays() {
+       $pay = new Pay;
+       $pay->payExpireCheck();
     }
 }

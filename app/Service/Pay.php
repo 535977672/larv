@@ -4,7 +4,7 @@ namespace App\Service;
 use App\Model\PayRecord;
 use App\Model\PayCode;
 use App\Model\Order;
-use App\Service\File;
+use App\Service\File as Files;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use \Exception;
@@ -150,7 +150,7 @@ class Pay extends Service{
                 ['status', '=', 0]
             ])->get();
         if($data->count() > 1){
-            $file = new File();
+            $file = new Files();
             foreach ($data as $value) {
                 $value->status = 2;
                 $value->note = $value->note . '--自动检查过期' . date('Y-m-d H:i:s', $time+60);

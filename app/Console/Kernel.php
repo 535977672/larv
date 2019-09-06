@@ -28,10 +28,10 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         $filePath = '/var/www/console.log';
-        $schedule->command('order:check')
+        $schedule->command('order:check2')
             ->everyFiveMinutes() //每5分钟执行一次任务
             ->timezone('Asia/Shanghai')
-            ->withoutOverlapping() //避免任务重复
+            //->withoutOverlapping() //避免任务重复
             ->appendOutputTo($filePath);
     }
 
