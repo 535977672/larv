@@ -324,7 +324,7 @@ class OrderController extends Controller
         if($d > 300 || $d < 0) return $this->failed('请求已过期');
         //先获取二维码
         $file = new File();
-        $qrcode = $file->payFileWaterMark($money, $exp, $type);
+        $qrcode = $file->payFileWaterMark($record->money, $exp, $type);
         return $this->successful(compact('qrcode', 'type', 'exp', 'money', 'oid', 'code'));
     }
     
