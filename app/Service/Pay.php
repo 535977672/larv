@@ -149,7 +149,7 @@ class Pay extends Service{
                 ['expiring', '<', $time],
                 ['status', '=', 0]
             ])->get();
-        if($data->count() > 1){
+        if($data->count() > 0){
             $file = new Files();
             foreach ($data as $value) {
                 $value->status = 2;
