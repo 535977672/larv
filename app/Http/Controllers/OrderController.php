@@ -248,12 +248,6 @@ class OrderController extends Controller
             return $this->failed('用户过多，请刷新重试', [], 400);
         }
         
-        //先获取二维码
-        $file = new File();
-        $qrcode = $file->payFileWaterMark($newPrice, $exp, $param['paytype']);
-        if(!$qrcode){
-            return $this->failed('系统繁忙，请刷新重试', [], 400);
-        }
         $spec_key = '';
         if($goods->type == 1){
             if($dataJson['colorname'] && $dataJson['attr']) $spec_key = $dataJson['colorname'].'-'.$dataJson['attr'];
@@ -287,7 +281,6 @@ class OrderController extends Controller
             'phone' => $param['mobile'],
             'ip' => get_real_ip(),
             'u_id' => $param['u_id'],
-            'qrcode' => $qrcode,
         ];
 
         //价格已计算好
@@ -324,12 +317,14 @@ class OrderController extends Controller
         if(!$record) return $this->failed('订单信息不存在');
         $type = $record->type;
         $exp = $record->expiring;
-        $qrcode = $record->qrcode;
         $money = price_format($record->money);
         $oid = $record->o_id;
         $code = \App\Model\Order::find($id)->order_sn;
         $d = $exp - time();
         if($d > 300 || $d < 0) return $this->failed('请求已过期');
+        //先获取二维码
+        $file = new File();
+        $qrcode = $file->payFileWaterMark($money, $exp, $type);
         return $this->successful(compact('qrcode', 'type', 'exp', 'money', 'oid', 'code'));
     }
     

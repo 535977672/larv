@@ -89,7 +89,9 @@ class File extends Service{
         $fileName = $baseDir . 'pay_' . $name . '.jpg';
         $uniqid = uniqid('pay', true) . '.jpg';
         $dirName = storage_path('app/public/pay/') . $uniqid;
-        
+        if(is_file($dirName)){
+            return env('APP_URL').'/storage/pay/' . $uniqid;
+        }
         if(!is_file($fileName)){
             //$this->setErrorMsg('文件不存在');
             //return false;
