@@ -572,7 +572,7 @@ class TestController extends Controller
             //文字水印
             //text(string $text, int $x = 0, int $y = 0, \Closure $callback = null)  
             ->text('而微微的地方￥的地方', 250, 10, function($font) {
-                $font->file('C:/Windows/Fonts/simsun.ttc');
+                $font->file(strtoupper(substr(PHP_OS,0,3))==='WIN'?'C:/Windows/Fonts/STXINWEI.TTF':'/usr/share/fonts/win/fangzheng.TTF');
                 $font->size(24);
                 $font->color('#239bf0');
                 $font->align('center');
@@ -580,7 +580,7 @@ class TestController extends Controller
                 //$font->angle(45);
             })
             ->text('而微微的', 250, 490, function($font) {
-                $font->file('C:/Windows/Fonts/simsun.ttc');
+                $font->file(strtoupper(substr(PHP_OS,0,3))==='WIN'?'C:/Windows/Fonts/STXINWEI.TTF':'/usr/share/fonts/win/fangzheng.TTF');
                 $font->size(24);
                 $font->color('#239bf0');
                 $font->align('center');
@@ -602,14 +602,14 @@ class TestController extends Controller
         $h = $img->height();
         $img->resizeCanvas($w, $h+60, 'center', false, '#f8f8f8')
         ->text('而微微的地方￥的地方', $w/2, 100, function($font) {
-                $font->file('C:/Windows/Fonts/simsun.ttc');
+                $font->file(strtoupper(substr(PHP_OS,0,3))==='WIN'?'C:/Windows/Fonts/STXINWEI.TTF':'/usr/share/fonts/win/fangzheng.TTF');
                 $font->size(96);
                 $font->color('#239bf0');
                 $font->align('center');
                 $font->valign('top');
             })
         ->text('而微微的', $w/2, $h-40, function($font) {
-                $font->file('C:/Windows/Fonts/simsun.ttc');
+                $font->file(strtoupper(substr(PHP_OS,0,3))==='WIN'?'C:/Windows/Fonts/STXINWEI.TTF':'/usr/share/fonts/win/fangzheng.TTF');
                 $font->size(96);
                 $font->color('#239bf0');
                 $font->align('center');
@@ -623,14 +623,14 @@ class TestController extends Controller
         $h = $img->height();
         $img->resizeCanvas($w, $h+60, 'center', false, '#f8f8f8')
         ->text('而微微的地方￥的地方', $w/2, 100, function($font) {
-                $font->file('C:/Windows/Fonts/simsun.ttc');
+                $font->file(strtoupper(substr(PHP_OS,0,3))==='WIN'?'C:/Windows/Fonts/STXINWEI.TTF':'/usr/share/fonts/win/fangzheng.TTF');
                 $font->size(96);
                 $font->color('#239bf0');
                 $font->align('center');
                 $font->valign('top');
             })
         ->text('而微微的', $w/2, $h-40, function($font) {
-                $font->file('C:/Windows/Fonts/simsun.ttc');
+                $font->file(strtoupper(substr(PHP_OS,0,3))==='WIN'?'C:/Windows/Fonts/STXINWEI.TTF':'/usr/share/fonts/win/fangzheng.TTF');
                 $font->size(96);
                 $font->color('#239bf0');
                 $font->align('center');
