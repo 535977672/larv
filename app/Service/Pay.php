@@ -168,7 +168,7 @@ class Pay extends Service{
      */
     public function payPersonExpireCheck($ids) {
         $data = PayRecord::find($ids);
-        if($data->count() > 1){
+        if($data->count() > 0){
             foreach ($data as $value) {
                 $value->status = 1;
                 $value->note = $value->note . '--手动检查过期' . date('Y-m-d H:i:s', time());
