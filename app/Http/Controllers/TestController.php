@@ -47,7 +47,7 @@ class TestController extends Controller
         
         //$this->getcity();
         
-        //$this->image2();
+        $this->image2();
         
         return return_ajax(200,'1212');
     }
@@ -591,26 +591,27 @@ class TestController extends Controller
         
     }
     
-    protected function image_1() {
-        
-        $img = Image::make(storage_path('app/public/pay/') . 'tt2.png');
+    protected function image2() {
+        $t = 'png';
+        //$t = 'jpg';
+        $img = Image::make(storage_path('app/public/pay/') . 'tt2.'.$t);
         $w = $img->width();
         $h = $img->height();
         $img->resizeCanvas($w, $h+60, 'center', false, '#f8f8f8')
-        ->text('而微微的地方￥的地方', $w/2, 10, function($font) {
+        ->text('而微微的地方￥的地方', $w/2, 100, function($font) {
                 $font->file('C:/Windows/Fonts/simsun.ttc');
-                $font->size(24);
+                $font->size(96);
                 $font->color('#239bf0');
                 $font->align('center');
                 $font->valign('top');
             })
-        ->text('而微微的', $w/2, $h+40, function($font) {
+        ->text('而微微的', $w/2, $h-40, function($font) {
                 $font->file('C:/Windows/Fonts/simsun.ttc');
-                $font->size(24);
+                $font->size(96);
                 $font->color('#239bf0');
                 $font->align('center');
             })
             
-        ->save(storage_path('app/public/test/') . 'tt.png');
+        ->save(storage_path('app/public/test/') . 'tt.'.$t);
     }
 }

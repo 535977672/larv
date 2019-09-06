@@ -15,6 +15,6 @@ return [
     |
     */
 
-    'driver' => 'gd'//imagick确保已安装 默认gd库
+    'driver' => 'imagick'//imagick确保已安装 默认gd库
 
 ];
