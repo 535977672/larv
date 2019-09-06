@@ -47,7 +47,7 @@ class File extends Service{
      * @return boolean
      */
     public function payFileDel($name){
-        $dirName = '../storage/app/public/pay/' . $name;
+        $dirName = storage_path('app/public/pay/') . $name;
         //$redis = Redis::connection();
         //$redis->hDel('pay', $name);
         if(is_file($dirName)){
@@ -132,8 +132,8 @@ class File extends Service{
             })
         ->save($dirName);
         
-        $redis = Redis::connection();
-        $redis->hSet('pay', $uniqid, time());
+        //$redis = Redis::connection();
+        //$redis->hSet('pay', $uniqid, time());
         return env('APP_URL').'/storage/pay/' . $uniqid;
     }
 }
