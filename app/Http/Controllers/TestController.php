@@ -39,7 +39,7 @@ class TestController extends Controller
         
         //$this->fileTest();
         
-        $this->pfileTest();
+        //$this->pfileTest();
         
         //$this->modelTest();
         
@@ -47,7 +47,9 @@ class TestController extends Controller
         
         //$this->getcity();
         
-        $this->image2();
+        //$this->image2();
+        
+        $this->image3();
         
         return return_ajax(200,'1212');
     }
@@ -592,8 +594,10 @@ class TestController extends Controller
     
     protected function image2() {
         $t = 'png';
-        //$t = 'jpg';
-        $img = Image::make(storage_path('app/public/pay/') . 'tt2.'.$t);
+        $t = 'jpg';
+        
+        //Image::configure(array('driver' => 'imagick'));
+        $img = Image::make(storage_path('app/pay/a/') . 'paycomm.'.$t);
         $w = $img->width();
         $h = $img->height();
         $img->resizeCanvas($w, $h+60, 'center', false, '#f8f8f8')
@@ -612,5 +616,17 @@ class TestController extends Controller
             })
             
         ->save(storage_path('app/public/test/') . 'tt.'.$t);
+    }
+    
+    protected function image3() {
+        $t = storage_path('app/pay/a/') . 'paycomm.'.$t;
+        try {
+            $core = new \Imagick;
+            $core->readImage($t);  
+        
+        } catch (\ImagickException $e) {
+            var_dump($e->getMessage());
+            var_dump($e);
+        }
     }
 }
