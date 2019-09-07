@@ -116,28 +116,25 @@ class OrderController extends Controller
         $mark = 5;
         while($i > 0){
             if(Cache::store('redis')->tags(['payGoodsMoney'])->get($newPrice)){
-                $newPrice = $param['order_amount'] - mt_rand($srand, $erand);
-                $i--;
             }else if(Cache::store('redis')->tags(['payGoodsMoneyPer'])->add($newPrice, $key, \Carbon\Carbon::parse(date('Y-m-d H:i:s', $exp)))){
                 $pay = new Pay();
-                $money = $pay->getMoney(1);
+                $money = $pay->getMoney();
                 if(!in_array($newPrice, $money)){
-                    $param['discount_money'] = $param['order_amount'] - $newPrice;
+                    $param['discount_money'] = bcsub($param['order_amount'], $newPrice);
                     $param['order_amount'] = $newPrice;
-                    $i = -1;
-                }else{
-                    $i--;
+                    $i = -2;
                 }
-            }else{
-                $newPrice = $param['order_amount'] - mt_rand($srand, $erand);
-                $i--;
             }
             if($i < $mark && $srand < 50){
                 $srand = 50;
                 $erand = 99;
             }
+            if($i != -2){
+                $newPrice = bcsub($param['order_amount'], mt_rand($srand, $erand));
+                $i--;
+            }
         }
-        if($i != -1){
+        if($i != -2){
             Cache::store('redis')->tags(['payGoodsMoneyPerIp'])->forget($key);
             return $this->failed('用户过多，请稍后重试');
         }
@@ -178,7 +175,7 @@ class OrderController extends Controller
         if($oprice != $dataJson['order_amount']) {
             return $this->clearCache($oprice, $datakey);
         }
-        
+        $this->clearCache($oprice, $datakey);
         $goodsId = $dataJson['goods_id'];
         $attrId = $dataJson['attr_id'];
         $num = $dataJson['num'];
@@ -316,7 +313,6 @@ class OrderController extends Controller
                 'spec_key' => $goods->type == 1 ? $attr->attr : '套餐'
             ];
         }
-        $this->clearCache($oprice, $datakey);
         return $this->successful($data);
     }
     
