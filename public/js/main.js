@@ -594,7 +594,7 @@ function initPay(){
     });
 }
 
-function loadData(url, data = {}, callback = ''){
+function loadData(url, data = {}, callback = '',type = 'GET', load = 0, cache = 1, exp = 24){
     var loadings = false;
     var next_page_url = url+'?page=2';
     $(document.body).infinite(200).on("infinite", function() {
@@ -615,7 +615,7 @@ function loadData(url, data = {}, callback = ''){
             if(callback){
                 callback(list);
             }
-        },'GET', 0, 1, 24);
+        }, type, load, cache, exp);
     });
 }
 
@@ -636,4 +636,21 @@ function privewImgComment(){
     obj.on('click', function(){
         privewImg($(this).parent().find('li'), 'data-src').open();
     });
+}
+
+function initOrder(){
+    $('.weui-media-box_appmsg').unbind('click');
+    $('.order-pay').unbind('click');
+    $('.weui-media-box_appmsg').on('click', function(){
+        winHref('/order/detail/'+$(this).attr('data-id')+'/'+getSetId());
+    });
+    $('.order-pay').on('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        winHref('/order/pay/'+$(this).attr('data-id'));
+    });
+}
+
+function initOrderList(){
+    
 }

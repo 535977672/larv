@@ -77,7 +77,10 @@ class OrderController extends Controller
                     'img' => $img,
                     'attr' => $attrname,
                     'colorname' => $colorname,
-                    'goods_name' => $v->goods_name
+                    'goods_name' => $v->goods_name,
+                    'goods_id' => $v->goods_id,
+                    'attr_id' => $v->attr_id,
+                    'attr_price' => $v->attr_price,
                 ];
             }
         }else{
@@ -106,8 +109,8 @@ class OrderController extends Controller
             if($addr) $param['uaddr'] = $addr->toArray();
         }
         
-        $param['order_amount'] = $num*$oprice;//订单总价
-        $newPrice = $param['order_amount'];//支付=订单总价-积分-随机立减
+        $param['order_amount'] = bcmul($num, $oprice);//订单总价
+        $newPrice = intval($param['order_amount']);//支付=订单总价-积分-随机立减
         
         //redis控制价格唯一
         $i = 15;
@@ -253,6 +256,7 @@ class OrderController extends Controller
         
         //先获取二维码
         $file = new File();
+        //$qrcode = $file->payFileCopy($newPrice, $param['paytype']);
         $qrcode = $file->payFileWaterMark($newPrice, $exp, $param['paytype']);
         if(!$qrcode){
             return $this->failed('系统繁忙，请刷新重试', [], 400);
@@ -262,25 +266,43 @@ class OrderController extends Controller
             if($dataJson['colorname'] && $dataJson['attr']) $spec_key = $dataJson['colorname'].'-'.$dataJson['attr'];
             else $spec_key = $dataJson['colorname']?:$dataJson['attr'];
             $ourl = $goodsModel->getGoodsExt($goodsId)->original_url;
+            $goodsParam = [
+                'order_id' => 0,
+                'goods_id' => $goods->goods_id,
+                'goods_name' => $goods->goods_name,
+                'goods_sn' => $param['order_sn'],
+                'goods_num' => $num,
+                'goods_price' => $param['goods_price'],
+                'final_price' => $param['order_amount'],
+                'arrt_id' => $attrId,
+                'spec_key' => $spec_key,
+                'goods_type' => $param['type'],
+                'img' => $dataJson['img'],
+                'o_url' => $ourl,
+            ];
         }else{
-            $spec_key = '套餐';
-            $ourl = '';
+            $subgoods = $dataJson['sub'];
+            if(!$subgoods) return $this->failed('参数错误');
+            $goodsParam = [];
+            foreach ($subgoods as $v){
+                if($v['colorname'] && $v['attr']) $spec_key = $v['colorname'].'-'.$v['attr'];
+                else $spec_key = $v['colorname']?:$v['attr'];
+                $goodsParam[] = [
+                    'order_id' => 0,
+                    'goods_id' => $v['goods_id'],
+                    'goods_name' => $v['goods_name'],
+                    'goods_sn' => $param['order_sn'],
+                    'goods_num' => 1,
+                    'goods_price' => $v['attr_price'],
+                    'final_price' => '0.00',
+                    'arrt_id' => $v['attr_id'],
+                    'spec_key' => $spec_key,
+                    'goods_type' => 2,
+                    'img' => $v['img'],
+                    'o_url' => $goodsModel->getGoodsExt($v['goods_id'])->original_url,
+                ];
+            }
         }
-        
-        $goodsParam = [
-            'order_id' => 0,
-            'goods_id' => $goods->goods_id,
-            'goods_name' => $goods->goods_name,
-            'goods_sn' => $param['order_sn'],
-            'goods_num' => $num,
-            'goods_price' => $param['goods_price'],
-            'final_price' => $param['order_amount'],
-            'arrt_id' => $attrId,
-            'spec_key' => $spec_key,
-            'goods_type' => $param['type'],
-            'o_url' => $ourl,
-        ];
-        
         $payParam = [
             'o_id' => 0,
             'money' => $param['order_amount'],
@@ -330,6 +352,8 @@ class OrderController extends Controller
         $money = price_format($record->money);
         $oid = $record->o_id;
         $code = \App\Model\Order::find($id)->order_sn;
+        if(in_array($record->status, [3,4,5])) return $this->failed('已支付');
+        else if($record->status != 0) return $this->failed('请求已过期');
         $d = $exp - time();
         if($d > 300 || $d < 0) return $this->failed('请求已过期');
         return $this->successful(compact('qrcode', 'type', 'exp', 'money', 'oid', 'code'));
@@ -345,6 +369,33 @@ class OrderController extends Controller
         $record = $pay->getPayRecordByoId($id);
         if(!$record || !in_array($record->status, [3,4,5])) return $this->failed();
         return $this->successful();
+    }
+    
+    public function orderList()
+    {
+        $user = $this->request->user();
+        if ($user) {
+            $order = new OrderService();
+            $list = $order->getOrderList($user->id);
+            foreach ($list as $v){
+                $v->add_time = date('m-d H:i', $v->add_time);
+                $v->statusstr = $v->getOrderStatusStrAttribute();
+            }
+            return $this->successful('', ['list' => $list]);
+        }
+        return $this->successful();
+    }
+    
+    public function orderDetail($id, $guestuid)
+    {
+        $user = $this->request->user();
+        if ($user) {
+            $guestuid = $user->id;
+        }
+        $order = new OrderService();
+        $detail = $order->getOrderDetail($id);
+        if(!$detail || $detail->u_id != $guestuid) return $this->failed('请求错误');
+        return $this->successful('', compact('detail'));
     }
     
     protected function clearCache($oprice, $datakey){

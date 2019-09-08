@@ -27,10 +27,18 @@ class Order extends Service{
             if(!$id){
                 throw new Exception('创建订单失败，请重试');
             }
-            $goodsData['order_id'] = $id;
-            if(!OrderGoods::insertGetId($goodsData)){
-                throw new Exception('创建订单商品失败，请重试');
+            
+            if(isset($goodsData[0]) && is_array($goodsData[0])){
+                foreach($goodsData as $k=>$v){
+                    $goodsData[$k]['order_id'] = $id;
+                }
+            }else{
+                $goodsData['order_id'] = $id;
             }
+            if(!OrderGoods::insert($goodsData)){
+                throw new Exception('创建订单商品失败，请重试');
+            }  
+            
             $payData['o_id'] = $id;
             if(!PayRecord::insertGetId($payData)){
                 throw new Exception('创建支付失败，请重试');
@@ -45,15 +53,20 @@ class Order extends Service{
     }
     
     public function getOrderDetail($id){
-        OrderModel::find($id);    
+        return OrderModel::with(['ordergoods'])
+        ->where('order_id', $id)->first();
     }
     
     public function getOrderList($uid, $limit = 20){
-        OrderModel::where([
+        return OrderModel::with(['ordergoods' => function ($query) {
+                $query->select(DB::raw('order_id,goods_name,goods_num,spec_key,shipping_code,shipping_name,img'));//order_id必须
+            }])
+            ->where([
                 ['u_id', '=', $uid],
                 ['deleted', '=', 0],
             ])
-            ->select(DB::raw('goods_id,goods_name,shop_price,original_img'))
+            ->select(DB::raw('order_id,order_sn,u_id,order_amount,add_time,type,pay_status,order_status'))
+            ->orderBy('order_id', 'desc')
             ->simplePaginate($limit);
     }
     

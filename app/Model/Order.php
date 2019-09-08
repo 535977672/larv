@@ -24,7 +24,7 @@ class Order extends Model
                 $str = '待确认';
                 break;
             case 1:
-                $str = '已确认';
+                $str = '已发货';
                 break;  
             case 2:
                 $str = '已收货';

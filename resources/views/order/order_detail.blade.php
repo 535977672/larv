@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', '订单确认')
+@section('title', '订单详请')
 @section('content')
 <div class="container">
     <div class="weui-panel weui-panel_access">
@@ -60,7 +60,7 @@
             </div>
         </div>
     </div>
-    <input name="price" type="hidden" value="{{ intval($param['order_amount']) }}">
+    <input name="price" type="hidden" value="{{ $param['order_amount'] }}">
     <input name="randstr" type="hidden" value="{{ $param['randstr'] }}">
     <input name="datakey" type="hidden" value="{{ $param['datakey'] }}">
     </form>

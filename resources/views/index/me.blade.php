@@ -23,6 +23,13 @@
     <div id="logout">
         退出
     </div>
+    <div id="login">
+        登录
+    </div>
+    
+    <div>
+        <a href="/order/list">我的订单</a>
+    </div>
 </div>
 @endsection
 @section('script')
@@ -30,6 +37,8 @@
     $('#logout').on('click', function(){
         logout();
     });
-
+    $('#login').on('click', function(){
+        login();
+    });
 </script>
 @endsection
