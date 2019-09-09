@@ -47,11 +47,4 @@ class IndexController extends Controller
         return view('index.see');
     }
     
-    
-    
-    public function detail($id)
-    {
-        
-        return view('index.detail', ['id'=>$id]);
-    }
 }
