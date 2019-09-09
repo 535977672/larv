@@ -52,6 +52,7 @@ Route::prefix('goods')->group(function () {
 Route::prefix('member')->group(function () {
     Route::get('index', 'MemberController@index');
 });
+Route::view('/argee', 'guide.agreement');
 
 
 Auth::routes();
