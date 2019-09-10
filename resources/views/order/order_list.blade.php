@@ -11,7 +11,7 @@
 @section('content')
 <div class="container">
     <div class="weui-panel weui-panel_access">
-        @if (count($list) > 0)
+        @if (isset($list))
         @foreach ($list as $a)
         <div class="weui-panel__hd mt10">订单{{ $a->order_sn }} <span class="m-fr">{{ $a->add_time }}</span></div>
         <div class="weui-panel__bd">
