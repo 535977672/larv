@@ -328,15 +328,30 @@ class OrderController extends Controller
             //返回订单信息
             $data = [
                 'order_id' => $orderId,
-                'order_amount' => $param['order_amount'],
-                'discount_money' => $param['discount_money'],
                 'goods_name' => $goods->goods_name,
-                'goods_id' => $goods->goods_id,
                 'order_sn' => $param['order_sn'],
                 'num' => $num,
-                'original_img' => $goods->original_img,
-                'spec_key' => $goods->type == 1 ? $attr->attr : '套餐'
+                'add_time' => date('m-d H:i', $param['add_time']),
             ];
+            if($goods->type == 1){
+                $data['ordergoods'][] = [
+                    'goods_id' => $goodsParam['goods_id'],
+                    'goods_name' => $goodsParam['goods_name'],
+                    'goods_num' => $goodsParam['goods_num'],
+                    'spec_key' => $goodsParam['spec_key'],
+                    'img' => $goodsParam['img']
+                ];
+            }else{
+                foreach ($goodsParam as $v) {
+                   $data['ordergoods'][] = [
+                        'goods_id' => $v['goods_id'],
+                        'goods_name' => $v['goods_name'],
+                        'goods_num' => $v['goods_num'],
+                        'spec_key' => $v['spec_key'],
+                        'img' => $v['img']
+                    ]; 
+                }
+            }
         }
         return $this->successful($data);
     }

@@ -529,6 +529,7 @@ function orderBuy(){
         var data = res.data;
         $('#order-buy').attr('data-clock', '1');
         $('#order-buy').attr('data-oid', data.order_id);
+        setOrderGoods(data);
         winHref('/order/pay/'+data.order_id);
     });
 }
@@ -657,33 +658,58 @@ function initOrder(){
 function initOrderList($type){
     if($type === 1){
         loadData('/order/list', {}, function(goods){
-            var html = '';
-            $.each(goods, function(i, g){
-                html += '<div class="weui-panel__hd mt10">订单'+g.order_sn+' <span class="m-fr">'+g.add_time+'</span></div>'
-                            +'<div class="weui-panel__bd">';
-                    $.each(g.ordergoods, function(j, gg){
-                        html += '<a href="javascript:void(0);" data-id="'+g.order_id+'" class="weui-media-box weui-media-box_appmsg">'
-                                    +'<div class="weui-media-box__hd">'
-                                        +'<img class="weui-media-box__thumb" src="'+gg.img+'">'
-                                    +'</div>'
-                                    +'<div class="weui-media-box__bd">'
-                                        +'<h4 class="weui-media-box__title f-14 m-name">'+gg.goods_name+'</h4>'
-                                        +'<p class="weui-media-box__desc">规格 '+gg.spec_key+'</p>'
-                                        +'<div>'
-                                            +'<bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-detail" data-id="'+g.order_id+'">详情</bottom>'
-                                        +'</div>'
-                                    +'</div>'
-                                +'</a>';
-                    });
-                   html += '</div>'; 
-            });
-            $('.weui-panel').append(html);
+            $('.weui-panel').append(orderListHtml(goods, $type));
             initOrder();
         }, 'GET', 0, 0);
     }else if($type === 2){
-        
+       $('.weui-panel').append(orderListHtml(getOrderGoods(), $type)); 
     }
     initOrder();
+}
+
+function getOrderGoods(){
+   return getlocalData('5e4e49abda5c7cf487706b81d17d8ab7');
+}
+
+function delAllOrderGoods(){
+   dellocalData('5e4e49abda5c7cf487706b81d17d8ab7');
+}
+
+function delOrderGoods(orderId){
+    var goods = getOrderGoods();
+    goods = goods.filter(function(item){ return item.order_id != orderId;});
+    delAllOrderGoods();
+    if(goods.length>0) setlocalData('5e4e49abda5c7cf487706b81d17d8ab7', goods);
+    return true;
+}
+
+function setOrderGoods($goods){
+    if($goods.length<2) return;
+    setlocalData('5e4e49abda5c7cf487706b81d17d8ab7', [$goods]);
+}
+
+function orderListHtml(goods, type){
+    var html = '';
+    $.each(goods, function(i, g){
+        html += '<div class="weui-panel__hd mt10">订单'+g.order_sn+' <span class="m-fr">'+g.add_time+'</span></div>'
+                    +'<div class="weui-panel__bd">';
+            $.each(g.ordergoods, function(j, gg){
+                html += '<a href="javascript:void(0);" data-id="'+g.order_id+'" class="weui-media-box weui-media-box_appmsg">'
+                            +'<div class="weui-media-box__hd">'
+                                +'<img class="weui-media-box__thumb" src="'+gg.img+'">'
+                            +'</div>'
+                            +'<div class="weui-media-box__bd">'
+                                +'<h4 class="weui-media-box__title f-14 m-name">'+gg.goods_name+'</h4>'
+                                +'<p class="weui-media-box__desc">规格 '+gg.spec_key+'</p>'
+                                +'<div>'
+                                    +'<bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-detail" data-id="'+g.order_id+'">详情</bottom>'
+                                +'</div>'
+                            +'</div>'
+                        +'</a>';
+            });
+           html += '</div>'; 
+    });
+    return html;
 }
 
 function initMe(){
