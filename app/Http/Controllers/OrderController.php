@@ -105,7 +105,7 @@ class OrderController extends Controller
         $user = $this->request->user();
         if ($user) {
             //收货地址
-            $addr = UserAddress::where('user_id', $user->id)->first();
+            $addr = UserAddress::where('u_id', $user->id)->first();
             if($addr) $param['uaddr'] = $addr->toArray();
         }
         
@@ -319,6 +319,9 @@ class OrderController extends Controller
         $order = new OrderService();
         if(false === $orderId = $order->createOrder($param, $goodsParam, $payParam)){
             return $this->failed($order->getErrorMsg(), [], 400);
+        }
+        if ($user) {
+            UserAddress::create($param);
         }
         $data = ['order_id' => $orderId];
         if (!$user) {
