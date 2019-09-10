@@ -292,7 +292,7 @@ class OrderController extends Controller
                     'goods_id' => $v['goods_id'],
                     'goods_name' => $v['goods_name'],
                     'goods_sn' => $param['order_sn'],
-                    'goods_num' => 1,
+                    'goods_num' => $num,
                     'goods_price' => $v['attr_price'],
                     'final_price' => '0.00',
                     'arrt_id' => $v['attr_id'],
