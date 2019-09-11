@@ -229,7 +229,7 @@ function winHref(url){
 }
 
 function historyBack(n){
-    historyBack(n);
+    history.go(n);
 }
 
 //图片懒加载
