@@ -51,7 +51,7 @@
                 <label for="" class="weui-label">省市区</label>
             </div>
             <div class="weui-cell__bd">
-                <input type="text" name="uaddr" class="weui-input f12" id='city-picker' value="@if($param['uaddr']['province']){{ $param['uaddr']['address'] }} {{ $param['uaddr']['city'] }} {{ $param['uaddr']['district'] }}@endif"/>
+                <input type="text" name="uaddr" class="weui-input f12" id='city-picker' value="@if($param['uaddr']['province']){{ $param['uaddr']['province'] }} {{ $param['uaddr']['city'] }} {{ $param['uaddr']['district'] }}@endif"/>
             </div>
         </div>
         <div class="weui-cell">
