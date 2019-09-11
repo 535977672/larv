@@ -57,6 +57,10 @@ class Order extends Service{
         ->where('order_id', $id)->first();
     }
     
+    public function orderDel($id, $uid){
+        return OrderModel::where('order_id', $id)->where('u_id', $uid)->update(['deleted'=>1]);
+    }
+    
     public function getOrderList($uid, $limit = 20){
         return OrderModel::with(['ordergoods' => function ($query) {
                 $query->select(DB::raw('order_id,goods_name,goods_num,spec_key,shipping_code,shipping_name,img'));//order_id必须

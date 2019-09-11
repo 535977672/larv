@@ -40,6 +40,7 @@ Route::prefix('order')->group(function () {
     Route::get('request/{type}/{id}/{num}/{price}/{guestuid}', 'OrderController@orderRequest')->where(['type' => '[12]', 'num' => '([1-9])|(10)', 'price' => '[0-9]+']);
     Route::get('detail/{id}/{guestuid}', 'OrderController@orderDetail');
     Route::get('list', 'OrderController@orderList');
+    Route::post('del/{id}', 'OrderController@orderDel');
 });
 Route::prefix('goods')->group(function () {
     Route::get('/', 'GoodsController@goods');

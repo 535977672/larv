@@ -228,6 +228,10 @@ function winHref(url){
     window.location.href = url;
 }
 
+function historyBack(n){
+    historyBack(n);
+}
+
 //图片懒加载
 function lazyload(obj){
     return;
@@ -579,7 +583,7 @@ function initPay(){
                     $("#money").text("支付成功");
                     $("#msg").html("<h1>即将返回首页</h1>");
                     setTimeout(function(){
-                        history.go(-3);
+                        historyBack(-3);
                     }, 3000);
                 }
             }, 'POST', 0);
@@ -590,7 +594,7 @@ function initPay(){
         $('#show_qrcode').attr("src","/static/img/qrcode_timeout.png");
         $('#msg').html("<h1>支付页面已过期</h1>");
         setTimeout(function(){
-            history.go(-3);
+            historyBack(-3);
         }, 3000);
     }
     $().ready(function(){
@@ -648,10 +652,29 @@ function initOrder(){
     $('.weui-media-box_appmsg').on('click', function(){
         winHref('/order/detail/'+$(this).attr('data-id')+'/'+getSetId());
     });
-    $('.order-pay').on('click', function(e){
-        e.preventDefault();
-        e.stopPropagation();
+    $('.order-pay').on('click', function(){
         winHref('/order/pay/'+$(this).attr('data-id'));
+    });
+    $('.order-del').on('click', function(){
+        var id = $(this).attr('data-id');
+        if(isLogin() !== 'isLogin'){
+            delOrderGoods(id);
+        }
+        ajax('/order/del/'+id, {}, function(res){
+            if(res.status === 200){
+                showMsg("删除成功");
+                historyBack(-1);
+            }else{
+                showMsg(res.msg);
+            }
+        });
+    });
+    $('.order-shipping').on('click', function(){
+        var url = window.location.protocol+"//"+window.location.host+'?nav=4';
+        winHref('https://m.kuaidi100.com/app/query/?com=&nu='+$(this).attr('data-code')+'&coname=meizu&callbackurl='+encodeURI(url));
+    });
+    $('.order-quest').on('click', function(){
+        
     });
 }
 

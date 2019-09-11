@@ -413,7 +413,18 @@ class OrderController extends Controller
         $order = new OrderService();
         $detail = $order->getOrderDetail($id);
         if(!$detail || $detail->u_id != $guestuid) return $this->failed('请求错误');
+        if($detail->deleted) return $this->failed('订单已删除');
         return $this->successful('', compact('detail'));
+    }
+    
+    public function orderDel($id)
+    {
+        $user = $this->request->user();
+        $guestuid = $user?$user->id:$this->request->post('guestuid', 0);
+        $order = new OrderService();
+        $del = $order->ogetOrderDel($id, $guestuid);
+        if(!$del) return $this->failed('删除失败');
+        return $this->successful('删除成功');
     }
     
     protected function clearCache($oprice, $datakey){
