@@ -1,15 +1,7 @@
 @extends('layouts.app')
-@section('head')
-<style>
-    .weui-btn_mini{line-height: 24px;padding: 0 14px;}
-    .weui-panel{background-color: #efeff4;}
-    .weui-panel>div{background-color: white;}
-    .weui-media-box__desc{line-height: normal;}
-</style>
-@endsection
 @section('title', '订单列表')
 @section('content')
-<div class="container">
+<div class="container order">
     <div class="weui-panel">
         @if (isset($list))
         @foreach ($list as $a)
@@ -32,7 +24,7 @@
         <div class="weui-panel__ft">
             <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
                 <div class="weui-cell__bd">
-                    <bottom class="weui-btn weui-btn_mini weui-btn_warn m-fr order-pay" data-id="{{ $a->order_id }}" data-back="-1">待支付</bottom>
+                    <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-pay" data-id="{{ $a->order_id }}" data-back="-1">待支付</bottom>
                 </div>
             </a>
         </div>

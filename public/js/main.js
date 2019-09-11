@@ -740,7 +740,7 @@ function orderListHtml(goods, type){
             html += '<div class="weui-panel__ft">'
                         +'<a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">'
                             +'<div class="weui-cell__bd">'
-                                +'<bottom class="weui-btn weui-btn_mini weui-btn_warn m-fr order-pay" data-id="'+g.order_id+'" data-back="-1">待支付</bottom>'
+                                +'<bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-pay" data-id="'+g.order_id+'" data-back="-1">待支付</bottom>'
                             +'</div>'
                         +'</a>'
                     +'</div>'; 

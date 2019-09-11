@@ -1,15 +1,7 @@
 @extends('layouts.app')
-@section('head')
-<style>
-    .weui-btn_mini{line-height: 24px;padding: 0 14px;}
-    .weui-panel{background-color: #efeff4;}
-    .weui-panel>div{background-color: white;}
-    .weui-media-box__desc{line-height: normal;}
-</style>
-@endsection
 @section('title', '订单详请')
 @section('content')
-<div class="container f-14">
+<div class="container order">
     <div class="weui-panel">
         <div class="weui-panel__bd">
             <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
@@ -17,7 +9,7 @@
                     <img class="weui-media-box__thumb" style="width:32px;height:32px;vertical-align:middle;" src="/static/img/city.png">
                 </div>
                 <div class="weui-media-box__bd">
-                    <h4 class="weui-media-box__title m-name goods-name">收货地址: {{ $detail->province }} {{ $detail->city }} {{ $detail->district }} {{ $detail->address }}</h4>
+                    <h4 class="weui-media-box__title f-14 m-name goods-name">收货地址: {{ $detail->province }} {{ $detail->city }} {{ $detail->district }} {{ $detail->address }}</h4>
                     <p class="weui-media-box__desc">收货人: {{ $detail->consignee }}&nbsp;&nbsp;&nbsp;&nbsp;手机: {{ $detail->mobile }}</p>
                 </div>
             </a>
@@ -30,19 +22,19 @@
                     <img class="weui-media-box__thumb" src="{{ $g->img }}">
                 </div>
                 <div class="weui-media-box__bd">
-                    <h4 class="weui-media-box__title m-name goods-name">{{ $g->goods_name }}</h4>
+                    <h4 class="weui-media-box__title f-14 m-name goods-name">{{ $g->goods_name }}</h4>
                     <p class="weui-media-box__desc">规格 {{ $g->spec_key }}</p>
                     <div>
                         @if($detail->pay_status == 1)
                             @if($detail->order_status == 1 && $g->is_send == 1)
-                            <bottom class="weui-btn weui-btn_mini weui-btn_warn m-fr order-quest" data-id="{{ $g->og_id }}">确认收货</bottom>
+                            <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-quest" data-id="{{ $g->og_id }}">确认收货</bottom>
                             @elseif($detail->order_status == 1 && $g->is_send == 0)
                             <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr">未发货</bottom>
                             @elseif($g->is_receive == 2)
                             <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr">已收货</bottom>
                             @endif
                             @if($detail->shipping_code)
-                            <bottom class="weui-btn weui-btn_mini weui-btn_warn m-fr order-shipping" data-code="{{ $detail->shipping_code }}">查看物流</bottom>
+                            <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-shipping" data-code="{{ $detail->shipping_code }}">查看物流</bottom>
                             @endif
                         @endif
                     </div>
@@ -54,10 +46,10 @@
             <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
                 <div class="weui-cell__bd">
                     @if($detail->pay_status != 1)
-                    <bottom class="weui-btn weui-btn_mini weui-btn_warn m-fr order-pay" data-id="{{ $detail->order_id }}" data-back="-1">待支付</bottom>
+                    <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-pay" data-id="{{ $detail->order_id }}" data-back="-1">待支付</bottom>
                     @endif
                     @if($detail->pay_status == 0 || $detail->order_status >= 2)
-                    <bottom class="weui-btn weui-btn_mini weui-btn_warn m-fr order-del" data-id="{{ $detail->order_id }}">删除订单</bottom>
+                    <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-del" data-id="{{ $detail->order_id }}">删除订单</bottom>
                     @endif
                 </div>
             </a>
@@ -66,8 +58,8 @@
         <div class="weui-panel__bd mt10">
             <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
                 <div class="weui-media-box__bd">
-                    <p class="weui-media-box__desc">订单总价<span class="m-fr">￥{{ price_format($detail->total_amount) }}</span></p>
-                    <p class="weui-media-box__desc">网站优惠<span class="m-fr">-￥{{ price_format($detail->discount_money) }}</span></p>
+                    <p class="weui-media-box__desc f-14">订单总价<span class="m-fr">￥{{ price_format($detail->total_amount) }}</span></p>
+                    <p class="weui-media-box__desc f-14">网站优惠<span class="m-fr">-￥{{ price_format($detail->discount_money) }}</span></p>
                     <p class="weui-media-box__desc c-black mt5 f-16">实际支付<span class="m-fr c-red">￥{{ price_format($detail->order_amount) }}</span></p>
                 </div>
             </a>
@@ -76,7 +68,7 @@
         <div class="weui-panel__bd mt10">
             <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
                 <div class="weui-media-box__bd">
-                    <h4 class="weui-media-box__title t-ac">微信客服</h4>
+                    <h4 class="weui-media-box__title f-14 t-ac">微信客服</h4>
                     <p class="weui-media-box__desc t-ac"><img style="width:240px;" src="/static/img/service.jpg"></p>
                 </div>
             </a>
