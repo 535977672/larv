@@ -727,6 +727,7 @@ function setOrderGoods($goods){
 function orderListHtml(goods, type){
     var html = '';
     $.each(goods, function(i, g){
+		if(isEmpty(g.order_sn)) return true;
         html += '<div><div class="weui-panel__hd mt10">订单'+g.order_sn+' <span class="m-fr">'+g.add_time+'</span></div>'
                     +'<div class="weui-panel__bd">';
             $.each(g.ordergoods, function(j, gg){
