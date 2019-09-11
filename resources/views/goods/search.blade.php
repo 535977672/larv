@@ -4,7 +4,7 @@
 @endsection
 @section('title', '搜索')
 @section('content')
-<div class="container m-top">
+<div class="container m-top bgc-ec">
     <div class="weui-search-bar" id="searchBar">
         <form class="weui-search-bar__form" method="get" action="/goods/search">
             <div class="weui-search-bar__box">

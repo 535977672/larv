@@ -28,10 +28,12 @@ a{color: #888; text-decoration: none; }
 #select-numd, #select-numu{outline: 0;width: 30px;font-size: 24px;border: 1px solid #f5f5f5;background-color: #f5f5f5;}
 #select-buy,#order-buy{outline: 0; width: 100%; background-color: #FF0036; color: #fff; border: none; text-align: center;height: 36px; line-height: 36px;}
 .order .weui-btn_mini{padding: 0 14px;color: #9E9E9E;}
-.order .weui-panel{background-color: #efeff4;}
+.order .weui-panel{background-color: #ececec; padding: 0px 5px;}
 .order .weui-panel>div{background-color: white;}
 .order .weui-media-box__desc{line-height: normal;}
 .order .weui-btn+.weui-btn{margin-top: 0px;margin-right: 10px;}
+.order .weui-media-box{padding: 10px 15px;}
+.order .weui-panel>div{border-radius: 4px;box-shadow: 0 1px 1px rgba(0, 0, 0, .20);}
 /*支付*/
 .mod-title {
     height: 60px;

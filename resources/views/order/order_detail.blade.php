@@ -3,7 +3,7 @@
 @section('content')
 <div class="container order">
     <div class="weui-panel">
-        <div class="weui-panel__bd">
+        <div class="weui-panel__bd mt5">
             <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
                 <div class="weui-media-box__hd">
                     <img class="weui-media-box__thumb" style="width:32px;height:32px;vertical-align:middle;" src="/static/img/city.png">
@@ -14,47 +14,48 @@
                 </div>
             </a>
         </div>
-        <div class="weui-panel__hd mt10">订单{{ $detail->order_sn }} <span class="m-fr">{{ date('Y-m-d H:i:s', $detail->add_time) }}</span></div>
-        <div class="weui-panel__bd">
-            @foreach ($detail->ordergoods as $k=>$g)
-            <a href="javascript:void(0);" data-id="{{ $detail->order_id }}" class="weui-media-box weui-media-box_appmsg">
-                <div class="weui-media-box__hd">
-                    <img class="weui-media-box__thumb" src="{{ $g->img }}">
-                </div>
-                <div class="weui-media-box__bd">
-                    <h4 class="weui-media-box__title f-14 m-name goods-name">{{ $g->goods_name }}</h4>
-                    <p class="weui-media-box__desc">规格 {{ $g->spec_key }} x{{ $g->goods_num }}</p>
-                    <div>
-                        @if($detail->pay_status == 1)
-                            @if($detail->order_status == 1 && $g->is_send == 1)
-                            <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-quest" data-id="{{ $g->og_id }}">确认收货</bottom>
-                            @elseif($detail->order_status == 1 && $g->is_send == 0)
-                            <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr">未发货</bottom>
-                            @elseif($g->is_receive == 2)
-                            <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr">已收货</bottom>
+        <div>
+            <div class="weui-panel__hd mt10">订单{{ $detail->order_sn }} <span class="m-fr">{{ date('Y-m-d H:i:s', $detail->add_time) }}</span></div>
+            <div class="weui-panel__bd">
+                @foreach ($detail->ordergoods as $k=>$g)
+                <a href="javascript:void(0);" data-id="{{ $detail->order_id }}" class="weui-media-box weui-media-box_appmsg">
+                    <div class="weui-media-box__hd">
+                        <img class="weui-media-box__thumb" src="{{ $g->img }}">
+                    </div>
+                    <div class="weui-media-box__bd">
+                        <h4 class="weui-media-box__title f-14 m-name goods-name">{{ $g->goods_name }}</h4>
+                        <p class="weui-media-box__desc">规格 {{ $g->spec_key }} x{{ $g->goods_num }}</p>
+                        <div>
+                            @if($detail->pay_status == 1)
+                                @if($detail->order_status == 1 && $g->is_send == 1)
+                                <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-quest" data-id="{{ $g->og_id }}">确认收货</bottom>
+                                @elseif($detail->order_status == 1 && $g->is_send == 0)
+                                <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr">未发货</bottom>
+                                @elseif($g->is_receive == 2)
+                                <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr">已收货</bottom>
+                                @endif
+                                @if($detail->shipping_code)
+                                <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-shipping" data-code="{{ $detail->shipping_code }}">查看物流</bottom>
+                                @endif
                             @endif
-                            @if($detail->shipping_code)
-                            <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-shipping" data-code="{{ $detail->shipping_code }}">查看物流</bottom>
-                            @endif
+                        </div>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+            <div class="weui-panel__ft">
+                <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
+                    <div class="weui-cell__bd">
+                        @if($detail->pay_status != 1)
+                        <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-pay" data-id="{{ $detail->order_id }}" data-back="-1">待支付</bottom>
+                        @endif
+                        @if($detail->pay_status == 0 || $detail->order_status >= 2)
+                        <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-del" data-id="{{ $detail->order_id }}">删除订单</bottom>
                         @endif
                     </div>
-                </div>
-            </a>
-            @endforeach
+                </a>
+            </div>
         </div>
-        <div class="weui-panel__ft">
-            <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
-                <div class="weui-cell__bd">
-                    @if($detail->pay_status != 1)
-                    <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-pay" data-id="{{ $detail->order_id }}" data-back="-1">待支付</bottom>
-                    @endif
-                    @if($detail->pay_status == 0 || $detail->order_status >= 2)
-                    <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-del" data-id="{{ $detail->order_id }}">删除订单</bottom>
-                    @endif
-                </div>
-            </a>
-        </div>
-
         <div class="weui-panel__bd mt10">
             <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
                 <div class="weui-media-box__bd">

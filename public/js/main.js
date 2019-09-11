@@ -657,18 +657,20 @@ function initOrder(){
     });
     $('.order-del').on('click', function(){
         var id = $(this).attr('data-id');
-        if(isLogin() !== 'isLogin'){
-            delOrderGoods(id);
-        }
-        ajax('/order/del/'+id, {}, function(res){
-            if(res.status === 200){
-                showMsg("删除成功");
-                historyBack(-1);
-                winReload();
-            }else{
-                showMsg(res.msg);
+        $.confirm("确认删除", function() {
+            if(isLogin() !== 'isLogin'){
+                delOrderGoods(id);
             }
-        });
+            ajax('/order/del/'+id, {}, function(res){
+                if(res.status === 200){
+                    showMsg("删除成功");
+                    historyBack(-1);
+                    winReload();
+                }else{
+                    showMsg(res.msg);
+                }
+            });
+        }, function() {});
     });
     $('.order-shipping').on('click', function(){
         var url = window.location.protocol+"//"+window.location.host+'?nav=4';
@@ -676,14 +678,16 @@ function initOrder(){
     });
     $('.order-quest').on('click', function(){
         var id = $(this).attr('data-id');
-        ajax('/order/quest/'+id, {}, function(res){
-            if(res.status === 200){
-                showMsg("确认收货成功");
-                winReload();
-            }else{
-                showMsg(res.msg);
-            }
-        });
+        $.confirm("确认收货", function() {
+            ajax('/order/quest/'+id, {}, function(res){
+                if(res.status === 200){
+                    showMsg("确认收货成功");
+                    winReload();
+                }else{
+                    showMsg(res.msg);
+                }
+            });
+        }, function() {});
     });
 }
 
@@ -723,7 +727,7 @@ function setOrderGoods($goods){
 function orderListHtml(goods, type){
     var html = '';
     $.each(goods, function(i, g){
-        html += '<div class="weui-panel__hd mt10">订单'+g.order_sn+' <span class="m-fr">'+g.add_time+'</span></div>'
+        html += '<div><div class="weui-panel__hd mt10">订单'+g.order_sn+' <span class="m-fr">'+g.add_time+'</span></div>'
                     +'<div class="weui-panel__bd">';
             $.each(g.ordergoods, function(j, gg){
                 html += '<a href="javascript:void(0);" data-id="'+g.order_id+'" class="weui-media-box weui-media-box_appmsg">'
@@ -746,6 +750,7 @@ function orderListHtml(goods, type){
                         +'</a>'
                     +'</div>'; 
         }
+        html += '</div>';
     });
     return html;
 }

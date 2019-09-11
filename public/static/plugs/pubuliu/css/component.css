@@ -13,6 +13,13 @@
 	opacity: 0;
 }
 
+.grid li>div {
+    border-radius: 4px;
+    background-color: white;
+    padding: 5px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .20);
+}
+
 .grid li.shown,
 .no-js .grid li,
 .no-cssanimations .grid li {
