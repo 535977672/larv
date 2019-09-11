@@ -732,7 +732,7 @@ function orderListHtml(goods, type){
                             +'</div>'
                             +'<div class="weui-media-box__bd">'
                                 +'<h4 class="weui-media-box__title f-14 m-name">'+gg.goods_name+'</h4>'
-                                +'<p class="weui-media-box__desc">规格 '+gg.spec_key+'</p>'
+                                +'<p class="weui-media-box__desc">规格 '+gg.spec_key+' x'+gg.goods_num+'</p>'
                             +'</div>'
                         +'</a>';
             });

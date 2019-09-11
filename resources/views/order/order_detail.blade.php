@@ -23,7 +23,7 @@
                 </div>
                 <div class="weui-media-box__bd">
                     <h4 class="weui-media-box__title f-14 m-name goods-name">{{ $g->goods_name }}</h4>
-                    <p class="weui-media-box__desc">规格 {{ $g->spec_key }}</p>
+                    <p class="weui-media-box__desc">规格 {{ $g->spec_key }} x{{ $g->goods_num }}</p>
                     <div>
                         @if($detail->pay_status == 1)
                             @if($detail->order_status == 1 && $g->is_send == 1)
