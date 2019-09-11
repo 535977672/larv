@@ -35,7 +35,7 @@
                     <div>
                         @if($detail->pay_status == 1)
                             @if($detail->order_status == 1 && $g->is_send == 1)
-                            <bottom class="weui-btn weui-btn_mini weui-btn_warn m-fr order-quest" data-id="{{ $detail->order_id }}">确认收货</bottom>
+                            <bottom class="weui-btn weui-btn_mini weui-btn_warn m-fr order-quest" data-id="{{ $g->og_id }}">确认收货</bottom>
                             @elseif($detail->order_status == 1 && $g->is_send == 0)
                             <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr">未发货</bottom>
                             @elseif($g->is_receive == 2)
@@ -50,25 +50,25 @@
             </a>
             @endforeach
         </div>
-        @if($detail->pay_status != 1)
         <div class="weui-panel__ft">
             <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
                 <div class="weui-cell__bd">
-                    <bottom class="weui-btn weui-btn_mini weui-btn_warn m-fr order-pay" data-id="{{ $detail->order_id }}">待支付</bottom>
-                    @if($detail->order_status >= 2)
+                    @if($detail->pay_status != 1)
+                    <bottom class="weui-btn weui-btn_mini weui-btn_warn m-fr order-pay" data-id="{{ $detail->order_id }}" data-back="-1">待支付</bottom>
+                    @endif
+                    @if($detail->pay_status == 0 || $detail->order_status >= 2)
                     <bottom class="weui-btn weui-btn_mini weui-btn_warn m-fr order-del" data-id="{{ $detail->order_id }}">删除订单</bottom>
                     @endif
                 </div>
             </a>
         </div>
-        @endif
 
         <div class="weui-panel__bd mt10">
             <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
                 <div class="weui-media-box__bd">
-                    <p class="weui-media-box__desc f-12">订单总价<span class="m-fr">￥{{ price_format($detail->total_amount) }}</span></p>
-                    <p class="weui-media-box__desc f-12">网站优惠<span class="m-fr">-￥{{ price_format($detail->discount_money) }}</span></p>
-                    <p class="weui-media-box__desc c-black mt5">实际支付<span class="m-fr c-red">￥{{ price_format($detail->order_amount) }}</span></p>
+                    <p class="weui-media-box__desc">订单总价<span class="m-fr">￥{{ price_format($detail->total_amount) }}</span></p>
+                    <p class="weui-media-box__desc">网站优惠<span class="m-fr">-￥{{ price_format($detail->discount_money) }}</span></p>
+                    <p class="weui-media-box__desc c-black mt5 f-16">实际支付<span class="m-fr c-red">￥{{ price_format($detail->order_amount) }}</span></p>
                 </div>
             </a>
         </div>
@@ -77,7 +77,7 @@
             <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
                 <div class="weui-media-box__bd">
                     <h4 class="weui-media-box__title t-ac">微信客服</h4>
-                    <p class="weui-media-box__desc t-ac"><img style="width:270px;" src="/static/img/service.jpg"></p>
+                    <p class="weui-media-box__desc t-ac"><img style="width:240px;" src="/static/img/service.jpg"></p>
                 </div>
             </a>
         </div>

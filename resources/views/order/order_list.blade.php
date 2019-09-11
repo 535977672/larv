@@ -27,25 +27,16 @@
             </a>
              @endforeach
         </div>
+        
+        @if($a->pay_status != 1)
         <div class="weui-panel__ft">
             <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
                 <div class="weui-cell__bd">
-                    @if($a->pay_status == 1)
-                        @if($a->order_status == 1)
-                        <bottom class="weui-btn weui-btn_mini weui-btn_warn m-fr order-quest" data-id="{{ $a->order_id }}">确认收货</bottom>
-                        @elseif($a->order_status == 2)
-                        <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr">已收货</bottom>
-                        @elseif($a->order_status === 0)
-                        <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr">待发货</bottom>
-                        @else
-                        <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr">{{ $a->statusstr }}</bottom>
-                        @endif
-                    @else
-                    <bottom class="weui-btn weui-btn_mini weui-btn_warn m-fr order-pay" data-id="{{ $a->order_id }}">待支付</bottom>
-                    @endif
+                    <bottom class="weui-btn weui-btn_mini weui-btn_warn m-fr order-pay" data-id="{{ $detail->order_id }}" data-back="-1">待支付</bottom>
                 </div>
-            </a>    
+            </a>
         </div>
+        @endif
         @endforeach
         @endif
     </div>

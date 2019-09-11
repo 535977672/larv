@@ -422,9 +422,17 @@ class OrderController extends Controller
         $user = $this->request->user();
         $guestuid = $user?$user->id:$this->request->post('guestuid', 0);
         $order = new OrderService();
-        $del = $order->ogetOrderDel($id, $guestuid);
-        if(!$del) return $this->failed('删除失败');
+        if(!$order->orderDel($id, $guestuid)) return $this->failed('删除失败');
         return $this->successful('删除成功');
+    }
+    
+    public function orderQuest($id)
+    {
+        $user = $this->request->user();
+        $guestuid = $user?$user->id:$this->request->post('guestuid', 0);
+        $order = new OrderService();
+        if(!$order->orderQuest($id, $guestuid)) return $this->failed('确认收货失败');
+        return $this->successful('确认收货成功');
     }
     
     protected function clearCache($oprice, $datakey){

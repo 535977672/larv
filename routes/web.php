@@ -41,6 +41,7 @@ Route::prefix('order')->group(function () {
     Route::get('detail/{id}/{guestuid}', 'OrderController@orderDetail');
     Route::get('list', 'OrderController@orderList');
     Route::post('del/{id}', 'OrderController@orderDel');
+    Route::post('quest/{id}', 'OrderController@orderQuest');
 });
 Route::prefix('goods')->group(function () {
     Route::get('/', 'GoodsController@goods');

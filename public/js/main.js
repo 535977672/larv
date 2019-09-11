@@ -461,7 +461,7 @@ function initRequestes(){
     
     $('#order-buy').on('click', function(){
         if($(this).attr('data-clock') == '1'){
-            winHref('/order/pay/'+$('#order-buy').attr('data-oid'));
+            winHref('/order/pay/'+$('#order-buy').attr('data-oid')+'?back=-3');
             return false;
         }
         orderBuy();
@@ -534,7 +534,7 @@ function orderBuy(){
         $('#order-buy').attr('data-clock', '1');
         $('#order-buy').attr('data-oid', data.order_id);
         setOrderGoods(data);
-        winHref('/order/pay/'+data.order_id);
+        winHref('/order/pay/'+data.order_id+'?back=-3');
     });
 }
 
@@ -583,7 +583,7 @@ function initPay(){
                     $("#money").text("支付成功");
                     $("#msg").html("<h1>即将返回首页</h1>");
                     setTimeout(function(){
-                        historyBack(-3);
+                        historyBack(window.location.href.substr(-2));
                     }, 3000);
                 }
             }, 'POST', 0);
@@ -594,7 +594,7 @@ function initPay(){
         $('#show_qrcode').attr("src","/static/img/qrcode_timeout.png");
         $('#msg').html("<h1>支付页面已过期</h1>");
         setTimeout(function(){
-            historyBack(-3);
+            historyBack(window.location.href.substr(-2));
         }, 3000);
     }
     $().ready(function(){
@@ -653,7 +653,7 @@ function initOrder(){
         winHref('/order/detail/'+$(this).attr('data-id')+'/'+getSetId());
     });
     $('.order-pay').on('click', function(){
-        winHref('/order/pay/'+$(this).attr('data-id'));
+        winHref('/order/pay/'+$(this).attr('data-id')+'?back='+$(this).attr('data-back'));
     });
     $('.order-del').on('click', function(){
         var id = $(this).attr('data-id');
@@ -674,7 +674,15 @@ function initOrder(){
         winHref('https://m.kuaidi100.com/app/query/?com=&nu='+$(this).attr('data-code')+'&coname=meizu&callbackurl='+encodeURI(url));
     });
     $('.order-quest').on('click', function(){
-        
+        var id = $(this).attr('data-id');
+        ajax('/order/quest/'+id, {}, function(res){
+            if(res.status === 200){
+                showMsg("确认收货成功");
+                winReload();
+            }else{
+                showMsg(res.msg);
+            }
+        });
     });
 }
 
@@ -724,13 +732,19 @@ function orderListHtml(goods, type){
                             +'<div class="weui-media-box__bd">'
                                 +'<h4 class="weui-media-box__title f-14 m-name">'+gg.goods_name+'</h4>'
                                 +'<p class="weui-media-box__desc">规格 '+gg.spec_key+'</p>'
-                                +'<div>'
-                                    +'<bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-detail" data-id="'+g.order_id+'">详情</bottom>'
-                                +'</div>'
                             +'</div>'
                         +'</a>';
             });
-           html += '</div>'; 
+        html += '</div>'; 
+        if(type === 1 && g.pay_status != 1){
+            html += '<div class="weui-panel__ft">'
+                        +'<a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">'
+                            +'<div class="weui-cell__bd">'
+                                +'<bottom class="weui-btn weui-btn_mini weui-btn_warn m-fr order-pay" data-id="'+g.order_id+'" data-back="-1">待支付</bottom>'
+                            +'</div>'
+                        +'</a>'
+                    +'</div>'; 
+        }
     });
     return html;
 }

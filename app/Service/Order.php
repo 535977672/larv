@@ -13,7 +13,7 @@ use \Exception;
 class Order extends Service{
 
     /**
-     * 
+     * 添加订单
      * @param type $data
      * @param type $goodsData
      * @param type $payData
@@ -52,15 +52,66 @@ class Order extends Service{
         }
     }
     
+    /**
+     * 订单详细
+     * @param type $id
+     * @return type
+     */
     public function getOrderDetail($id){
         return OrderModel::with(['ordergoods'])
         ->where('order_id', $id)->first();
     }
     
+    /**
+     * 删除订单
+     * @param type $id
+     * @param type $uid
+     * @return type
+     */
     public function orderDel($id, $uid){
         return OrderModel::where('order_id', $id)->where('u_id', $uid)->update(['deleted'=>1]);
     }
     
+    /**
+     * 确认收货
+     * @param type $id
+     * @param type $uid
+     * @return type
+     */
+    public function orderQuest($id, $uid){
+        try {
+            DB::beginTransaction();
+            $goods = OrderGoods::find($id);
+            $order = OrderModel::where('order_id', $goods->order_id)->where('u_id', $uid)->first();
+            if(!$goods || !$order) throw new Exception('订单不存在');
+            $goods->is_receive = 1;
+            $goods->confirm_time = time();
+            if(!$goods->save()){
+                throw new Exception('确认收货失败');
+            }
+            $goods = OrderGoods::where('order_id', $goods->order_id)->where('is_receive', 0)->first();
+            if(!$goods){
+                $order->order_status = 2;
+                $order->confirm_time = time();
+                if(!$order->save()){
+                    throw new Exception('确认收货失败');
+                }
+            }
+            DB::commit();
+            return true;
+        } catch (Exception $exc) {
+            DB::rollBack();
+            $this->setErrorMsg($exc->getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * 订单列表
+     * @param type $uid
+     * @param type $limit
+     * @return type
+     */
     public function getOrderList($uid, $limit = 20){
         return OrderModel::with(['ordergoods' => function ($query) {
                 $query->select(DB::raw('order_id,goods_name,goods_num,spec_key,shipping_code,shipping_name,img'));//order_id必须
@@ -74,6 +125,15 @@ class Order extends Service{
             ->simplePaginate($limit);
     }
     
+    
+    /**admin**************************************************************************/
+    /**
+     * 
+     * @param type $data
+     * @param type $limit
+     * @param type $field
+     * @return type
+     */
     public function aOrderList($data, $limit = 20, $field = '*'){
         $where = [
             ['deleted', '=', 0],
@@ -94,6 +154,13 @@ class Order extends Service{
         return $list;
     }
     
+    /**
+     * 
+     * @param type $data
+     * @param type $limit
+     * @param type $field
+     * @return type
+     */
     public function aOrderGoodsList($data, $limit = 20, $field = '*'){
         if($field = '*') $field = 'og.*,o.pay_status,o.order_status,o.consignee,o.province,o.city,o.district,o.address,o.mobile,o.total_amount,o.order_amount,o.paytype';
         $where = [
