@@ -9,7 +9,7 @@
             <div class="weui-panel__hd mt10">订单{{ $a->order_sn }} <span class="m-fr">{{ $a->add_time }}</span></div>
             <div class="weui-panel__bd">
                 @foreach ($a->ordergoods as $k=>$g)
-                <a href="javascript:void(0);" data-id="{{ $a->order_id }}" class="weui-media-box weui-media-box_appmsg">
+                <a href="javascript:void(0);" data-id="{{ $a->order_id }}" class="weui-media-box weui-media-box_appmsg order-detail">
                     <div class="weui-media-box__hd">
                         <img class="weui-media-box__thumb" src="{{ $g->img }}">
                     </div>

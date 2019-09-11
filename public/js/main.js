@@ -647,9 +647,9 @@ function privewImgComment(){
 }
 
 function initOrder(){
-    $('.weui-media-box_appmsg').unbind('click');
+    $('.order-detail').unbind('click');
     $('.order-pay').unbind('click');
-    $('.weui-media-box_appmsg').on('click', function(){
+    $('.order-detail').on('click', function(){
         winHref('/order/detail/'+$(this).attr('data-id')+'/'+getSetId());
     });
     $('.order-pay').on('click', function(){
@@ -730,7 +730,7 @@ function orderListHtml(goods, type){
         html += '<div><div class="weui-panel__hd mt10">订单'+g.order_sn+' <span class="m-fr">'+g.add_time+'</span></div>'
                     +'<div class="weui-panel__bd">';
             $.each(g.ordergoods, function(j, gg){
-                html += '<a href="javascript:void(0);" data-id="'+g.order_id+'" class="weui-media-box weui-media-box_appmsg">'
+                html += '<a href="javascript:void(0);" data-id="'+g.order_id+'" class="weui-media-box weui-media-box_appmsg order-detail">'
                             +'<div class="weui-media-box__hd">'
                                 +'<img class="weui-media-box__thumb" src="'+gg.img+'">'
                             +'</div>'
