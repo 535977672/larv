@@ -156,7 +156,7 @@ function getTheme()
 function theme()
 {
     return $arr = [
-        'ec' => '#ececec',
+        'white' => 'white',
         'f5' => '#f5f5f5',
         '00bec8' => '#00bec8',
         '1989fa' => '#1989fa',
