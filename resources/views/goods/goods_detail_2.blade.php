@@ -8,7 +8,7 @@
         </div>
         <div class="swiper-pagination"></div>
     </div>
-    <div class="mt5 m-goods">
+    <div class="mt5 m-goods bgc-ec">
         <div class="goods-items goods-price">
             <i class="price-symbol">¥</i>
             <span class="price">{{ price_format($goods->shop_price) }}</span>

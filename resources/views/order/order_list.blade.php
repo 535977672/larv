@@ -2,7 +2,7 @@
 @section('title', '订单列表')
 @section('content')
 <div class="container order">
-    <div class="weui-panel">
+    <div class="weui-panel bgc-ec">
         @if (isset($list))
         @foreach ($list as $a)
         <div>

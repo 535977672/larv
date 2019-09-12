@@ -2,7 +2,7 @@
 @section('title', '订单详请')
 @section('content')
 <div class="container order">
-    <div class="weui-panel">
+    <div class="weui-panel bgc-ec">
         <div class="weui-panel__bd mt5">
             <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
                 <div class="weui-media-box__hd">
