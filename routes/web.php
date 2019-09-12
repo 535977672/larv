@@ -29,7 +29,6 @@ Route::prefix('index')->group(function () {
     Route::get('index', 'IndexController@index');
     Route::get('main', 'IndexController@main');
     Route::match(['get'], 'hot', 'IndexController@hot');
-    Route::get('see', 'IndexController@see');
     Route::get('me', 'IndexController@me');
     Route::get('detail/{id}', 'IndexController@detail');
 });

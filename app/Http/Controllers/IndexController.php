@@ -40,11 +40,4 @@ class IndexController extends Controller
         return view('index.me', ['uid' => \Illuminate\Support\Facades\Auth::id()]);
     }
     
-    
-    
-    public function see()
-    {
-        return view('index.see');
-    }
-    
 }

@@ -25,7 +25,7 @@
         </div>
         <div id="tab2" class="weui-tab__bd-item" data-url="/index/hot">
         </div>
-        <div id="tab3" class="weui-tab__bd-item" data-url="/index/see">
+        <div id="tab3" class="weui-tab__bd-item" data-url="/order/list">
         </div>
         <div id="tab4" class="weui-tab__bd-item" data-url="/index/me">
         </div>
@@ -48,7 +48,7 @@
           <div class="weui-tabbar__icon">
             <img src="/static/img/see.png" alt="">
           </div>
-          <p class="weui-tabbar__label">发现</p>
+          <p class="weui-tabbar__label">订单</p>
         </a>
         <a href="/?nav=4" class="weui-tabbar__item @if ($nav == 4)weui-bar__item--on @endif" id="login">
           <div class="weui-tabbar__icon">
