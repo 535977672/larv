@@ -434,10 +434,10 @@ function initDetail(){
         selectNumSet(4);
     });
     $('.skuText').on('click', function(){
-        $("#skuTextPop").popup();
+        popup("skuTextPop");
     });
     $('.skuAttr').on('click', function(){
-        $("#skuAttrPop").popup();
+        popup("skuAttrPop");
     });
     $('#select-numu').on('click', function(){
         selectNumSet(1);
@@ -764,7 +764,7 @@ function initMe(){
         login();
     });
     $('#theme-chose').on('click', function(){
-        $("#themeAttrPop").popup();
+        popup("themeAttrPop");
     });
     $('.m-theme').on('click', function(){
         var theme = $(this).text();
@@ -774,5 +774,13 @@ function initMe(){
                 winReload();
             }, 'GET');
         }, function() {});
+    });
+}
+
+function popup(id){
+    $("#"+id).popup();
+    document.body.style.overflow = 'hidden';
+    $("#"+id+" .weui-popup__overlay,.close-popup").on('click', function(){
+        document.body.style.overflow = 'auto';
     });
 }
