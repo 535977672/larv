@@ -2,7 +2,7 @@
     <form class="weui-search-bar__form" method="get" action="/goods/search">
         <div class="weui-search-bar__box">
             <i class="weui-icon-search"></i>
-            <input type="search" name="keywords" class="weui-search-bar__input" id="searchInput" placeholder="搜索">
+            <input type="search" name="keywords" class="weui-search-bar__input bgc-ec" id="searchInput" placeholder="搜索">
             <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
         </div>
         <label class="weui-search-bar__label" id="searchText">
