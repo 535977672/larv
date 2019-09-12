@@ -150,7 +150,7 @@ function getTheme()
 {
     $arr = theme();
     $theme = Cache::store('redis')->tags(['theme'])->get('theme', 'ec');
-    return isset($arr[$theme])?:$arr['ec'];
+    return isset($arr[$theme])?$arr[$theme]:$arr['ec'];
 }
 
 function theme()
@@ -167,9 +167,9 @@ function theme()
         '673AB7' => '#673AB7',
         'FF5722' => '#FF5722',
         '4CAF50' => '#4CAF50',
-        'f50bc1' => 'f50bc1',
-        'f4433617' => '#f4433617',
-        '2196f30f' => '#2196f30f',
-        'blue' => 'rgb(237, 246, 247)'
+        'f50bc1' => '#f50bc1',
+        'rgb1' => 'rgba(156, 39, 176, 0.17)',
+        'rgb2' => 'rgba(255, 193, 7, 0.18)',
+        'rgb2' => 'rgb(237, 246, 247)'
     ];
 }
