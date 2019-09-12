@@ -763,6 +763,9 @@ function initMe(){
     $('#login').on('click', function(){
         login();
     });
+    $('#theme-chose').on('click', function(){
+        $("#themeAttrPop").popup();
+    });
     $('.m-theme').on('click', function(){
         $.confirm("确认主题", function() {
             ajax('/member/theme/'+$(this).text(), {}, function(res){

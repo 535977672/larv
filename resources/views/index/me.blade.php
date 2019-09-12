@@ -43,6 +43,18 @@
                 快递查询
             </p>
         </a>
+        @auth
+        @if($uid == 1)
+        <a href="javascript:;" class="weui-grid js_grid" id="theme-chose">
+            <div class="weui-grid__icon">
+                <img src="/static/img/order.png" alt="">
+            </div>
+            <p class="weui-grid__label">
+                主题
+            </p>
+        </a>
+        @endif
+        @endauth
     </div>
 </div>
 @auth
