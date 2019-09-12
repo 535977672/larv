@@ -45,6 +45,25 @@
         </a>
     </div>
 </div>
+@auth
+@if($uid == 1)        
+<div id="themeAttrPop" class="weui-popup__container popup-bottom">
+    <div class="weui-popup__overlay"></div>
+    <div class="weui-popup__modal">
+        <div class="m-popup m-popup-attr">
+            <div class="weui-cells">
+                <p class="t-ac mt10 mb15">主题</p>
+                @foreach (theme() as $k=>$t)
+                <div class="weui-cell mr10">
+                    <div class="weui-cell__bd m-theme" style="background-color: {{ $t }};">{{ $k }}</div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+@endauth
 @endsection
 @section('script')
 <script type="text/javascript" src="/static/plugs/slideunlock/js/jquery.slideunlock.js"></script>

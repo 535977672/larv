@@ -11,4 +11,11 @@ class MemberController extends Controller
     {
         return $this->successful();
     }
+    
+    public function setTheme($theme)
+    {
+        $user = $this->request->user();
+        if ($user && $user->id == 1) setTheme($theme);
+        return $this->successful();
+    }
 }

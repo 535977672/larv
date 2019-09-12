@@ -37,7 +37,7 @@ class IndexController extends Controller
     
     public function me()
     {
-        return view('index.me');
+        return view('index.me', ['uid' => \Illuminate\Support\Facades\Auth::id()]);
     }
     
     

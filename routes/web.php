@@ -53,6 +53,7 @@ Route::prefix('goods')->group(function () {
 
 Route::prefix('member')->group(function () {
     Route::get('index', 'MemberController@index');
+    Route::get('theme/{theme}', 'MemberController@setTheme');
 });
 Route::view('/argee', 'guide.agreement');
 

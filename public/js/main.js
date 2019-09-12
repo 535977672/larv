@@ -763,4 +763,12 @@ function initMe(){
     $('#login').on('click', function(){
         login();
     });
+    $('.m-theme').on('click', function(){
+        $.confirm("确认主题", function() {
+            ajax('/member/theme/'+$(this).text(), {}, function(res){
+                showMsg(res.msg);
+                winReload();
+            }, 'GET');
+        }, function() {});
+    });
 }

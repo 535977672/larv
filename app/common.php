@@ -7,6 +7,8 @@
  * 修改完成后运行 composer dumpautoload
  */
 
+use Illuminate\Support\Facades\Cache;
+
 /**
  * 返回
  * @param type $status
@@ -137,4 +139,37 @@ function FH($str){
  */
 function price_format($money){
     return !$money ? '0.00' : sprintf("%.2f",$money/100);
+}
+
+function setTheme($theme)
+{
+    return Cache::store('redis')->tags(['theme'])->put('theme', $theme);
+}
+
+function getTheme()
+{
+    $arr = theme();
+    $theme = Cache::store('redis')->tags(['theme'])->get('theme', 'ec');
+    return isset($arr[$theme])?:$arr['ec'];
+}
+
+function theme()
+{
+    return $arr = [
+        'ec' => '#ececec',
+        'f5' => '#f5f5f5',
+        '00bec8' => '#00bec8',
+        '1989fa' => '#1989fa',
+        'e3383e' => '#e3383e',
+        'F44336' => '#F44336',
+        'f44' => '#f44',
+        'E91E63' => '#E91E63',
+        '673AB7' => '#673AB7',
+        'FF5722' => '#FF5722',
+        '4CAF50' => '#4CAF50',
+        'f50bc1' => 'f50bc1',
+        'f4433617' => '#f4433617',
+        '2196f30f' => '#2196f30f',
+        'blue' => 'rgb(237, 246, 247)'
+    ];
 }
