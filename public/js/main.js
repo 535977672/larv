@@ -767,8 +767,9 @@ function initMe(){
         $("#themeAttrPop").popup();
     });
     $('.m-theme').on('click', function(){
+        var theme = $(this).text();
         $.confirm("确认主题", function() {
-            ajax('/member/theme/'+$(this).text(), {}, function(res){
+            ajax('/member/theme/'+theme, {}, function(res){
                 showMsg(res.msg);
                 winReload();
             }, 'GET');

@@ -143,7 +143,7 @@ function price_format($money){
 
 function setTheme($theme)
 {
-    return Cache::store('redis')->tags(['theme'])->put('theme', $theme);
+    return Cache::store('redis')->tags(['theme'])->put('theme', $theme, 518400);
 }
 
 function getTheme()
