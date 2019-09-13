@@ -149,8 +149,8 @@ function setTheme($theme)
 function getTheme()
 {
     $arr = theme();
-    $theme = Cache::store('redis')->tags(['theme'])->get('theme', 'ec');
-    return isset($arr[$theme])?$arr[$theme]:$arr['ec'];
+    $theme = Cache::store('redis')->tags(['theme'])->get('theme', 'white');
+    return isset($arr[$theme])?$arr[$theme]:$arr['white'];
 }
 
 function theme()
