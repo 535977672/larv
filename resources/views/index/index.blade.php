@@ -50,7 +50,7 @@
           </div>
           <p class="weui-tabbar__label">订单</p>
         </a>
-        <a href="/?nav=4" class="weui-tabbar__item @if ($nav == 4)weui-bar__item--on @endif" id="login">
+        <a href="/?nav=4" class="weui-tabbar__item @if ($nav == 4)weui-bar__item--on @endif">
           <div class="weui-tabbar__icon">
             <img src="/static/img/me.png" alt="">
           </div>
@@ -78,6 +78,9 @@
         }
         var url = oldhash == hash ? his.substr(1) : $('#tab'+hash).attr('data-url');
         $('#tab1').append('<iframe src="'+url+'"></iframe>');
+        $('.weui-tabbar__item').on('click', function(){
+            historyUrl(2);
+        });
     </script>
 </body>    
 </html>

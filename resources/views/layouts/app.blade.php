@@ -24,15 +24,6 @@
 </head>
 
 <body>
-    @if( !is_weixin() && !isset($refreshclose))
-    <div class="weui-pull-to-refresh__layer">
-            <div class='weui-pull-to-refresh__arrow'></div>
-            <div class='weui-pull-to-refresh__preloader'></div>
-            <div class="down">下拉刷新</div>
-            <div class="up">释放刷新</div>
-            <div class="refresh">正在刷新</div>
-    </div>
-    @endif
     @yield('content')
     <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
@@ -47,11 +38,6 @@
             FastClick.attach(document.body);
             historyUrl();
         });
-        @if( !is_weixin() && !isset($refreshclose))
-        $(document.body).pullToRefresh(function () {
-            location.reload();
-        });
-        @endif
     </script>
     @yield('script')
 </body>    

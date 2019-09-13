@@ -45,8 +45,10 @@ function historyUrl(set = ''){
     if(!set) {
         var hash = parent.hash;
         if(hash) return sessionStorage.setItem("historyUrl", hash+window.location.href);
-    } else {
+    } else if(set == 1) {
         return sessionStorage.getItem("historyUrl");
+    } else {
+        return sessionStorage.removeItem("historyUrl");
     }
 }
 
@@ -664,7 +666,7 @@ function initOrder(){
             ajax('/order/del/'+id, {}, function(res){
                 if(res.status === 200){
                     showMsg("删除成功");
-                    historyBack(-1);
+                    historyBack(-2);
                     winReload();
                 }else{
                     showMsg(res.msg);
