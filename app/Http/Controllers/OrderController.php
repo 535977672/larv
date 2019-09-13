@@ -431,7 +431,7 @@ class OrderController extends Controller
         $user = $this->request->user();
         $guestuid = $user?$user->id:$this->request->post('guestuid', 0);
         $order = new OrderService();
-        if(!$order->orderQuest($id, $guestuid)) return $this->failed('确认收货失败');
+        if(!$order->orderQuest($id, $guestuid)) return $this->failed($order->getErrorMsg());
         return $this->successful('确认收货成功');
     }
     
