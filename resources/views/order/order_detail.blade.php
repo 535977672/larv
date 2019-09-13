@@ -27,11 +27,11 @@
                         <p class="weui-media-box__desc">规格 {{ $g->spec_key }} x{{ $g->goods_num }}</p>
                         <div>
                             @if($detail->pay_status == 1)
-                                @if($detail->order_status == 0 && $g->is_send == 1)
+                                @if($detail->order_status == 0 && $g->is_send == 1 $g->is_receive == 0)
                                 <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-quest" data-id="{{ $g->og_id }}">确认收货</bottom>
                                 @elseif($detail->order_status == 0 && $g->is_send == 0)
                                 <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr">未发货</bottom>
-                                @elseif($g->is_receive == 2)
+                                @elseif($g->is_receive == 1)
                                 <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr">已收货</bottom>
                                 @endif
                                 @if($detail->shipping_code)
