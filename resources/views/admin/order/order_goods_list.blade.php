@@ -97,11 +97,8 @@
                                 <th>订单编号</th>
                                 <th>商品</th>
                                 <th>收货人</th>
-                                <th>订单金额</th>
-                                <th>应付金额</th>
-                                <th>订单状态</th>
-                                <th>发货状态</th>
-                                <th>支付状态</th>
+                                <th>订单/应付金额</th>
+                                <th>状态</th>
                                 <th>支付方式</th>
                                 <th>操作</th>
                             </tr>
@@ -113,11 +110,8 @@
                                 <td><a class="c-red" href="/admin/order/orderlist?order_id={{ $l->order_id }}">{{ $l->goods_sn }}</a></td>
                                 <td><a class="c-red" target="_blank" href="{{ $l->o_url }}">{{ $l->goods_name }}</a></td>
                                 <td>{{ $l->consignee }}</td>
-                                <td>{{ price_format($l->total_amount) }}</td>
-                                <td>{{ price_format($l->order_amount) }}</td>
-                                <td>{{ $l->order_status_str }}</td>
-                                <td>{{ $l->is_send_str }}</td>
-                                <td>{{ $l->pay_status_str }}</td>
+                                <td>订单金额{{ price_format($l->total_amount) }}<br/>应付金额{{ price_format($l->order_amount) }}</td>
+                                <td>订单状态{{ $l->order_status_str }}<br/>发货状态{{ $l->is_send_str }}<br/>支付状态{{ $l->pay_status_str }}</td>
                                 <td>{{ $l->paytype_str }}</td>
                                 <td class="td-manage">
                                     @if($l->is_send == 0)
