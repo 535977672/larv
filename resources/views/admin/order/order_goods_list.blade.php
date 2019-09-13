@@ -110,8 +110,8 @@
                                 <td><a class="c-red" href="/admin/order/orderlist?order_id={{ $l->order_id }}">{{ $l->goods_sn }}</a></td>
                                 <td><a class="c-red" target="_blank" href="{{ $l->o_url }}">{{ $l->goods_name }}</a></td>
                                 <td>{{ $l->consignee }}</td>
-                                <td>订单金额{{ price_format($l->total_amount) }}<br/>应付金额{{ price_format($l->order_amount) }}</td>
-                                <td>订单状态{{ $l->order_status_str }}<br/>发货状态{{ $l->is_send_str }}<br/>支付状态{{ $l->pay_status_str }}</td>
+                                <td style="width: 120px;">订单金额：￥{{ price_format($l->total_amount) }}<br/>应付金额：￥{{ price_format($l->order_amount) }}</td>
+                                <td style="width: 110px;">订单状态： {{ $l->order_status_str }}<br/>发货状态： {{ $l->is_send_str }}<br/>支付状态： {{ $l->pay_status_str }}</td>
                                 <td>{{ $l->paytype_str }}</td>
                                 <td class="td-manage">
                                     @if($l->is_send == 0)
