@@ -84,7 +84,7 @@ class Order extends Service{
             $goods = OrderGoods::find($id);
             $order = OrderModel::where('order_id', $goods->order_id)->where('u_id', $uid)->first();
             if(!$goods || !$order) throw new Exception('订单不存在');
-            if($order->order_status != 0 || $order->pay_status != 1)  throw new Exception('订单状态错误');
+            if($order->order_status >1 || $order->pay_status != 1)  throw new Exception('订单状态错误');
             $goods->is_receive = 1;
             $goods->confirm_time = time();
             if(!$goods->save()){
