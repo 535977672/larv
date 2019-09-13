@@ -57,6 +57,15 @@ layui.define(['layer', 'jquery'], function(exports){
     obj.closeAjaxLoading = function (index){
         layer.close(index);
     };
+    
+    obj.confirm = function (title = '确认操作', callback = ''){
+        layer.confirm(title, function(index){
+            if(callback){
+                callback();
+            }
+            layer.close(index);
+        });
+    };
 
     //刷新
     obj.winReload = function (par = 0){

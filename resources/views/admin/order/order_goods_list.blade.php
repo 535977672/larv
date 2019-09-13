@@ -72,6 +72,13 @@
                             </select>
                         </div>
                         <div class="layui-input-inline layui-show-xs-block">
+                            <select name="is_send">
+                                <option value="">是否发货</option>
+                                <option value="0" @isset($requestes['is_send']) @if($requestes['is_send'] === '0') selected @endif @endisset>未发货</option>
+                                <option value="1" @isset($requestes['is_send']) @if($requestes['is_send'] == 1) selected @endif @endisset>已发货</option>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline layui-show-xs-block">
                             <input type="text" name="order_sn" placeholder="请输入订单号" autocomplete="off" class="layui-input" @isset($requestes['order_sn']) value="{{ $requestes['order_sn'] }}" @endisset>
                         </div>
                         <div class="layui-input-inline layui-show-xs-block">
@@ -93,6 +100,7 @@
                                 <th>订单金额</th>
                                 <th>应付金额</th>
                                 <th>订单状态</th>
+                                <th>发货状态</th>
                                 <th>支付状态</th>
                                 <th>支付方式</th>
                                 <th>操作</th>
@@ -108,10 +116,14 @@
                                 <td>{{ price_format($l->total_amount) }}</td>
                                 <td>{{ price_format($l->order_amount) }}</td>
                                 <td>{{ $l->order_status_str }}</td>
+                                <td>{{ $l->is_send_str }}</td>
                                 <td>{{ $l->pay_status_str }}</td>
                                 <td>{{ $l->paytype_str }}</td>
                                 <td class="td-manage">
-                                    
+                                    @if($l->is_send == 0)
+                                    <a title="确认已发货" class="ordergoodssend" data-url="/admin/order/ordergoodssend/{{ $l->og_id }}" href="javascript:;">
+                                        <i class="layui-icon">&#xe698;</i>已发货</a>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach
@@ -133,11 +145,12 @@
 @endsection
 @section('script')
 <script>
-layui.use(['comm', 'form', 'layer','laydate'], function(){
+layui.use(['comm', 'form', 'layer','laydate', 'jquery'], function(){
     var form = layui.form
     ,comm = layui.comm
     ,layer = layui.layer
-    ,laydate = layui.laydate;
+    ,laydate = layui.laydate
+    ,$ = layui.jquery;
     
     //执行一个laydate实例
     laydate.render({
@@ -147,6 +160,19 @@ layui.use(['comm', 'form', 'layer','laydate'], function(){
     //执行一个laydate实例
     laydate.render({
         elem: '#end' //指定元素
+    });
+    
+    $('.ordergoodssend').on('click', function(){
+        var o = $(this);
+        comm.confirm('确认已发货', function(){
+            comm.ajax(o.attr('data-url'), {}, function(res){
+                if(res.status === 200){
+                    location.reload();
+                }else{
+                    layer.msg(res.msg, {icon: 2});
+                }
+            });
+        });
     });
 });
 </script>

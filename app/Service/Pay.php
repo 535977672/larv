@@ -124,8 +124,11 @@ class Pay extends Service{
             if(!$payRecord->save()){
                 throw new Exception('支付状态更新失败');
             }
-            $order->order_status = 1;
+            if(!$order){
+                throw new Exception('订单不存在');
+            }
             $order->pay_status = 1;
+            $order->pay_time = time();
             if(!$order->save()){
                 throw new Exception('订单状态更新失败');
             }
@@ -153,6 +156,7 @@ class Pay extends Service{
             $file = new Files();
             foreach ($data as $value) {
                 $value->status = 2;
+                $value->complete_time = time();
                 $value->note = $value->note . '--自动检查过期' . date('Y-m-d H:i:s', $time+60);
                 $value->save();
                 $file->payFileDelUrl($value->qrcode);
@@ -167,15 +171,67 @@ class Pay extends Service{
      * @return boolean
      */
     public function payPersonExpireCheck($ids) {
-        $data = PayRecord::find($ids);
-        if($data->count() > 0){
-            foreach ($data as $value) {
-                $value->status = 1;
-                $value->note = $value->note . '--手动检查过期' . date('Y-m-d H:i:s', time());
-                $value->save();
+        try {
+            DB::beginTransaction();
+            $data = PayRecord::find(is_array($ids) ? $ids : explode(',', $ids));
+            if($data->count() > 0){
+                foreach ($data as $value) {
+                    if(in_array($value->status, [0,2,6])){
+                        $value->status = 1;
+                        $value->complete_time = time();
+                        $value->note = $value->note . '--手动检查过期' . date('Y-m-d H:i:s', time());
+                        if(!$value->save()){
+                            throw new Exception($value->id . '设置失败');
+                        }
+                    }
+                }
             }
+            DB::commit();
+            return true;
+        } catch (Exception $exc) {
+            DB::rollBack();
+            $this->setErrorMsg($exc->getMessage());
+            return false;
         }
-        return true;
+    }
+    
+    /**
+     * 手动确认支付
+     * @param type array $ids
+     * @return boolean
+     */
+    public function paySuccess($ids) {
+        try {
+            DB::beginTransaction();
+            $data = PayRecord::find(is_array($ids) ? $ids : explode(',', $ids));
+            if($data->count() > 0){
+                foreach ($data as $value) {
+                    if(in_array($value->status, [0,2,6])){
+                        $value->status = 5;
+                        $value->complete_time = time();
+                        $value->note = $value->note . '--手动确认支付' . date('Y-m-d H:i:s', time());
+                        if(!$value->save()){
+                            throw new Exception($value->id . '设置失败');
+                        }
+                        $order = Order::find($value->o_id);
+                        if(!$order){
+                            throw new Exception('订单不存在');
+                        }
+                        $order->pay_status = 1;
+                        $order->pay_time = time();
+                        if(!$order->save()){
+                            throw new Exception($value->o_id . '订单状态更新失败');
+                        }
+                    }
+                }
+            }
+            DB::commit();
+            return true;
+        } catch (Exception $exc) {
+            DB::rollBack();
+            $this->setErrorMsg($exc->getMessage());
+            return false;
+        }
     }
     
     /**

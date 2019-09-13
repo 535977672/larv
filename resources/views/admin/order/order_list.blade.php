@@ -33,7 +33,7 @@
                             <select name="order_status">
                                 <option value="">订单状态</option>
                                 <option value="0" @isset($requestes['order_status']) @if($requestes['order_status'] === '0') selected @endif @endisset>待确认</option>
-                                <option value="1" @isset($requestes['order_status']) @if($requestes['order_status'] == 1) selected @endif @endisset>已确认</option>
+                                <option value="1" @isset($requestes['order_status']) @if($requestes['order_status'] == 1) selected @endif @endisset>已发货</option>
                                 <option value="2" @isset($requestes['order_status']) @if($requestes['order_status'] == 2) selected @endif @endisset>已收货</option>
                                 <option value="3" @isset($requestes['order_status']) @if($requestes['order_status'] == 3) selected @endif @endisset>已取消</option>
                                 <option value="4" @isset($requestes['order_status']) @if($requestes['order_status'] == 4) selected @endif @endisset>已完成</option>
@@ -82,9 +82,7 @@
                                 <th>应付金额</th>
                                 <th>订单状态</th>
                                 <th>支付状态</th>
-                                <th>发货状态</th>
                                 <th>支付方式</th>
-                                <th>配送方式</th>
                                 <th>下单时间</th>
                                 <th>操作</th>
                             </tr>
@@ -99,10 +97,8 @@
                                 <td>{{ price_format($l->order_amount) }}</td>
                                 <td>{{ $l->order_status_str }}</td>
                                 <td>{{ $l->pay_status_str }}</td>
-                                <td>0</td>
                                 <td>{{ $l->paytype_str }}</td>
-                                <td>0</td>
-                                <td>0</td>
+                                <td>{{ date('Y-m-d H:i:s', $l->add_time) }}</td>
                                 <td class="td-manage">
                                     <a title="查看" onclick="xadmin.open('订单详情','/admin/order/detail/{{ $l->order_id }}')" href="javascript:;">
                                         <i class="layui-icon">&#xe63c;</i></a>

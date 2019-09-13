@@ -84,6 +84,7 @@ class Order extends Service{
             $goods = OrderGoods::find($id);
             $order = OrderModel::where('order_id', $goods->order_id)->where('u_id', $uid)->first();
             if(!$goods || !$order) throw new Exception('订单不存在');
+            if($order->order_status != 1 || $order->pay_status != 1)  throw new Exception('订单状态错误');
             $goods->is_receive = 1;
             $goods->confirm_time = time();
             if(!$goods->save()){
@@ -175,6 +176,7 @@ class Order extends Service{
         isset($data['order_sn']) && $data['order_sn'] && $where[] = ['og.goods_sn', 'like', '%'.$data['order_sn'].'%'];
         isset($data['paytype']) && $data['paytype'] && $where[] = ['o.paytype', '=', $data['paytype']];
         isset($data['order_status']) && $data['order_status'] >=0 && $where[] = ['o.order_status', '=', $data['order_status']];
+        isset($data['is_send']) && $data['is_send'] >=0 && $where[] = ['og.is_send', '=', $data['is_send']];
         $list = OrderGoods::from('order_goods as og')
             ->where($where)
             ->join('order as o', 'o.order_id', '=', 'og.order_id')
@@ -182,5 +184,39 @@ class Order extends Service{
             ->select(DB::raw($field))
             ->paginate($limit);
         return $list;
+    }
+    
+    /**
+     * 订单商品列表发货
+     * @param type $id
+     * @param type $uid
+     * @return type
+     */
+    public function orderGoodsSend($id){
+        try {
+            DB::beginTransaction();
+            $goods = OrderGoods::find($id);
+            $order = OrderModel::find($goods->order_id);
+            if(!$goods || !$order) throw new Exception('订单不存在');
+            if($order->order_status != 0 || $order->pay_status != 1)  throw new Exception('订单状态错误');
+            $goods->is_send = 1;
+            if(!$goods->save()){
+                throw new Exception('确认发货失败');
+            }
+            $goods = OrderGoods::where('order_id', $goods->order_id)->where('is_send', 0)->first();
+            if(!$goods){
+                $order->order_status = 1;
+                $order->shipping_time = time();
+                if(!$order->save()){
+                    throw new Exception('确认发货失败');
+                }
+            }
+            DB::commit();
+            return true;
+        } catch (Exception $exc) {
+            DB::rollBack();
+            $this->setErrorMsg($exc->getMessage());
+            return false;
+        }
     }
 }

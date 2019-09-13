@@ -59,20 +59,28 @@
                                 <th>支付状态</th>
                                 <th>创建时间</th>
                                 <th>过期时间</th>
+                                <th>备注</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($list as $l)
                             <tr>
-                                <td><input type="checkbox" name="" lay-skin="primary" data-id="{{ $l->order_id }}"></td>
+                                <td><input type="checkbox" name="" lay-skin="primary" data-id="{{ $l->id }}"></td>
                                 <td><a class="c-red" href="/admin/order/orderlist?order_id={{ $l->o_id }}">{{ $l->o_id }}</a></td>
                                 <td>{{ price_format($l->money) }}</td>
                                 <td>{{ $l->type_str }}</td>
                                 <td>{{ $l->status_str }}</td>
                                 <td>{{ $l->create_time_str }}</td>
                                 <td>{{ $l->expiring_str }}</td>
+                                <td style="max-width: 120px;">{{ $l->note }}</td>
                                 <td class="td-manage">
+                                    @if(in_array($l->status, [0,2,6]))
+                                    <a title="确认已收款" class="paysuccess" data-url="/admin/order/paysuccess/{{ $l->id }}" href="javascript:;">
+                                        <i class="layui-icon">&#xe698;</i>已收款</a>
+                                    <a title="支付过期" class="payoutexp" data-url="/admin/order/payoutexp/{{ $l->id }}" href="javascript:;">
+                                        <i class="layui-icon">&#xe69c;</i>过期</a>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach
@@ -83,7 +91,6 @@
                     <div class="page">
                         <div>
                             {{ $list->links() }}
-                            
                         </div>
                     </div>
                 </div>
@@ -94,11 +101,12 @@
 @endsection
 @section('script')
 <script>
-layui.use(['comm', 'form', 'layer','laydate'], function(){
+layui.use(['comm', 'form', 'layer','laydate', 'jquery'], function(){
     var form = layui.form
     ,comm = layui.comm
     ,layer = layui.layer
-    ,laydate = layui.laydate;
+    ,laydate = layui.laydate
+    ,$ = layui.jquery;
     
     //执行一个laydate实例
     laydate.render({
@@ -108,6 +116,32 @@ layui.use(['comm', 'form', 'layer','laydate'], function(){
     //执行一个laydate实例
     laydate.render({
         elem: '#end' //指定元素
+    });
+    
+    $('.paysuccess').on('click', function(){
+        var o = $(this);
+        comm.confirm('确认已收款', function(){
+            comm.ajax(o.attr('data-url'), {}, function(res){
+                if(res.status === 200){
+                    location.reload();
+                }else{
+                    layer.msg(res.msg, {icon: 2});
+                }
+            });
+        });
+    });
+    
+    $('.payoutexp').on('click', function(){
+        var o = $(this);
+        comm.confirm('确认支付已过期', function(){
+            comm.ajax(o.attr('data-url'), {}, function(res){
+                if(res.status === 200){
+                    location.reload();
+                }else{
+                    layer.msg(res.msg, {icon: 2});
+                }
+            });
+        });
     });
 });
 </script>

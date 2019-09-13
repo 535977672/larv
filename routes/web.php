@@ -105,5 +105,8 @@ Route::prefix('admin')->group(function () {
         Route::get('detail/{id}', 'Admin\OrderController@detail');
         Route::get('ordergoodslist', 'Admin\OrderController@orderGoodsList');
         Route::get('paylist', 'Admin\OrderController@payList');
+        Route::post('paysuccess/{id}', 'Admin\OrderController@paySuccess');
+        Route::post('payoutexp/{id}', 'Admin\OrderController@payOutExp');
+        Route::post('ordergoodssend/{id}', 'Admin\OrderController@orderGoodsSend');
     });
 });

@@ -9,6 +9,7 @@ class Service {
     public function setErrorMsg($msg, $code = 0){
         $this->msg = $msg;
         $this->code = $code;
+        return false;
     }
     
     public function getErrorMsg(){

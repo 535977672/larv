@@ -83,7 +83,7 @@ class OrderGoods extends Model
                 $str = '待确认';
                 break;
             case 1:
-                $str = '已确认';
+                $str = '已发货';
                 break;  
             case 2:
                 $str = '已收货';
@@ -137,6 +137,23 @@ class OrderGoods extends Model
                 break;  
             case 2:
                 $str = '微信';
+                break;
+            default:
+                $str = '';
+        }
+        return $str;
+    }
+    
+    public function getIsSendStrAttribute()
+    {
+        $value = $this->is_send;
+        $str = '';
+        switch($value){
+            case 0:
+                $str = '未发货';
+                break;  
+            case 1:
+                $str = '已发货';
                 break;
             default:
                 $str = '';
