@@ -118,6 +118,10 @@
                                     <a title="确认已发货" class="ordergoodssend" data-url="/admin/order/ordergoodssend/{{ $l->og_id }}" href="javascript:;">
                                         <i class="layui-icon">&#xe698;</i>已发货</a>
                                     @endif
+                                    @if($l->is_send == 1)
+                                    <a title="添加物流信息" class="ordergoodsship" data-url="/admin/order/ordergoodsship/{{ $l->og_id }}" href="javascript:;">
+                                        <i class="layui-icon">&#xe7ae;</i>物流</a>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach
@@ -160,6 +164,36 @@ layui.use(['comm', 'form', 'layer','laydate', 'jquery'], function(){
         var o = $(this);
         comm.confirm('确认已发货', function(){
             comm.ajax(o.attr('data-url'), {}, function(res){
+                if(res.status === 200){
+                    location.reload();
+                }else{
+                    layer.msg(res.msg, {icon: 2});
+                }
+            });
+        });
+    });
+    
+    $('.ordergoodsship').on('click', function(){
+        var o = $(this);
+        var html = '<div class="mt10 mb10 mr10 ml10"><form class="layui-form" method="get" name="shipping">'
+                            +'<input class="layui-input mt10" placeholder="物流" name="shipping_name"  id="shipping_name">'
+                            +'<input class="layui-input mt10" placeholder="物流单号" name="shipping_code"  id="shipping_code">'
+                        +'<div class="layui-input-inline layui-show-xs-block t-ac mt20">'
+                            +'<button class="layui-btn" id="submit">提交</button>'
+                        +'</div>'
+                    +'</form></div>';
+        var index = layer.open({
+            type: 1,
+            title: '设置物流',
+            area: ['300px', '200px'],
+            content: html
+        });
+        form.render('select');
+        $('#submit').on('click', function(){
+            comm.ajax(o.attr('data-url'), {
+                shipping_code: $('#shipping_code').val(),
+                shipping_name: $('#shipping_name').val()
+            }, function(res){
                 if(res.status === 200){
                     location.reload();
                 }else{

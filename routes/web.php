@@ -108,5 +108,6 @@ Route::prefix('admin')->group(function () {
         Route::post('paysuccess/{id}', 'Admin\OrderController@paySuccess');
         Route::post('payoutexp/{id}', 'Admin\OrderController@payOutExp');
         Route::post('ordergoodssend/{id}', 'Admin\OrderController@orderGoodsSend');
+        Route::post('ordergoodsship/{id}', 'Admin\OrderController@orderGoodsShip');
     });
 });

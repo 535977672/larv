@@ -219,4 +219,29 @@ class Order extends Service{
             return false;
         }
     }
+    
+    /**
+     * 订单商品列表发货物流
+     * @return type
+     */
+    public function orderGoodsShip($id, $code, $name = ''){
+        try {
+            DB::beginTransaction();
+            $goods = OrderGoods::find($id);
+            $order = OrderModel::find($goods->order_id);
+            if(!$goods || !$order) throw new Exception('订单不存在');
+            if($order->order_status > 1 || $order->pay_status != 1)  throw new Exception('订单状态错误');
+            $goods->shipping_code = $code;
+            $goods->shipping_name = $name;
+            if(!$goods->save()){
+                throw new Exception('设置物流失败');
+            }
+            DB::commit();
+            return true;
+        } catch (Exception $exc) {
+            DB::rollBack();
+            $this->setErrorMsg($exc->getMessage());
+            return false;
+        }
+    }
 }
