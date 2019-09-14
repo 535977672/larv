@@ -70,7 +70,7 @@ class OrderController extends AdminController
     {
         $code = $this->request->post('shipping_code', '');
         $name = $this->request->post('shipping_name', '');
-        if(!$code) return $this->failed('添加物流单号');
+        //if(!$code) return $this->failed('添加物流单号');
         if(!$this->orderServer->orderGoodsShip($id, $code, $name)) return $this->failed($this->orderServer->getErrorMsg());
         return $this->successful();
     }

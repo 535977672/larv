@@ -35,7 +35,7 @@
                                 <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr">已收货</bottom>
                                 @endif
                                 @if($g->shipping_code)
-                                <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-shipping" data-code="{{ $detail->shipping_code }}">查看物流</bottom>
+                                <bottom class="weui-btn weui-btn_mini weui-btn_default m-fr order-shipping" data-code="{{ $g->shipping_code }}">查看物流</bottom>
                                 @endif
                             @endif
                         </div>
