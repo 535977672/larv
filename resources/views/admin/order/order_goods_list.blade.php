@@ -99,6 +99,7 @@
                                 <th>收货人</th>
                                 <th>订单/应付金额</th>
                                 <th>状态</th>
+                                <th>物流</th>
                                 <th>支付方式</th>
                                 <th>操作</th>
                             </tr>
@@ -112,6 +113,7 @@
                                 <td>{{ $l->consignee }}</td>
                                 <td style="width: 120px;">订单金额：￥{{ price_format($l->total_amount) }}<br/>应付金额：￥{{ price_format($l->order_amount) }}</td>
                                 <td style="width: 110px;">订单状态： {{ $l->order_status_str }}<br/>发货状态： {{ $l->is_send_str }}<br/>支付状态： {{ $l->pay_status_str }}</td>
+                                <td>{{ $l->shipping_code }}<br/>{{ $l->shipping_name }}</td>
                                 <td>{{ $l->paytype_str }}</td>
                                 <td class="td-manage">
                                     @if($l->is_send == 0)
@@ -175,7 +177,7 @@ layui.use(['comm', 'form', 'layer','laydate', 'jquery'], function(){
     
     $('.ordergoodsship').on('click', function(){
         var o = $(this);
-        var html = '<div class="mt10 mb10 mr10 ml10"><form class="layui-form" method="get" name="shipping">'
+        var html = '<div class="mt10 mb10 mr10 ml10"><form class="layui-form" name="shipping">'
                             +'<input class="layui-input mt10" placeholder="物流" name="shipping_name"  id="shipping_name">'
                             +'<input class="layui-input mt10" placeholder="物流单号" name="shipping_code"  id="shipping_code">'
                         +'<div class="layui-input-inline layui-show-xs-block t-ac mt20">'
@@ -200,6 +202,7 @@ layui.use(['comm', 'form', 'layer','laydate', 'jquery'], function(){
                     layer.msg(res.msg, {icon: 2});
                 }
             });
+            return false;
         });
     });
 });
