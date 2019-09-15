@@ -68,7 +68,7 @@
 </div>
 @endsection
 @section('script')
-<script src="/js/city-picker.min.js?v=1"></script>
+<script src="/js/city-picker.min.js?v=1.0"></script>
 <script>
     initRequestes();
 </script>
