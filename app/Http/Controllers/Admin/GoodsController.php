@@ -238,7 +238,7 @@ class GoodsController extends AdminController
             }
         }
         $data['ids'] = json_encode($ids);
-        $data['original_img'] = '/storage/goods/' . $data['original_img'];
+        $data['original_img'] = substr($data['original_img'], 0, 4) == 'http' ? $data['original_img'] : '/storage/goods/' . $data['original_img'];
         $data['is_on_sale'] = 0;
         if(!$this->goodsService->aGoodsTeamAdd($data)) return $this->failed();
         return $this->successful();

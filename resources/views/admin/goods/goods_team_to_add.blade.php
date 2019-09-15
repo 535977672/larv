@@ -128,7 +128,7 @@ layui.use(['comm', 'form', 'layer', 'jquery'], function(){
             if(res.status !== 200){
                 layer.msg(res.msg, {icon: 2});
             }else{
-                //window.location.reload();
+                window.location.reload();
             }
         });
         return false;
