@@ -244,4 +244,23 @@ class Goods extends Service{
             ->simplePaginate($limit);
     }
     
+    
+    
+    
+    /**amdin*******************************************************************/
+    public function aGoodsList($where = [], $limit = 20){
+        return GoodsModel::with('ext')->where($where)
+            ->orderBy('goods_id', 'desc')
+            ->paginate($limit);
+    }
+    
+    public function aGoodsAttrList($where = [], $limit = 20){
+        return GoodsAttr::with(['goods', 'color'])->where($where)
+            ->orderBy('goods_id', 'desc')
+            ->paginate($limit);
+    }
+    
+    public function aGoodsTeamAdd($data){
+        return GoodsModel::insert($data);
+    }
 }

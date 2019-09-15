@@ -8,6 +8,13 @@ use App\Service\Goods as GoodsService;
 
 class GoodsController extends AdminController
 {
+    private $goodsService = null;
+
+
+    protected function initialize() 
+    {
+        $this->goodsService = new GoodsService;
+    }
     /**
      * 收集数据检查
      * @return type
@@ -203,5 +210,37 @@ class GoodsController extends AdminController
             return return_ajax(0, $errors[0]);
         }
         return true;
+    }
+    
+    
+    
+    /**************************************************************************/
+    public function goodsList()
+    {
+       return $this->successful(['list' => $this->goodsService->aGoodsList()]);
+    }
+    
+    public function goodsTeamToAdd()
+    {
+       return $this->successful(['list' => $this->goodsService->aGoodsAttrList([], 1000)]);
+    }
+    
+    public function goodsTeamAdd()
+    {
+        $data = $this->request->all();
+        $id = $data['ids'];
+        if(!$id || !$data['goods_name'] || !$data['original_img']) return $this->failed();
+        $ids = [];
+        foreach($id as $v){
+            if($v){
+                $t = explode('-', $v);
+                $ids[$t[0]] = $t[1];
+            }
+        }
+        $data['ids'] = json_encode($ids);
+        $data['original_img'] = '/storage/goods/' . $data['original_img'];
+        $data['is_on_sale'] = 0;
+        if(!$this->goodsService->aGoodsTeamAdd($data)) return $this->failed();
+        return $this->successful();
     }
 }

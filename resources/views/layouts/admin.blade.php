@@ -44,14 +44,14 @@
             delAll($(this));
         });
         function delAll(obj){
-            var data = $(".layui-form-checked").not('.header').prev('input')
+            var data = $("tbody .layui-form-checked").not('.header').prev('input')
             ,ids = '';
             $.each(data, function(i,v){
                 ids = ids + ',' +$(v).attr('data-id');
             });
             ids = ids.substr(1);
             if(comm.isEmpty(ids)) {
-                layer.msg('选择删除数据', {icon: 1});
+                layer.msg('选择删除数据', {icon: 2});
                 return;
             }
             layer.confirm('确认要删除吗？',function(index){

@@ -98,6 +98,9 @@ Route::prefix('admin')->group(function () {
         Route::get('cd/{id}', 'Admin\GoodsController@checkDetail');
         Route::post('s/{id?}', 'Admin\GoodsController@save');
         Route::post('cd/', 'Admin\GoodsController@checkDel');
+        Route::get('goodslist', 'Admin\GoodsController@goodsList');
+        Route::get('goodsteamtoadd', 'Admin\GoodsController@goodsTeamToAdd');
+        Route::post('goodsteamadd', 'Admin\GoodsController@goodsTeamAdd');
     });
     Route::prefix('order')->group(function () {
         Route::match(['get', 'post'], 'orderlist', 'Admin\OrderController@orderList');

@@ -39,6 +39,10 @@
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>数据转移</cite>
                         </a>
+                        <a onclick="xadmin.add_tab('商品列表','/admin/g/goodslist')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>商品列表</cite>
+                        </a>
                     </li>
                 </ul>
             </li>
