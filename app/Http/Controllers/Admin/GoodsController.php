@@ -51,6 +51,13 @@ class GoodsController extends AdminController
             $value->content = html_entity_decode($value->content, ENT_QUOTES);
             if(!empty($value->attr)){
                 $value->attr = json_decode($value->attr);
+                foreach ($value->attr as $k => $v) {
+                    if(in_array(mb_substr($v, 0, 2), ['主要','生产','保质','产地','保修',':&'])){
+                        unset($value->attr[$k]);
+                    }else if(mb_substr($v, 0, 4) == '品牌:&' && !$value->brand){
+                        $value->brand = mb_substr($v, 9);
+                    }
+                }
             }
             if(!empty($value->price)){
                 $value->price = json_decode($value->price);
