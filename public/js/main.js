@@ -260,9 +260,9 @@ function loadDataMain(){
     loadData('/goods', {}, function(goods){
         var html = '';
         $.each(goods, function(i, g){
-            html = html + '<li><div><a href="/goods/detail/'+g.goods_id+'"><img  class="'+g.original_img+'" alt=""><p class="goods-name m-name">'+g.goods_name+'</p></a></div></li>';
+            html = html + '<li><div><a href="/goods/detail/'+g.goods_id+'"><img  src="'+g.original_img+'" alt=""><p class="goods-name m-name">'+g.goods_name+'</p></a></div></li>';
         });
-        $('.main-img').append(html);
+        $('#grid').append(html);
         animOnScrollLoad('grid');
     });
 }
