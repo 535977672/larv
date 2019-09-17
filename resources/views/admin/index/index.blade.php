@@ -39,6 +39,8 @@
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>数据转移</cite>
                         </a>
+                    </li>
+                    <li>
                         <a onclick="xadmin.add_tab('商品列表','/admin/g/goodslist')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>商品列表</cite>
@@ -57,10 +59,14 @@
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>订单列表</cite>
                         </a>
+                    </li>
+                    <li>
                         <a onclick="xadmin.add_tab('商品列表','/admin/order/ordergoodslist')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>商品列表</cite>
                         </a>
+                    </li>
+                    <li>
                         <a onclick="xadmin.add_tab('支付记录','/admin/order/paylist')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>支付记录</cite>
