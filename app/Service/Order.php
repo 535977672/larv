@@ -137,7 +137,7 @@ class Order extends Service{
      */
     public function aOrderList($data, $limit = 20, $field = '*'){
         $where = [
-            ['deleted', '=', 0],
+            //['deleted', '=', 0],
         ];
         isset($data['paytype']) && $data['paytype'] && $where[] = ['paytype', '=', $data['paytype']];
         isset($data['order_status']) && $data['order_status'] >=0 && $where[] = ['order_status', '=', $data['order_status']];
@@ -165,7 +165,7 @@ class Order extends Service{
     public function aOrderGoodsList($data, $limit = 20, $field = '*'){
         if($field = '*') $field = 'og.*,o.pay_status,o.order_status,o.consignee,o.province,o.city,o.district,o.address,o.mobile,o.total_amount,o.order_amount,o.paytype';
         $where = [
-            ['o.deleted', '=', 0],
+            //['o.deleted', '=', 0],
         ];
         isset($data['is_buy']) && $data['is_buy'] >=0 && $where[] = ['og.is_buy', '=', $data['is_buy']];
         isset($data['is_send']) && $data['is_send'] >=0 && $where[] = ['og.is_send', '=', $data['is_send']];
@@ -224,7 +224,7 @@ class Order extends Service{
      * 订单商品列表发货物流
      * @return type
      */
-    public function orderGoodsShip($id, $code, $name = ''){
+    public function orderGoodsShip($id, $code, $name = '', $pay_money = 0, $pay_cost = 0){
         try {
             DB::beginTransaction();
             $goods = OrderGoods::find($id);
@@ -233,6 +233,8 @@ class Order extends Service{
             if($order->order_status > 1 || $order->pay_status != 1)  throw new Exception('订单状态错误');
             $goods->shipping_code = $code;
             $goods->shipping_name = $name;
+            $goods->pay_money = FI($pay_money*100);
+            $goods->pay_cost = FI($pay_cost*100);
             if(!$goods->save()){
                 throw new Exception('设置物流失败');
             }

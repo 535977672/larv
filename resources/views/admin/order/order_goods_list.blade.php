@@ -180,6 +180,8 @@ layui.use(['comm', 'form', 'layer','laydate', 'jquery'], function(){
         var html = '<div class="mt10 mb10 mr10 ml10"><form class="layui-form" name="shipping">'
                             +'<input class="layui-input mt10" placeholder="物流" name="shipping_name"  id="shipping_name">'
                             +'<input class="layui-input mt10" placeholder="物流单号" name="shipping_code"  id="shipping_code">'
+                            +'<input class="layui-input mt10" placeholder="支付金额" name="pay_money"  id="pay_money">'
+                            +'<input class="layui-input mt10" placeholder="邮费" name="pay_cost"  id="pay_cost">'
                         +'<div class="layui-input-inline layui-show-xs-block t-ac mt20">'
                             +'<button class="layui-btn" id="submit">提交</button>'
                         +'</div>'
@@ -187,14 +189,16 @@ layui.use(['comm', 'form', 'layer','laydate', 'jquery'], function(){
         var index = layer.open({
             type: 1,
             title: '设置物流',
-            area: ['300px', '200px'],
+            area: ['300px', '350px'],
             content: html
         });
         form.render('select');
         $('#submit').on('click', function(){
             comm.ajax(o.attr('data-url'), {
                 shipping_code: $('#shipping_code').val(),
-                shipping_name: $('#shipping_name').val()
+                shipping_name: $('#shipping_name').val(),
+                pay_money: $('#pay_money').val(),
+                pay_cost: $('#pay_cost').val()
             }, function(res){
                 if(res.status === 200){
                     location.reload();

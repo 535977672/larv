@@ -27,9 +27,10 @@ class OrderController extends AdminController
      */
     public function orderDel()
     {
+        return $this->failed('禁止操作');
         $ids = explode(',', $this->request->post('ids', ''));
-        Order::whereIn('order_id', $ids)
-          ->update(['deleted' => 1]);
+        //Order::whereIn('order_id', $ids)
+        //  ->update(['deleted' => 1]);
         return $this->successful('保存成功');
     }
     
@@ -70,8 +71,10 @@ class OrderController extends AdminController
     {
         $code = $this->request->post('shipping_code', '');
         $name = $this->request->post('shipping_name', '');
+        $pay_money = Ff($this->request->post('pay_money', 0));
+        $pay_cost = Ff($this->request->post('pay_cost', 0));
         //if(!$code) return $this->failed('添加物流单号');
-        if(!$this->orderServer->orderGoodsShip($id, $code, $name)) return $this->failed($this->orderServer->getErrorMsg());
+        if(!$this->orderServer->orderGoodsShip($id, $code, $name, $pay_money, $pay_cost)) return $this->failed($this->orderServer->getErrorMsg());
         return $this->successful();
     }
     

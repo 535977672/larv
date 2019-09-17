@@ -1,4 +1,9 @@
 @extends('layouts.admin')
+@section('head')
+<style>
+    .bg{background-color: #c3c2c2;}
+</style>
+@endsection
 @section('content')
 <div class="x-nav">
     <span class="layui-breadcrumb">
@@ -59,7 +64,7 @@
                         </thead>
                         <tbody>
                             @foreach ($list as $l)
-                            <tr>
+                            <tr class="addgroup" data-gid="{{ $l->goods_id }}">
                                 <td><input type="checkbox" name="" lay-skin="primary" data-id="{{ $l->attr_id }}" data-gid="{{ $l->goods_id }}" data-p1="{{ $l->attr_price }}" data-p2="{{ $l->realprice }}"></td>
                                 <td>{{ $l->goods->goods_name }}</td>
                                 <td>
@@ -100,6 +105,17 @@ layui.use(['comm', 'form', 'layer', 'jquery'], function(){
     ,comm = layui.comm
     ,layer = layui.layer
     ,$ = layui.jquery;
+    
+    var group = 0, gClass = 'bg';
+    $.each($('.addgroup'), function(i,v){
+        if(group !== $(v).attr('data-gid')) {
+            group = $(v).attr('data-gid');
+            gClass = gClass?'':'bg';
+            if(gClass) $(v).addClass(gClass);
+        }else{
+            if(gClass) $(v).addClass(gClass);
+        }
+    });
     
     var d;
     

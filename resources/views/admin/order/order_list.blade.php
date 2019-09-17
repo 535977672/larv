@@ -65,9 +65,9 @@
                     </form>
                 </div>
                 <div class="layui-card-header">
-                    <button class="layui-btn layui-btn-danger delAll" data-url="order/orderdel">
+                    <!--<button class="layui-btn layui-btn-danger delAll" data-url="order/orderdel">
                         <i class="layui-icon"></i>批量删除
-                    </button>
+                    </button>-->
                 </div>
                 <div class="layui-card-body table-over">
                     <table class="layui-table layui-form">
