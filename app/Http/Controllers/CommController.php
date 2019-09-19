@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Service\Pay;
 use App\Model\NotifyLog;
+use App\Service\Encrypt as EncryptService;
 
 class CommController extends Controller
 {
@@ -23,11 +24,19 @@ class CommController extends Controller
         $title = $request->post('title', '');
         $content = $request->post('content', '');
         $type = intval($request->post('type', 0));
+        $sign = intval($request->post('sign', ''));
         $log = NotifyLog::create(['status' => 0, 'create_time' => $time, 'content' => json_encode($request->all(), JSON_UNESCAPED_UNICODE)]);
 
+        if ($sign !== EncryptService::encrypt($content . $pkg . $title . $type, env('API_PASSWORD'))) {
+            $log->status = 2;
+            $log->res = '解码失败';
+            $log->save();
+            return return_ajax(0, $log->res, ['params' => $request->all()]);
+        }
+        
         $pay = new Pay;
         $re = $pay->notification($pkg, $title, $content, $type);
-        if($re === false) {
+        if ($re === false) {
             $log->status = 2;
             $log->res = $pay->getErrorMsg();
             $log->save();
