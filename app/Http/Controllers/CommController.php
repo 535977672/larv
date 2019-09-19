@@ -27,9 +27,13 @@ class CommController extends Controller
         $sign = intval($request->post('sign', ''));
         $log = NotifyLog::create(['status' => 0, 'create_time' => $time, 'content' => json_encode($request->all(), JSON_UNESCAPED_UNICODE)]);
 
-        if ($sign !== EncryptService::encrypt($content . $pkg . $title . $type, env('API_PASSWORD'))) {
+        $encrypt = EncryptService::encrypt($content . $pkg . $title . $type, env('API_PASSWORD'));
+        if ($sign !== $encrypt) {
             $log->status = 2;
             $log->res = '解码失败';
+            $contents = json_decode($log->content, true);
+            $contents['encrypt'] = $encrypt;
+            $log->content = json_encode($contents, JSON_UNESCAPED_UNICODE);
             $log->save();
             return return_ajax(0, $log->res, ['params' => $request->all()]);
         }
