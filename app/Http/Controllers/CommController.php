@@ -35,7 +35,7 @@ class CommController extends Controller
             $contents['encrypt'] = $encrypt;
             $log->content = json_encode($contents, JSON_UNESCAPED_UNICODE);
             $log->save();
-            return return_ajax(0, $log->res, ['params' => $request->all(), $encrypt, $sign]);
+            return return_ajax(0, $log->res, ['params' => $request->all()]);
         }
         
         $pay = new Pay;
