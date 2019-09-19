@@ -35,7 +35,7 @@ class CommController extends Controller
             $contents['encrypt'] = $encrypt;
             $log->content = json_encode($contents, JSON_UNESCAPED_UNICODE);
             $log->save();
-            return return_ajax(0, $log->res, ['params' => $request->all()]);
+            return return_ajax(0, $log->res, ['params' => $request->all(), $encrypt, $sign]);
         }
         
         $pay = new Pay;
@@ -49,3 +49,9 @@ class CommController extends Controller
         return return_ajax(200,'success');
     }
 }
+
+//Z8OewooDpcKowrrCqcKSwq3DimnCnGzDlMOLwrXCrsK+wqPCl8KWw5jDjGJsw5\/DnWLCsMK9aMOuf8K9wo\/CtcOawqDCgsKvw5rCvGjCpMKRw57Cl8OMw5vDksKEwqrDg8Kaw6XCm8KDw5nCqsKqw4TDgnbDn8KXw4PCnMOmw5TCtW3CrsOSw47ClMKNwqnCkMK1wpvDpsK0wonCpsOPw43DpnHCpMOjw4nCncOTwr55wrQ=
+//Z8OewovDpcKowrrCqcKSwq3DimnCnGzDlMOLwrXCrsK+wqPCl8KWw5jDjGJsw5\/DnWLCsMK9aMOuf8K9wo\/CtcOawqDCgsKvw5rCvGjCpMKRw57Cl8OMw5vDksKEwqrDg8Kaw6XCm8KDw5nCqsKqw4TDgnbDn8KXw4PCnMOmw5TCtW3CrsOSw47ClMKNwqnCkMK1wpvDpsK0wonCpsOPw43DpnHCpMOjw4nCncOTwr55wrQ=
+
+
+
