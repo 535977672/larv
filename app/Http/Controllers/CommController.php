@@ -28,7 +28,7 @@ class CommController extends Controller
         $log = NotifyLog::create(['status' => 0, 'create_time' => $time, 'content' => json_encode($request->all(), JSON_UNESCAPED_UNICODE)]);
 
         $encrypt = EncryptService::encrypt($content . $pkg . $title . $type, env('API_PASSWORD'));
-        if ($sign != $encrypt) {
+        if ($sign !== $encrypt) {
             $log->status = 2;
             $log->res = '解码失败';
             $contents = json_decode($log->content, true);
