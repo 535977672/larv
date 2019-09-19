@@ -24,7 +24,7 @@ class CommController extends Controller
         $title = $request->post('title', '');
         $content = $request->post('content', '');
         $type = intval($request->post('type', 0));
-        $sign = intval($request->post('sign', ''));
+        $sign = $request->post('sign', '');
         $log = NotifyLog::create(['status' => 0, 'create_time' => $time, 'content' => json_encode($request->all(), JSON_UNESCAPED_UNICODE)]);
 
         $encrypt = EncryptService::encrypt($content . $pkg . $title . $type, env('API_PASSWORD'));
