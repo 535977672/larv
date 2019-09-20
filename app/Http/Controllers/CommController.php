@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace App\Http\Controllers;
 
@@ -15,7 +15,7 @@ class CommController extends Controller
     /**
      * 监听通知回调处理
      * @param Request $request
-     * @return type
+     * @return type 
      */
     public function notification(Request $request)
     {
