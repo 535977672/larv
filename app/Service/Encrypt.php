@@ -49,18 +49,6 @@ class Encrypt extends Service{
      * @return 密文
      */
     public static function encrypt2($sourceString, $password) {
-        $sourceString = base64_encode($sourceString);
-        return base64_encode(self::crypt($sourceString, $password));
-    }
-
-    /**
-     *
-     * @param sourceString
-     * @param password
-     * @return 明文
-     */
-    public static function decrypt2($sourceString, $password) {
-        $sourceString = base64_decode($sourceString);
-        return base64_decode(self::crypt($sourceString, $password, 1));
+        return base64_encode(preg_replace('/\s/', '',self::crypt($sourceString, $password)));
     }
 }
