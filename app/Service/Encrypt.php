@@ -41,14 +41,4 @@ class Encrypt extends Service{
         }
         return implode('', $c);
     }
-
-
-    /**
-     * @param sourceString
-     * @param password
-     * @return 密文
-     */
-    public static function encrypt2($sourceString, $password) {
-        return base64_encode(preg_replace('/\s|\\\/', '',self::crypt(preg_replace('/\s|\\\/', '', $sourceString), $password)));
-    }
 }
