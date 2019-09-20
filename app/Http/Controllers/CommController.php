@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers;
 
@@ -27,7 +27,7 @@ class CommController extends Controller
         $sign = $request->post('sign', '');
         $log = NotifyLog::create(['status' => 0, 'create_time' => $time, 'content' => json_encode($request->all(), JSON_UNESCAPED_UNICODE)]);
         $str = $content . $pkg . $title . $type;
-        $encrypt = EncryptService::encrypt2($str, env('API_PASSWORD'));
+        $encrypt = EncryptService::encrypt($str, env('API_PASSWORD'));
         if ($sign !== $encrypt) {
             $log->status = 2;
             $log->res = '解码失败';
