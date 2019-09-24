@@ -64,6 +64,7 @@
                         </thead>
                         <tbody>
                             @foreach ($list as $l)
+							@if($l->goods->is_on_sale > 0)
                             <tr class="addgroup" data-gid="{{ $l->goods_id }}">
                                 <td><input type="checkbox" name="" lay-skin="primary" data-id="{{ $l->attr_id }}" data-gid="{{ $l->goods_id }}" data-p1="{{ $l->attr_price }}" data-p2="{{ $l->realprice }}"></td>
                                 <td>{{ $l->goods->goods_name }}</td>
@@ -81,6 +82,7 @@
                                 <td class="td-manage">
                                 </td>
                             </tr>
+							@endif
                             @endforeach
                         </tbody>
                     </table>

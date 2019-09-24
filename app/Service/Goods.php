@@ -148,9 +148,9 @@ class Goods extends Service{
                 $goodsModel->type = 1;
             }
             if(!$id){
-                $goodsModel->comment_count = intval(getRandStr(2, 3));
-                $goodsModel->collect_sum = intval(getRandStr(3, 3));
-                $goodsModel->sales_sum = intval(getRandStr(2, 3));
+                $goodsModel->comment_count = 0; //intval(getRandStr(2, 3));
+                $goodsModel->collect_sum = 0;//intval(getRandStr(3, 3));
+                $goodsModel->sales_sum = 0;//intval(getRandStr(2, 3));
             }else{
                 $goodsModel->goods_id = $id;
             }
@@ -221,7 +221,7 @@ class Goods extends Service{
             }
             
             if(isset($data['tb_id']) && $data['tb_id']){
-                DB::update('update tb_attr set deleted = 1 where id = ?', [$data['tb_id']]);
+                DB::update('update tb_attr set deleted = 1,gid = ? where id = ?', [$goodsModel->goods_id, $data['tb_id']]);
             }
             
             DB::commit();
@@ -270,6 +270,12 @@ class Goods extends Service{
         foreach($ids as $id){
             $sql .= ' or (ids like %"'.$id.'":%)';
         }
-        return GoodsModel::where(DB::raw($sql))->update(['is_on_sale' => $status]);
+		$where = '';
+		if(status == 1){
+			$where = [
+				['type', '=', 1]
+			];
+		}
+        return GoodsModel::where($where)->where(DB::raw($sql))->update(['is_on_sale' => $status]);
     }
 }
