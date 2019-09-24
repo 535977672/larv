@@ -250,4 +250,12 @@ class GoodsController extends AdminController
         if(!$this->goodsService->aGoodsTeamAdd($data)) return $this->failed();
         return $this->successful();
     }
+    
+    public function isOnSale()
+    {
+        $data = $this->request->all();
+        if(!$data['ids']) return $this->failed();
+        if(!$this->goodsService->aIsOnSale($data['ids'], $data['status'])) return $this->failed();
+        return $this->successful();
+    }
 }

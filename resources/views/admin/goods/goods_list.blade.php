@@ -20,6 +20,8 @@
                     <button class="layui-btn" onclick="xadmin.open('添加套餐','/admin/g/goodsteamtoadd', '1000', '520')">
                         <i class="layui-icon"></i>添加套餐
                     </button>
+                    <button class="layui-btn isonsale" data-status="1" data-url="g/isonsale">上架</button>
+                    <button class="layui-btn isonsale" data-status="0" data-url="g/isonsale">下架</button>
                 </div>
                 <div class="layui-card-body table-over">
                     <table class="layui-table layui-form">
@@ -29,8 +31,8 @@
                                     <input type="checkbox" name="" lay-skin="primary">
                                 </th>
                                 <th>商品</th>
-                                <th>价格</th>
                                 <th>图片</th>
+                                <th>价格</th>
                                 <th>状态</th>
                                 <th>操作</th>
                             </tr>
@@ -76,7 +78,32 @@ layui.use(['comm', 'form', 'layer', 'jquery'], function(){
     ,comm = layui.comm
     ,layer = layui.layer
     ,$ = layui.jquery;
-    
+    $('.isonsale').on('click', function(){
+        isonsale($(this);
+    });
+    function isonsale(obj){
+        var data = $("tbody .layui-form-checked").not('.header').prev('input')
+        ,ids = '';
+        $.each(data, function(i,v){
+            ids = ids + ',' +$(v).attr('data-id');
+        });
+        ids = ids.substr(1);
+        if(comm.isEmpty(ids)) {
+            layer.msg('选择数据', {icon: 2});
+            return;
+        }
+        layer.confirm('确认操作？',function(index){
+            comm.ajax('/admin/'+obj.attr('data-url'), {ids: ids, status: obj.attr('data-status')}, function(res){
+                if(res.status !== 200){
+                    layer.msg(res.msg, {icon: 2});
+                }else{
+                    layer.msg('操作成功', {icon: 1});
+                    location.reload();
+                }
+            });
+            return false;
+        });
+    }
     
 });
 </script>

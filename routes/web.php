@@ -101,6 +101,7 @@ Route::prefix('admin')->group(function () {
         Route::get('goodslist', 'Admin\GoodsController@goodsList');
         Route::get('goodsteamtoadd', 'Admin\GoodsController@goodsTeamToAdd');
         Route::post('goodsteamadd', 'Admin\GoodsController@goodsTeamAdd');
+        Route::post('isonsale', 'Admin\OrderController@isOnSale');
     });
     Route::prefix('order')->group(function () {
         Route::match(['get', 'post'], 'orderlist', 'Admin\OrderController@orderList');

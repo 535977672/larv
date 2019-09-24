@@ -263,4 +263,13 @@ class Goods extends Service{
     public function aGoodsTeamAdd($data){
         return GoodsModel::insert($data);
     }
+    
+    public function aIsOnSale($ids, $status){
+        $sql = "(goods_id in ($ids))";
+        $ids = explode(',', $ids);
+        foreach($ids as $id){
+            $sql .= ' or (ids like %"'.$id.'":%)';
+        }
+        return GoodsModel::where(DB::raw($sql))->update(['is_on_sale' => $status]);
+    }
 }

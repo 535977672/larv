@@ -81,7 +81,7 @@
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">上架</label>
                                     <div class="layui-input-inline">
-                                        <input type="checkbox" name="is_on_sale" lay-skin="switch" checked>
+                                        <input type="checkbox" name="is_on_sale" lay-skin="switch">
                                     </div>
                                     <label class="layui-form-label">热门</label>
                                     <div class="layui-input-inline">
