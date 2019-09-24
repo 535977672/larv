@@ -79,7 +79,7 @@ layui.use(['comm', 'form', 'layer', 'jquery'], function(){
     ,layer = layui.layer
     ,$ = layui.jquery;
     $('.isonsale').on('click', function(){
-        isonsale($(this);
+        isonsale($(this));
     });
     function isonsale(obj){
         var data = $("tbody .layui-form-checked").not('.header').prev('input')

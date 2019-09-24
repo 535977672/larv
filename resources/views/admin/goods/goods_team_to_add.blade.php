@@ -64,17 +64,17 @@
                         </thead>
                         <tbody>
                             @foreach ($list as $l)
-							@if($l->goods->is_on_sale > 0)
+                            @if($l->goods['is_on_sale'] > 0)
                             <tr class="addgroup" data-gid="{{ $l->goods_id }}">
                                 <td><input type="checkbox" name="" lay-skin="primary" data-id="{{ $l->attr_id }}" data-gid="{{ $l->goods_id }}" data-p1="{{ $l->attr_price }}" data-p2="{{ $l->realprice }}"></td>
-                                <td>{{ $l->goods->goods_name }}</td>
+                                <td>{{ $l->goods['goods_name'] }}</td>
                                 <td>
                                     @if($l->img)
                                     <a class="c-red" target="_blank" href="{{ $l->img }}"><img src="{{ $l->img }}" height="50px" width="50px"></a>
                                     @elseif($l->color_id > 0 && $l->color->img)
-                                    <a class="c-red" target="_blank" href="{{ $l->color->img }}"><img src="{{ $l->color->img }}" height="50px" width="50px"></a>
+                                    <a class="c-red" target="_blank" href="{{ $l->color['img'] }}"><img src="{{ $l->color['img'] }}" height="50px" width="50px"></a>
                                     @else
-                                    <a class="c-red" target="_blank" href="{{ $l->goods->original_img }}"><img src="{{ $l->goods->original_img }}" height="50px" width="50px"></a>
+                                    <a class="c-red" target="_blank" href="{{ $l->goods['original_img'] }}"><img src="{{ $l->goods['original_img'] }}" height="50px" width="50px"></a>
                                     @endif
                                 </td>
                                 <td>属性价{{ price_format($l->attr_price) }}<br/>成本价{{ price_format($l->realprice) }}<br/>差价{{ price_format(bcsub($l->attr_price,$l->realprice)) }}</td>
@@ -82,7 +82,7 @@
                                 <td class="td-manage">
                                 </td>
                             </tr>
-							@endif
+                            @endif
                             @endforeach
                         </tbody>
                     </table>

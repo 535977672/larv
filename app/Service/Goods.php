@@ -265,17 +265,15 @@ class Goods extends Service{
     }
     
     public function aIsOnSale($ids, $status){
-        $sql = "(goods_id in ($ids))";
+        $sql = "((goods_id in ($ids))";
         $ids = explode(',', $ids);
         foreach($ids as $id){
-            $sql .= ' or (ids like %"'.$id.'":%)';
+            $sql .= ' or (ids like \'%"'.$id.'":%\')';
         }
-		$where = '';
-		if(status == 1){
-			$where = [
-				['type', '=', 1]
-			];
-		}
-        return GoodsModel::where($where)->where(DB::raw($sql))->update(['is_on_sale' => $status]);
+        $sql .= ')';
+        if($status == 1){
+            $sql .= " and type=1";
+        }
+        return DB::update('update m_goods set is_on_sale = '.$status.' where '.$sql);
     }
 }
