@@ -55,6 +55,8 @@ Route::prefix('member')->group(function () {
     Route::get('theme/{theme}', 'MemberController@setTheme');
 });
 Route::view('/argee', 'guide.agreement');
+Route::view('/flow', 'guide.flow');
+Route::view('/anonymous', 'guide.anonymous');
 
 
 Auth::routes();

@@ -35,14 +35,6 @@
                 订单
             </p>
         </a>
-        <a href="https://m.kuaidi100.com/app/query/?com=&nu=YT4053234734099&coname=meizu&callbackurl=http://test.test.com/test/kuaidi.html" class="weui-grid js_grid">
-            <div class="weui-grid__icon">
-                <img src="/static/img/login.png" alt="">
-            </div>
-            <p class="weui-grid__label">
-                快递查询
-            </p>
-        </a>
         @auth
         @if($uid == 1)
         <a href="javascript:;" class="weui-grid js_grid" id="theme-chose">
@@ -55,6 +47,32 @@
         </a>
         @endif
         @endauth
+    </div>
+    <div class="weui-cells">
+        <a class="weui-cell weui-cell_access" href="/anonymous">
+            <div class="weui-cell__hd"><img src="/static/img/anonymous.png" style="width: 24px;"></div>
+            <div class="weui-cell__bd">
+                <p>匿名购买</p>
+            </div>
+            <div class="weui-cell__ft">
+            </div>
+        </a>
+        <a class="weui-cell weui-cell_access" href="/flow">
+            <div class="weui-cell__hd"><img src="/static/img/flow.png" style="width: 24px;"></div>
+            <div class="weui-cell__bd">
+                <p>支付流程</p>
+            </div>
+            <div class="weui-cell__ft">
+            </div>
+        </a>
+        <a class="weui-cell weui-cell_access" href="/argee">
+            <div class="weui-cell__hd"><img src="/static/img/argee.png" style="width: 24px;"></div>
+            <div class="weui-cell__bd">
+                <p>用户协议</p>
+            </div>
+            <div class="weui-cell__ft">
+            </div>
+        </a>
     </div>
 </div>
 @auth
