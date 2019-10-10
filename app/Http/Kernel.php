@@ -59,5 +59,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'auth.admin' => \App\Http\Middleware\AuthAdmin::class,//admin路由登录判断
         'machine' => \App\Http\Middleware\CheckMachine::class,//机器访问检查
+        'accesslog' => \App\Http\Middleware\AccessLog::class,//机器访问检查
     ];
 }

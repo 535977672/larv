@@ -14,7 +14,8 @@ class Controller extends BaseController
     protected $request = '';
     public function __construct(Request $request) 
     { 
-        //$this->middleware('machine'); 
+        //$this->middleware('machine');
+        $this->middleware('accesslog'); 
         $this->request = $request;
         $this->initialize();
     }
