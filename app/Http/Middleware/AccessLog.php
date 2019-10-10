@@ -23,7 +23,7 @@ class AccessLog
             $request->method(),
             $request->url(),
             $request->userAgent(),
-            json_decode($request->all(), JSON_UNESCAPED_UNICODE),
+            json_encode($request->all(), JSON_UNESCAPED_UNICODE),
             time()
         ];
         DB::insert('insert into access_log (id, ip, method, url, agent, all, time) values (?, ?, ?, ?, ?, ?, ?)', $data);
