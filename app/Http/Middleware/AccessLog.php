@@ -28,6 +28,7 @@ class AccessLog
             time()
         ];
         DB::insert('insert into access_log (`id`, `ip`, `method`, `url`, `agent`,`from`, `all`, `time`) values (?, ?, ?, ?, ?, ?, ?, ?)', $data);
+        if(strpos($request->url(),'148.70.241.6') !== false) {exit;}
         return $next($request);
     }
 }
