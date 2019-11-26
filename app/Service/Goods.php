@@ -29,6 +29,10 @@ class Goods extends Service{
     public function getGoodsExt($goodsId){
         return GoodsExt::find($goodsId);
     }
+
+    public function getGoodsByName($goodsName){
+        return GoodsModel::where('goods_name', $goodsName)->first();
+    }
     
     public function getGoodsList($limit = 20, $where = []){
         return GoodsModel::where([
@@ -53,7 +57,7 @@ class Goods extends Service{
     }
     
     public function getGoodsDetail($id = 0, $field = ''){
-        if(!$field) $field = 'goods_id,goods_name,store_count,comment_count,shop_price,original_img,type,ids,sales_sum,addr';
+        if(!$field) $field = 'goods_id,goods_name,store_count,comment_count,shop_price,original_img,type,ids,sales_sum,addr,video';
         $select = DB::raw($field);
         $goods = GoodsModel::where('goods_id', $id)->select($select)->first();
         if(!$goods) return false;
@@ -139,8 +143,10 @@ class Goods extends Service{
             if(isset($data['limit']) && $data['limit']) $goodsModel->limit = $data['limit'];
             
             if(isset($data['addr']) && $data['addr']) $goodsModel->addr = $data['addr'];
-            if(isset($data['cost']) && $data['cost']) $goodsModel->cost = $data['cost']; 
-            
+            if(isset($data['cost']) && $data['cost']) $goodsModel->cost = $data['cost'];
+            if(isset($data['video']) && $data['video']) $goodsModel->video = $data['video'];
+            if(isset($data['ex']) && $data['ex']) $goodsModel->ex = $data['ex'];
+
             if(isset($data['ids']) && !$data['ids']) {
                 $goodsModel->ids = json_encode($data['ids']);
                 $goodsModel->type = 2;

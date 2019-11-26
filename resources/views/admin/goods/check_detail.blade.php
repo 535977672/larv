@@ -203,6 +203,27 @@
                                         @endforeach
                                     </div>
                                 </div>
+                                <!-- 视频 -->
+                                @if ($list->video)
+                                <hr class="layui-bg-green">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">视频</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="video"  class="layui-input" value="{{ $list->video }}">
+                                    </div>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="ex"  class="layui-input" value="{{ $list->ex }}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label"></label>
+                                    <div class="layui-input-block">
+                                        <video src="{{ $list->video }}" controls="controls" width="320" height="240" preload="auto">
+                                            浏览器版本过低
+                                        </video>
+                                    </div>
+                                </div>
+                                @endif
                                 <hr class="layui-bg-green">
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">详情</label>

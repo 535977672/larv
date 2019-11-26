@@ -50,9 +50,9 @@ class GoodsController extends AdminController
             $value->cover = json_decode($value->cover);
             $value->content = html_entity_decode($value->content, ENT_QUOTES);
             if(!empty($value->attr)){
-                $value->attr = json_decode($value->attr);
+                $value->attr = json_decode($value->attr, true);
                 foreach ($value->attr as $k => $v) {
-                    if(in_array(mb_substr($v, 0, 2), ['主要','生产','保质','产地','保修','有可', ':&'])){
+                    if(in_array(mb_substr($v, 0, 2), ['主要','生产','保质','产地','保修','有可', ':&','主图'])){
                         unset($value->attr[$k]);
                     }else if(mb_substr($v, 0, 4) == '品牌:&' && !$value->brand){
                         $value->brand = mb_substr($v, 9);
@@ -61,6 +61,9 @@ class GoodsController extends AdminController
             }
             if(!empty($value->price)){
                 $value->price = json_decode($value->price);
+            }
+            if(!empty($value->video)){
+                $value->ex = substr($value->video, strrpos($value->video, '.'));
             }
         }
         return view('admin.goods.check_detail', ['list'=>$list[0]]);
@@ -100,8 +103,13 @@ class GoodsController extends AdminController
             'shop_price' => intval(floatval($this->request->post('shop_price', 10000))*100),
             'cost_price' => intval(floatval($this->request->post('cost_price', 0))*100),
             'store_count' => intval($this->request->post('store_count', 10)),
+            'video' => $this->request->post('video', ''),
+            'ex' => $this->request->post('ex', '')
         ];
-        
+        if($this->goodsService->getGoodsByName($datas['goods_name'])){
+            return return_ajax(0, '商品已存在');
+        }
+
         $attrs = $this->request->post('attr', []);
         $attr = [];
         if($attrs){
