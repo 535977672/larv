@@ -176,7 +176,7 @@ class Goods extends Service{
 
 
                 foreach ($data['spec'] as $v) {
-                    if(isset($v['price_color_thumb']) && $v['price_color_thumb']){
+                    if(isset($v['price_color_thumb']) && ($v['price_color_thumb'] ||  $v['price_color_alt'])){
                         $goodsColor = new GoodsColor;
                         if($id) {
                             if(!isset($v['color_id']) || !$v['color_id']) throw new Exception('商品颜色ID丢失');
@@ -184,7 +184,7 @@ class Goods extends Service{
                         }
                         $goodsColor->goods_id = $goodsModel->goods_id;
                         if(stripos($v['price_color_thumb'], 'http') === false){
-                            $goodsColor->color = $v['price_color_thumb'];
+                            $goodsColor->color = $v['price_color_thumb']?:$v['price_color_alt'];
                             $goodsColor->color_img = '';
                             $goodsColor->img = '';
                         }else{

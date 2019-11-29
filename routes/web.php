@@ -41,6 +41,9 @@ Route::prefix('order')->group(function () {
     Route::get('list', 'OrderController@orderList');
     Route::post('del/{id}', 'OrderController@orderDel');
     Route::post('quest/{id}', 'OrderController@orderQuest');
+    Route::get('cart', 'OrderController@orderCart');
+    Route::post('requestcart', 'OrderController@orderRequestCart');
+    Route::get('requestcartd/datakey', 'OrderController@orderRequestCartData')->where(['datakey' => '[0-9a-za-Z]{32}']);
 });
 Route::prefix('goods')->group(function () {
     Route::get('/', 'GoodsController@goods');

@@ -56,7 +56,7 @@
             <div class="goods-content f-14">
                 @if ($goods->video)
                 <div>
-                <video src="{{ $goods->video }}" poster="{{ $goods->ext->image_url[0]['preview'] }}" controls="controls" width="100%" preload="auto" style="clear:both;display:block;margin:auto">
+                <video src="{{ $goods->video }}" poster="{{ $goods->ext->image_url[0]['preview'] }}" controls="controls" controlslist="nodownload" width="100%" preload="auto" style="clear:both;display:block;margin:auto">
                     浏览器版本过低
                 </video>
                 </div>
@@ -94,7 +94,7 @@
                         <i class="price-symbol">¥</i>
                         <span class="price" id="select-price" data-price="{{ price_format($goods->shop_price) }}" data-oprice="{{ price_format($goods->shop_price) }}">{{ price_format($goods->shop_price) }}</span>
                     </div>
-                    <div class="mb10">已选：<span id="color-select"></span><span id="select-attr"></span><span id="attr-select"></span></div>
+                    <div class="mb10">已选：<span id="spec-select"><span id="color-select"></span><span id="select-attr"></span><span id="attr-select"></span></span></div>
                 </div>
                 @if ($goods->color)
                 <div class="m-lineb m-cl pt10">
@@ -147,7 +147,12 @@
                 </div>
                 <div class="m-lineb">
                     <div class="mb10 pt10">
+                        @if($goods->type == 1)
+                        <button id="select-store" class="select-button-line" style="width: 50%;float: left;background-color: #ccc;color: black;" data-type="{{ $goods->type }}" data-goodsId="{{ $goods->goods_id }}">加入购物车</button>
+                        <button id="select-buy" class="select-button-line" style="width: 50%;float: right;" data-type="{{ $goods->type }}">立即购买</button>
+                        @else
                         <button id="select-buy" data-type="{{ $goods->type }}">立即购买</button>
+                        @endif
                     </div>
                 </div>
             </div>

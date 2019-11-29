@@ -154,23 +154,27 @@
                                     <div class="layui-col-md10">
                                         @foreach ($list->price as $k => $price)
                                         <hr class="layui-bg-orange">
-                                        @isset($price->preview)
+                                        @isset($price->thumb)
                                         <div class="layui-col-md12 mt10 spec">
                                             <label class="layui-form-label">颜色</label>
                                             <div class="layui-input-inline">
-                                                <input type="text" name="price_color_thumb[]"  placeholder="颜色" class="layui-input" value="{{ $price->thumb }}">
+                                                <input type="text" name="price_color_thumb[]"  placeholder="颜色" class="layui-input" value="@isset($price->thumb){{ $price->thumb }}@endisset">
                                             </div>
                                             <label class="layui-form-label">预览</label>
                                             <div class="layui-input-inline">
-                                                <input type="text" name="price_color_preview[]"  placeholder="颜色" class="layui-input" value="{{ $price->preview }}">
+                                                <input type="text" name="price_color_preview[]"  placeholder="颜色" class="layui-input" value="@isset($price->preview){{ $price->preview }}@endisset">
                                             </div>
                                             <label class="layui-form-label">颜色名</label>
                                             <div class="layui-input-inline">
-                                                <input type="text" name="price_color_alt[]"  placeholder="颜色名" class="layui-input" value="{{ $price->alt }}">
+                                                <input type="text" name="price_color_alt[]"  placeholder="颜色名" class="layui-input" value="@isset($price->alt){{ $price->alt }}@endisset">
                                             </div>
+                                            @isset($price->thumb)
+                                            @if($price->thumb)
                                             <div class="layui-input-inline">
                                                 <img src="{{ $price->thumb }}" width="60" height="60" alt="" style="border: 1px #FD482C solid;">
                                             </div>
+                                            @endif
+                                            @endisset
                                         </div>
                                         @endisset
                                         @foreach ($price->sku as  $sku)
@@ -204,7 +208,7 @@
                                     </div>
                                 </div>
                                 <!-- 视频 -->
-                                @if ($list->video)
+                                @if($list->video)
                                 <hr class="layui-bg-green">
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">视频</label>
@@ -252,17 +256,17 @@ layui.use(['comm', 'form','layedit','layer'], function(){
     ,comm = layui.comm
     ,layedit = layui.layedit
     ,layer = layui.layer;
-    
+
     var content = layedit.build('content', {
         height: 3000 //设置编辑器高度
     });
     //layedit.getContent(content);
-    
+
     var price = 0;
     if($('.price_spec_price').length > 0) price = $('.price_spec_price').first().val();
     $('#cost_price').val(price);
     $('#shop_price').val(Number(price) + 50);
-    
+
     //监听提交
     form.on('submit(form)', function(data){
         data.field.content = layedit.getContent(content);
@@ -277,7 +281,7 @@ layui.use(['comm', 'form','layedit','layer'], function(){
         });
         return false;
     });
-    
+
     $('.cancel1').on('click', function(){
         $(this).parent().parent().remove();
     });

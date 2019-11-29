@@ -12,9 +12,14 @@ function checkCache(){
     var len = 4194304;
     var l1 = JSON.stringify(localStorage).length;
     var l2 = JSON.stringify(sessionStorage).length;
-    if(l1 > len || l2 > len){
+    if(l1 > len){
         localStorage.clear();
+    }
+    if(l2 > len){
         sessionStorage.clear();
+        winReload();
+    }
+    if(l1 > len || l2 > len){
         winReload();
     }
 }
@@ -230,7 +235,7 @@ function winHref(url){
     window.location.href = url;
 }
 
-function historyBack(n){
+function historyBack(n = -1){
     history.go(n);
 }
 
@@ -448,7 +453,10 @@ function initDetail(){
         selectNumSet(2);
     });
     $('#select-buy').on('click', function(){
-        selectBuy();
+        selectBuy(false);
+    });
+    $('#select-store').on('click', function(){
+        selectBuy(true);
     });
 }
 
@@ -494,10 +502,10 @@ function selectNumSet(type){
     var num = Number($('#select-num').text());
     var price = (Number($('#select-price').attr('data-price'))*100).toFixed();
     if(type === 1){
-        if(num >= 10) return false;
+        if(num >= 10000) return false;
         num++;
     }else if(type === 2){
-        if(num == 1) return false;
+        if(num <= 1) return false;
         num--;
     }else if(type === 3){
         num = 1;
@@ -509,7 +517,7 @@ function selectNumSet(type){
     $('#select-num').text(num);
 }
 
-function selectBuy(){
+function selectBuy($store = false){
     var type = $('#select-buy').attr('data-type')
     ,attrO = ''
     ,num = Number($('#select-num').text())
@@ -522,20 +530,38 @@ function selectBuy(){
     if(price <= 0){
         showMsg('参数错误，请刷新重试');return;
     }
-    winHref('/order/request/'+type+'/'+attrO.attr('data-id')+'/'+num+'/'+price+'/'+getSetId());
+    //立即购买
+    if(!$store) winHref('/order/request/'+type+'/'+attrO.attr('data-id')+'/'+num+'/'+price+'/'+getSetId());
+    else {
+        //购物车
+        $goods = {};
+        $goods.type = type;
+        $goods.cart_id = attrO.attr('data-id');
+        $goods.num = num;
+        $goods.price = price;
+        $goods.name = $('.goods-items .goods-name').text();
+        $goods.spec = $('#spec-select').text();
+        $goods.privew = $('#select-img').attr('src');
+        $goods.total = num*price;
+        $goods.goods_id =  $('#select-store').attr('data-goodsId');
+        setCartGoods($goods);
+        showMsg("加入购物车成功");
+    }
 }
 
 function orderBuy(){
     ajax('/order/add', $('#myform').serializeJson(), function(res){
         if(res.status !== 200){
             showMsg(res.msg);
-            if(res.status === 400) winReload();
+            //if(res.status === 400) winReload();
+            //if(res.status === 401) historyBack(-1);
             return;
         }
         var data = res.data;
         $('#order-buy').attr('data-clock', '1');
         $('#order-buy').attr('data-oid', data.order_id);
         setOrderGoods(data);
+        if($('#scode').length) delAllCartGoods();
         winHref('/order/pay/'+data.order_id+'?back=-3');
     });
 }
@@ -785,4 +811,147 @@ function popup(id){
     $("#"+id+" .weui-popup__overlay,.close-popup").on('click', function(){
         document.body.style.overflow = 'auto';
     });
+}
+
+//购物车
+function initCartList($type = 2){
+    if($type === 1){
+
+    }else if($type === 2){
+        $('.cartlist').append(cartListHtml(getCartGoods(), $type));
+    }
+    initCart();
+}
+
+function initCart(){
+    $('#money').text('￥'+(getCartPrice()/100).toFixed(2));
+    $('.select-numu').on('click', function(){
+        selectCartNumSet(1, $(this));
+    });
+    $('.select-numd').on('click', function(){
+        selectCartNumSet(2, $(this));
+    });
+    $('#cart-buy').on('click', function(){
+        var $oGoods = getCartGoods();
+        if(!$oGoods) {
+            showMsg('没有商品信息');
+            return;
+        }
+        ajax('/order/requestcart', {attr: $oGoods}, function(res){
+            if(res.status == 200){
+                var datakey = res.data.datakey;
+                winHref('/order/requestcartd/'+datakey);
+            }else{
+                showMsg(res.msg, 5);
+            }
+        });
+    });
+}
+
+function selectCartNumSet(type, obj){
+    var sobj = obj.siblings('.select-num'), pobj = $('#cart-price-'+sobj.attr('data-id'));
+    var num = Number(sobj.text());
+    var price = Number(sobj.attr('data-price'));
+    if(type === 1){
+        if(num >= 10000) return false;
+        num++;
+    }else if(type === 2){
+        if(num <= 0) return false;
+        num--;
+    }
+    if(num){
+        price = (price*num/100).toFixed(2);
+        pobj.text(price);
+        sobj.text(num);
+        updateCartGoods(sobj.attr('data-id'), num);
+        $('#money').text('￥'+(getCartPrice()/100).toFixed(2));
+    }else{
+        delCartGoods(sobj.attr('data-id'));
+        obj.parents('.weui-panel__bd').remove();
+        $('#money').text('￥'+(getCartPrice()/100).toFixed(2));
+    }
+}
+
+function getCartPrice(){
+    var $oGoods = getCartGoods();
+    var price = 0;
+    if($oGoods){
+        $.each($oGoods, function(i, v){
+            price = Number(price)+Number(v.total);
+        });
+    }
+    return price;
+}
+
+function cartListHtml(goods){
+    var html = '';
+    html = '<div class="weui-panel weui-panel_access">';
+    $.each(goods, function(i, g){
+        if(isEmpty(g.cart_id)) return true;
+        html += '<div class="weui-panel__bd">'
+                        +'<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">'
+                            +'<div class="weui-media-box__hd">'
+                                +'<img class="weui-media-box__thumb" src="'+g.privew+'" onclick="location=\'/goods/detail/'+g.goods_id+'\'">'
+                            +'</div>'
+                            +'<div class="weui-media-box__bd">'
+                                +'<h4 class="weui-media-box__title f-14 m-name">'+g.name+'</h4>'
+                                +'<p class="weui-media-box__desc">规格 '+g.spec+'</p>'
+                                +'<p class="weui-media-box__desc">金额￥<span class="cart-price" id="cart-price-'+g.cart_id+'">'+Number(g.total/100).toFixed(2)+'</span>'
+                                    +'<span class="m-fr"><button class="select-numd">-</button><span class="pl10 pr10 select-num" data-id="'+g.cart_id+'" data-price="'+g.price+'">'+g.num+'</span><button class="select-numu">+</button></span></p>'
+                            +'</div>'
+                        +'</a>'
+                    +'</div>';
+    });
+    html += '</div>';
+    return html;
+}
+
+function getCartGoods(){
+    return getlocalData('5e4e49abda58uh795gde3wsd87n0vx5g');
+}
+
+function delAllCartGoods(){
+    dellocalData('5e4e49abda58uh795gde3wsd87n0vx5g');
+}
+
+function delCartGoods(cartId){
+    var goods = getCartGoods();
+    goods = goods.filter(function(item){ return item.cart_id != cartId;});
+    delAllCartGoods();
+    if(goods.length>0) setlocalData('5e4e49abda58uh795gde3wsd87n0vx5g', goods);
+    return true;
+}
+
+function setCartGoods($goods){
+    $oGoods = getCartGoods();
+    if($oGoods){
+        var add = true;
+        $.each($oGoods, function(i, v){
+            if(v.cart_id == $goods.cart_id) {
+                v.num = v.num + $goods.num;
+                v.price = $goods.price;
+                v.total = v.num*v.price;
+                add = false;
+            }
+        });
+        if(add) $oGoods = $oGoods.concat($goods);
+        delAllCartGoods();
+        setlocalData('5e4e49abda58uh795gde3wsd87n0vx5g', $oGoods);
+    }else{
+        setlocalData('5e4e49abda58uh795gde3wsd87n0vx5g', [$goods]);
+    }
+}
+
+function updateCartGoods($cartId, $num){
+    $oGoods = getCartGoods();
+    if($oGoods){
+        $.each($oGoods, function(i, v){
+            if(v.cart_id == $cartId) {
+                v.num = $num;
+                v.total = $num * v.price;
+            }
+        });
+        delAllCartGoods();
+        setlocalData('5e4e49abda58uh795gde3wsd87n0vx5g', $oGoods);
+    }
 }

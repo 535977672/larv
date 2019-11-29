@@ -134,6 +134,6 @@ class File extends Service{
         
         //$redis = Redis::connection();
         //$redis->hSet('pay', $uniqid, time());
-        return env('APP_URL').'/storage/pay/' . $uniqid;
+        return is_file($dirName)?env('APP_URL').'/storage/pay/' . $uniqid : false;
     }
 }

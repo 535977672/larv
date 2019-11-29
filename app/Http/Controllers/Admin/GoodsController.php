@@ -48,6 +48,7 @@ class GoodsController extends AdminController
         $list = DB::select('select * from tb_attr where id = :id', ['id' => $id]);
         foreach ($list as $key => $value) {
             $value->cover = json_decode($value->cover);
+            array_pop($value->cover);
             $value->content = html_entity_decode($value->content, ENT_QUOTES);
             if(!empty($value->attr)){
                 $value->attr = json_decode($value->attr, true);
@@ -62,6 +63,7 @@ class GoodsController extends AdminController
             if(!empty($value->price)){
                 $value->price = json_decode($value->price);
             }
+            $value->video = str_replace(array("\n","\r","\r\n"), '', $value->video);
             if(!empty($value->video)){
                 $value->ex = substr($value->video, strrpos($value->video, '.'));
             }
@@ -146,11 +148,10 @@ class GoodsController extends AdminController
         $price_spec_count = $this->request->post('price_spec_count', '');
         $price_spec_real_price = $this->request->post('price_spec_real_price', '');
         $price_spec_real_count = $this->request->post('price_spec_real_count', '');
-       
         $spec = [];
         if($price_color_thumb){
             foreach ($price_color_thumb as $k=>$color){
-                if($color){
+                if($color || $price_color_alt[$k]){
                     $temp = [];
                     $temp['price_color_thumb'] = $color;
                     $temp['price_color_preview'] = $price_color_preview[$k];
