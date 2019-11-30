@@ -585,7 +585,6 @@ function initPay(){
                 minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
                 second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
             }
-            console.log(hour,minute,second);
             if (hour <=0 && minute <= 0 && second <= 0) {
                 qrcode_timeout();
                 clearInterval(myTimer);
