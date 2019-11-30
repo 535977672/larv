@@ -13,7 +13,7 @@
                 <div class="weui-media-box__bd">
                     <h4 class="weui-media-box__title f-14 m-name">{{ $params['goods_name'] }}</h4>
                     <p class="weui-media-box__desc">规格{{ $params['colorname'] }} {{ $params['attr'] }} 数量x{{ $params['num'] }}</p>
-                    <p class="weui-media-box__desc">金额 ￥{{ $params['total'] }}</p>
+                    <p class="weui-media-box__desc">金额 ￥{{ price_format($params['total']) }}</p>
                 </div>
             </a>
         </div>

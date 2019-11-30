@@ -214,6 +214,7 @@ class OrderController extends Controller
             $dataJson['attrs'][] = $dataJson;
         }
         $total_amount = 0;
+        $goodsParam = [];
         $goodsModel = new Goods();
         foreach($dataJson['attrs'] as $p){
             $goodsId = $p['goods_id'];
@@ -246,7 +247,6 @@ class OrderController extends Controller
             $param['type'] = $goods->type;
             $param['ids'] = $goods->ids;
             $spec_key = '';
-            $goodsParam = [];
             $total_amount = bcadd($total_amount, bcmul($price, $num));
             if($goods->type == 1){
                 if($p['colorname'] && $p['attr']) $spec_key = $p['colorname'].'-'.$p['attr'];
