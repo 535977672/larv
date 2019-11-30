@@ -4,15 +4,16 @@
 <div class="container">
     <div class="weui-panel weui-panel_access">
         <div class="weui-panel__hd">订单确认</div>
-        @foreach($params['attrs'] as $param)
+        @foreach($param['attrs'] as $params)
         <div class="weui-panel__bd">
             <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
                 <div class="weui-media-box__hd">
-                    <img class="weui-media-box__thumb" src="{{ $param['img'] }}">
+                    <img class="weui-media-box__thumb" src="{{ $params['img'] }}">
                 </div>
                 <div class="weui-media-box__bd">
-                    <h4 class="weui-media-box__title f-14 m-name">{{ $param['goods_name'] }}</h4>
-                    <p class="weui-media-box__desc">规格{{ $param['colorname'] }} {{ $param['attr'] }} 数量x{{ $param['num'] }} 金额 {{ $param['total'] }}</p>
+                    <h4 class="weui-media-box__title f-14 m-name">{{ $params['goods_name'] }}</h4>
+                    <p class="weui-media-box__desc">规格{{ $params['colorname'] }} {{ $params['attr'] }} 数量x{{ $params['num'] }}</p>
+                    <p class="weui-media-box__desc">金额 ￥{{ $params['total'] }}</p>
                 </div>
             </a>
         </div>

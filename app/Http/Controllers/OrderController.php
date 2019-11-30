@@ -548,7 +548,7 @@ class OrderController extends Controller
         }
         $param = json_decode ($dataJson, true);
         $param['datakey'] = $datakey;
-        return $this->successful(['params' => $param]);
+        return $this->successful(['param' => $param]);
     }
     /**
      * 显示支付信息
