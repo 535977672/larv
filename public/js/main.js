@@ -585,6 +585,7 @@ function initPay(){
                 minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
                 second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
             }
+            console.log(hour,minute,second);
             if (hour <=0 && minute <= 0 && second <= 0) {
                 qrcode_timeout();
                 clearInterval(myTimer);
@@ -622,7 +623,7 @@ function initPay(){
         $('#show_qrcode').attr("src","/static/img/qrcode_timeout.png");
         $('#msg').html("<h1>支付页面已过期</h1>");
         setTimeout(function(){
-            historyBack(window.location.href.substr(-2));
+            //historyBack(window.location.href.substr(-2));
         }, 3000);
     }
     $().ready(function(){
