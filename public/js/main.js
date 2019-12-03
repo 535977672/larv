@@ -973,6 +973,7 @@ function updateCartGoods($cartId, $num){
 
 function cate(){
     $('.weui-flex__item').on('click', function(){
+        if($(this).find('div').hasClass('c-cate-s')) return;
         var sex = $(this).attr('data-sex');
         $(this).siblings('div').find('div').removeClass('c-cate-s');
         $(this).find('div').addClass('c-cate-s');
