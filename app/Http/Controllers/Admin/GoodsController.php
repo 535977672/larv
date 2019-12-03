@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Service\Goods as GoodsService;
+use App\Model\Category;
+use App\Model\SexCate;
 
 class GoodsController extends AdminController
 {
@@ -108,6 +110,8 @@ class GoodsController extends AdminController
             'video' => $this->request->post('video', ''),
             'ex' => $this->request->post('ex', '')
         ];
+        $cate = $this->request->post('cate', '');
+        $sex = $this->request->post('sex', 0);
         if($this->goodsService->getGoodsByName($datas['goods_name'])){
             return return_ajax(0, '商品已存在');
         }
@@ -193,6 +197,14 @@ class GoodsController extends AdminController
             }
         }
         $datas['spec'] = $spec;
+        $datas['sex'] = $sex;
+        if($cate){
+            $cated = Category::addFirstOrCreate(['name' => $cate], ['pid' => 0, 'sort' => 0, 'pic' => '', 'is_show' => 0, 'level' => 1]);
+            $datas['cid'] = $cated->id;
+            if($sex){
+                SexCate::addFirstOrCreate(['sex' => $sex, 'cid' => $cated->id], []);
+            }
+        }
         $goods = new GoodsService();
         if($goods->saveGoods($datas) === false){
             return return_ajax(0, $goods->getErrorMsg());

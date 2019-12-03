@@ -37,9 +37,17 @@ class GoodsController extends Controller
     public function search()
     {
         $keywords = $this->request->get('keywords', '');
+        $cid = $this->request->get('cid', 0);
+        $sex = $this->request->get('sex', 0);
+        $hot = $this->request->get('hot', 0);
+        $order = $this->request->get('order', 'goods_id');
+        $asc = $this->request->get('asc', 0);
         $where = [];
         if($keywords) $where[] = ['goods_name', 'like', "%$keywords%"];
-        $goods = $this->goodsModel->getGoodsList(20, $where);
+        if($cid) $where[] = ['cid', '=', $cid];
+        if($sex) $where[] = ['sex', '=', $sex];
+        if($hot) $where[] = ['hot', '=', $hot];
+        $goods = $this->goodsModel->getGoodsList(20, $where, $order, $asc);
         return $this->successful('goods.search', ['list' => $goods, 'keywords' => $keywords]);
     }
     

@@ -48,6 +48,23 @@
                                     <div class="layui-form-mid layui-word-aux"><a href="{{ $list->url }}" target="_blank">源地址</a></div>
                                 </div>
                                 <div class="layui-form-item">
+                                    <label class="layui-form-label">分类</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="cate"  placeholder="分类" class="layui-input" value="{{ $list->cate }}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">性别</label>
+                                    <div class="layui-input-inline">
+                                        <select name="sex" lay-filter="sex">
+                                            <option value="0" selected="">不限</option>
+                                            <option value="1">男</option>
+                                            <option value="2">女</option>
+                                            <option value="3">童装</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
                                     <label class="layui-form-label">品牌</label>
                                     <div class="layui-input-inline">
                                         <input type="text" name="brand"  placeholder="品牌" class="layui-input" value="{{ $list->brand }}">

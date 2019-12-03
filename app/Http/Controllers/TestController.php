@@ -53,6 +53,8 @@ class TestController extends Controller
         //$this->image3
         
         //$this->pays();
+
+        $this->models();
         
         return return_ajax(200,'1212');
     }
@@ -635,5 +637,10 @@ class TestController extends Controller
     public function pays() {
        $pay = new Pay;
        $pay->payExpireCheck();
+    }
+
+    public function models() {
+        $re = Test::addFirstOrCreate(['name'=>'1','code'=> 18], ['code'=> 13, 'times'=>11]);
+        var_dump($re);var_dump($re->id);
     }
 }

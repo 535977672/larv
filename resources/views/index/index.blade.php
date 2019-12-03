@@ -24,7 +24,7 @@
       <div class="weui-tab__bd">
         <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active" data-url="/index/main">
         </div>
-        <div id="tab2" class="weui-tab__bd-item" data-url="/index/hot">
+        <div id="tab2" class="weui-tab__bd-item" data-url="/cate/list">
         </div>
         <div id="tab3" class="weui-tab__bd-item" data-url="/order/cart">
         </div>
@@ -41,13 +41,13 @@
         </a>
         <a href="/?nav=2" class="weui-tabbar__item @if ($nav == 2)weui-bar__item--on @endif">
           <div class="weui-tabbar__icon">
-            <img src="/static/img/hot.png" alt="">
+            <img src="/static/img/cate.png" alt="">
           </div>
-          <p class="weui-tabbar__label">热门</p>
+          <p class="weui-tabbar__label">分类</p>
         </a>
         <a href="/?nav=3" class="weui-tabbar__item @if ($nav == 3)weui-bar__item--on @endif">
           <div class="weui-tabbar__icon">
-            <img src="/static/img/see.png" alt="">
+            <img src="/static/img/cart.png" alt="">
           </div>
           <p class="weui-tabbar__label">购物车</p>
         </a>

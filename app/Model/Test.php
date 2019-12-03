@@ -56,7 +56,7 @@ class Test extends Model
      * 过滤 HTTP 请求传入了非预期的字段参数
      * @var array
      */
-    protected $fillable = ['id', 'name', 'code', 'json'];
+    protected $fillable = ['id', 'name', 'code', 'json', 'times'];
     
     /**
      * 不可被批量赋值的属性。
@@ -194,5 +194,8 @@ class Test extends Model
         'code' => 'integer',
         'json' => 'array'//保存时自动json
     ];
-    
+
+    public static function addFirstOrCreate($key, $data) {
+        return self::firstOrCreate($key, $data);
+    }
 }

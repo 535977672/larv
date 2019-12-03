@@ -34,14 +34,14 @@ class Goods extends Service{
         return GoodsModel::where('goods_name', $goodsName)->first();
     }
     
-    public function getGoodsList($limit = 20, $where = []){
+    public function getGoodsList($limit = 20, $where = [], $order = 'goods_id', $asc = 0){
         return GoodsModel::where([
                 //['store_count', '>', 0],
                 ['is_on_sale', '=', 1],
             ])
             ->where($where)
             ->select(DB::raw('goods_id,goods_name,shop_price,original_img'))
-            ->orderBy('goods_id', 'desc')
+            ->orderBy($order, $asc?'asc':'desc')
             ->simplePaginate($limit);
     }
     
@@ -88,7 +88,14 @@ class Goods extends Service{
         }else{
             $goods->goods = $this->getSubGoods($goods->ids);
         }
+        $this->addView($id);
         return $goods;
+    }
+
+    public function addView($id = '') {
+        $goods = GoodsModel::where('goods_id', $id)->first();
+        $goods->view++;
+        return $goods->save();
     }
     
     public function getSubGoods($ids = '', $field = '') {
@@ -140,12 +147,14 @@ class Goods extends Service{
             $goodsModel->is_hot = $data['is_hot'];
             $goodsModel->give_integral = $data['give_integral'];
             $goodsModel->goods_type = $data['type'];
+            $goodsModel->sex = $data['sex'];
             if(isset($data['limit']) && $data['limit']) $goodsModel->limit = $data['limit'];
             
             if(isset($data['addr']) && $data['addr']) $goodsModel->addr = $data['addr'];
             if(isset($data['cost']) && $data['cost']) $goodsModel->cost = $data['cost'];
             if(isset($data['video']) && $data['video']) $goodsModel->video = $data['video'];
             if(isset($data['ex']) && $data['ex']) $goodsModel->ex = $data['ex'];
+            if(isset($data['cid']) && $data['cid']) $goodsModel->cid = $data['cid'];
 
             if(isset($data['ids']) && !$data['ids']) {
                 $goodsModel->ids = json_encode($data['ids']);

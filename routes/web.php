@@ -57,6 +57,11 @@ Route::prefix('member')->group(function () {
     Route::get('index', 'MemberController@index');
     Route::get('theme/{theme}', 'MemberController@setTheme');
 });
+Route::prefix('cate')->group(function () {
+    Route::get('list', 'CateController@cateList');
+    Route::get('sex/{sex}', 'CateController@cateListBySex')->where(['sex' => '[0-3]{1}']);
+});
+
 Route::view('/argee', 'guide.agreement');
 Route::view('/flow', 'guide.flow');
 Route::view('/anonymous', 'guide.anonymous');

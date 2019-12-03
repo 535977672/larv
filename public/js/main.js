@@ -258,11 +258,26 @@ function animOnScrollLoad(id){
     });
 }
 
+function parseUrl(){
+    var url = window.location.href;
+    var arr = [];
+    if(url.indexOf("?") != -1){
+        arr = url.split("?")[1].split("&");
+    }
+    var obj = {};
+    for (var i of arr) {
+        obj[i.split("=")[0]] = i.split("=")[1];
+    }
+    return obj;
+}
+
 function loadDataMain(){
     if($('#grid li').length < 1) return;
     $('#grid').addClass('effect-'+(Math.ceil(Math.random()*7)+1));
     animOnScrollLoad('grid');
-    loadData('/goods', {}, function(goods){
+    var data = parseUrl();
+    data.keywords = $('#searchInput').val();
+    loadData('/goods/search', data, function(goods){
         var html = '';
         $.each(goods, function(i, g){
             html = html + '<li><div><a href="/goods/detail/'+g.goods_id+'"><img  src="'+g.original_img+'" alt=""><p class="goods-name m-name">'+g.goods_name+'</p></a></div></li>';
@@ -954,4 +969,33 @@ function updateCartGoods($cartId, $num){
         delAllCartGoods();
         setlocalData('5e4e49abda58uh795gde3wsd87n0vx5g', $oGoods);
     }
+}
+
+function cate(){
+    $('.weui-flex__item').on('click', function(){
+        var sex = $(this).attr('data-sex');
+        $(this).siblings('div').find('div').removeClass('c-cate-s');
+        $(this).find('div').addClass('c-cate-s');
+        if(sex>0){
+            ajax('/cate/sex/'+sex, {}, function(res){
+                $('.m-cate').html(cateHtml(res.data.list, sex));
+            }, 'GET');
+        }else{
+            ajax('/cate/list/', {}, function(res){
+                $('.m-cate').html(cateHtml(res.data.list, sex));
+            }, 'GET');
+        }
+    });
+}
+
+function cateHtml(list, sex){
+    var html = '';
+    $.each(list, function(i, g){
+        if(sex>0){
+            html += '<a href="/goods/search?cid='+g.cid+'&sex='+sex+'">'+g.cate.name+'</a>';
+        }else{
+            html += '<a href="/goods/search?cid='+g.id+'&sex='+sex+'">'+g.name+'</a>';
+        }
+    });
+    return html;
 }
