@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', '分类')
 @section('content')
-<div class="container m-top bgc-ec">
+<div class="container">
     <div class="m-cate-base mt5 p5 weui-flex t-ac">
         <div class="weui-flex__item" data-sex="0"><div class="c-cate-b c-cate-s">全部</div></div>
         <div class="weui-flex__item" data-sex="1"><div class="c-cate-b">男装</div></div>
