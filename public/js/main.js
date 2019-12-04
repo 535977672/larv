@@ -981,11 +981,11 @@ function cate(){
         if(sex>0){
             ajax('/cate/sex/'+sex, {keywords: keywords}, function(res){
                 $('.m-cate').html(cateHtml(res.data.list, sex));
-            }, 'GET');
+            }, 'GET', 0, 1);
         }else{
             ajax('/cate/list/', {keywords: keywords}, function(res){
                 $('.m-cate').html(cateHtml(res.data.list, sex));
-            }, 'GET');
+            }, 'GET', 0, 1);
         }
     });
 }
