@@ -67,6 +67,10 @@ layui.define(['layer', 'jquery'], function(exports){
         });
     };
 
+    obj.msg = function (msg, icon = 1){
+        layer.msg(msg, {icon: icon});
+    };
+
     //刷新
     obj.winReload = function (par = 0){
         if(par === 0)
@@ -92,6 +96,30 @@ layui.define(['layer', 'jquery'], function(exports){
             obj.winReload();
         });
     };
+
+    obj.checkbox = function () {
+        $("thead .layui-form-checkbox").on('click', function(){
+            if($(this).hasClass('layui-form-checked')){
+                $("tbody .layui-form-checkbox").not('.layui-form-checked').click();
+            }else{
+                $("tbody .layui-form-checked").click();
+            }
+        });
+    }
+
+    obj.checkIds = function () {
+        var data = $("tbody .layui-form-checked").not('.header').prev('input')
+            ,ids = '';
+        $.each(data, function(i,v){
+            ids = ids + ',' +$(v).attr('data-id');
+        });
+        ids = ids.substr(1);
+        if(obj.isEmpty(ids)) {
+            obj.msg('请选择数据', 2);
+            return false;
+        }
+        return ids;
+    }
 
     exports('comm', obj);
 });  

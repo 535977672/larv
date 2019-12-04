@@ -57,10 +57,10 @@
                                     <label class="layui-form-label">性别</label>
                                     <div class="layui-input-inline">
                                         <select name="sex" lay-filter="sex">
-                                            <option value="0" selected="">不限</option>
-                                            <option value="1">男</option>
-                                            <option value="2">女</option>
-                                            <option value="3">童装</option>
+                                            <option value="0" @if($list->sex == 0)selected=""@endif>不限</option>
+                                            <option value="1" @if($list->sex == 1)selected=""@endif>男</option>
+                                            <option value="2" @if($list->sex == 2)selected=""@endif>女</option>
+                                            <option value="3" @if($list->sex == 3)selected=""@endif>童装</option>
                                         </select>
                                     </div>
                                 </div>

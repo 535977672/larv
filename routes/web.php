@@ -112,6 +112,7 @@ Route::prefix('admin')->group(function () {
         Route::get('goodsteamtoadd', 'Admin\GoodsController@goodsTeamToAdd');
         Route::post('goodsteamadd', 'Admin\GoodsController@goodsTeamAdd');
         Route::post('isonsale', 'Admin\GoodsController@isOnSale');
+        Route::post('mulcheck', 'Admin\GoodsController@mulCheck');
     });
     Route::prefix('order')->group(function () {
         Route::match(['get', 'post'], 'orderlist', 'Admin\OrderController@orderList');

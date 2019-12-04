@@ -33,6 +33,10 @@ class Goods extends Service{
     public function getGoodsByName($goodsName){
         return GoodsModel::where('goods_name', $goodsName)->first();
     }
+
+    public function getGoodsByUrl($url){
+        return GoodsExt::where('original_url', $url)->first();
+    }
     
     public function getGoodsList($limit = 20, $where = [], $order = 'goods_id', $asc = 0){
         return GoodsModel::where([

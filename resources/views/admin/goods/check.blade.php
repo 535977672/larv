@@ -20,6 +20,9 @@
                     <button class="layui-btn layui-btn-danger delAll" data-url="g/cd">
                         <i class="layui-icon"></i>批量删除
                     </button>
+                    <button class="layui-btn layui-btn-normal mulYes">
+                        <i class="layui-icon layui-icon-template-1"></i>批量确认
+                    </button>
                 </div>
                 <div class="layui-card-body ">
                     <table class="layui-table layui-form">
@@ -43,6 +46,13 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="layui-card-body ">
+                    <div class="page">
+                        <div>
+                            {{ $list->links() }}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -50,9 +60,31 @@
 @endsection
 @section('script')
 <script>
-layui.use(['comm', 'form'], function(){
+layui.use(['comm', 'form', 'jquery'], function(){
     var form = layui.form
-    ,comm = layui.comm;
+    ,comm = layui.comm
+    ,$ = layui.jquery;
+    comm.checkbox();
+    $('.mulYes').on('click', function () {
+        var ids = comm.checkIds();
+        if(!ids) return;
+        comm.confirm('批量确认', function(){
+            comm.ajax('/admin/g/mulcheck', {ids: ids}, function(res){
+                if(res.status !== 200){
+                    comm.msg(res.msg, 2);
+                }else{
+                    if(res.data) {
+                        comm.msg('有部分错误信息', 2);
+                        console.log(res.data);
+                    }else{
+                        comm.msg('操作成功', 1);
+                        comm.winReload();
+                    }
+                }
+            });
+            return false;
+        });
+    });
 });
 </script>
 @endsection
