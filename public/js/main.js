@@ -975,14 +975,15 @@ function cate(){
     $('.weui-flex__item').on('click', function(){
         if($(this).find('div').hasClass('c-cate-s')) return;
         var sex = $(this).attr('data-sex');
+        var keywords = $('#searchInputs').val();
         $(this).siblings('div').find('div').removeClass('c-cate-s');
         $(this).find('div').addClass('c-cate-s');
         if(sex>0){
-            ajax('/cate/sex/'+sex, {}, function(res){
+            ajax('/cate/sex/'+sex, {keywords: keywords}, function(res){
                 $('.m-cate').html(cateHtml(res.data.list, sex));
             }, 'GET');
         }else{
-            ajax('/cate/list/', {}, function(res){
+            ajax('/cate/list/', {keywords: keywords}, function(res){
                 $('.m-cate').html(cateHtml(res.data.list, sex));
             }, 'GET');
         }
@@ -998,5 +999,5 @@ function cateHtml(list, sex){
             html += '<a href="/goods/search?cid='+g.id+'&sex='+sex+'">'+g.name+'</a>';
         }
     });
-    return html;
+    return html+'<div class="m-cl"></div>';
 }

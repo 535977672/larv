@@ -12,17 +12,22 @@ class CateController extends Controller
 
     public function cateList()
     {
-        $list = Category::select(DB::raw('id,name'))->get();
-        return $this->successful('', ['list' => $list]);
+        $keywords = $this->request->get('keywords', '');
+        $model = Category::select(DB::raw('id,name'));
+        if($keywords) $model->where('name', 'like', "%$keywords%");
+        $list = $model->get();
+        return $this->successful('', ['list' => $list, 'keywords' => $keywords]);
     }
     
     public function cateListBySex($sex = 0)
     {
-        $model = SexCate::with(['cate' => function ($query) {
-            $query->select('id', 'name');
+        $keywords = $this->request->get('keywords', '');
+        $model = SexCate::with(['cate' => function ($query) use ($keywords) {
+            if($keywords) $query->select('id', 'name')->where('name', 'like', "%$keywords%");
+            else $query->select('id', 'name');
         }]);
         if($sex) $model->where('sex', $sex);
         $list = $model->get();
-        return $this->successful('', ['list' => $list]);
+        return $this->successful('', ['list' => $list, 'keywords' => $keywords]);
     }
 }
