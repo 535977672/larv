@@ -45,8 +45,7 @@ class Goods extends Service{
             ])
             ->where($where)
             ->select(DB::raw('goods_id,goods_name,shop_price,original_img'))
-            ->orderBy($order, $asc?'asc':'desc')
-            ->simplePaginate($limit);
+            ->orderBy($order, $asc?'asc':'desc');
         if($random){
             $list = $model->limit($limit)->inRandomOrder()->get();
         }else{
@@ -67,7 +66,7 @@ class Goods extends Service{
     }
     
     public function getGoodsDetail($id = 0, $field = ''){
-        if(!$field) $field = 'goods_id,goods_name,store_count,comment_count,shop_price,original_img,type,ids,sales_sum,addr,video';
+        if(!$field) $field = 'goods_id,goods_name,store_count,comment_count,shop_price,original_img,type,ids,sales_sum,addr,video,is_on_sale';
         $select = DB::raw($field);
         $goods = GoodsModel::where('goods_id', $id)->select($select)->first();
         if(!$goods) return false;

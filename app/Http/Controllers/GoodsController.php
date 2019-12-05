@@ -28,7 +28,7 @@ class GoodsController extends Controller
         //获取商品
         $goods = $this->goodsModel->getGoodsDetail($id);
         if(!$goods){
-            return $this->failed();
+            return $this->failed('商品已删除');
         }
         if($goods->type == 2) return $this->successful('goods.goods_detail_2', ['goods' => $goods]);
         return $this->successful('', ['goods' => $goods]);

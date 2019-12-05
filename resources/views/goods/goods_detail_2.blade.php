@@ -22,6 +22,11 @@
                 <span>{{ $goods->addr }}</span>
             </div>
         </div>
+        @if ($goods->is_on_sale == 0)
+            <div class="goods-items goods-prom pt5  f-12">
+                <span class="c-red f-10">商品已下架</span>
+            </div>
+        @endif
         @if ($goods->give_integral > 0)
         <div class="goods-items goods-prom pt5  f-12">
             <span class="c-888 mr5">促销</span>
@@ -58,6 +63,7 @@
         </div>
     </div>
 </div>
+@if ($goods->is_on_sale > 0)
 <div id="skuTextPop" class="weui-popup__container popup-bottom">
     <div class="weui-popup__overlay"></div>
     <div class="weui-popup__modal">
@@ -99,6 +105,7 @@
         </div>
     </div>
 </div>
+@endif
 @endsection
 @section('script')
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/swiper.min.js"></script>
