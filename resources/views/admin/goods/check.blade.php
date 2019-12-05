@@ -28,7 +28,7 @@
                     <table class="layui-table layui-form">
                         <thead>
                             <tr>
-                                <th><input type="checkbox" name="" lay-skin="primary"></th>
+                                <th><input type="checkbox" name="" lay-skin="primary" id="checkboxall"></th>
                                 <th>名称</th>
                                 <th>源地址</th>
                                 <th>图片</th>

@@ -55,7 +55,7 @@
             </div>
             <div class="goods-content f-14">
                 @if ($goods->video)
-                <div>
+                <div class="pb10">
                 <video src="{{ $goods->video }}" poster="{{ $goods->ext->image_url[0]['preview'] }}" controls="controls" controlslist="nodownload" width="100%" preload="auto" style="clear:both;display:block;margin:auto">
                     浏览器版本过低
                 </video>

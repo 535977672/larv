@@ -23,7 +23,7 @@
         <ul class="grid" id="grid"> 
         @if (count($list) > 0)
         @foreach ($list as $g)
-        <li><div><a href="/goods/detail/{{ $g->goods_id }}"><img  src="{{ $g->original_img }}" alt=""><p class="goods-name m-name">{{ $g->goods_name }}</p></a></div></li>
+        <li><div><a href="/goods/detail/{{ $g->goods_id }}"><img  src="{{ $g->original_img }}" alt=""><p class="goods-name m-name">{{ $g->goods_name }}</p><p class="goods-price">¥{{ price_format($g->shop_price) }}</p></a></div></li>
         @endforeach
         @endif
         </ul>

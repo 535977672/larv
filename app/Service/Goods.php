@@ -38,8 +38,8 @@ class Goods extends Service{
         return GoodsExt::where('original_url', $url)->first();
     }
     
-    public function getGoodsList($limit = 20, $where = [], $order = 'goods_id', $asc = 0){
-        return GoodsModel::where([
+    public function getGoodsList($limit = 20, $where = [], $order = 'goods_id', $asc = 0, $random = 0){
+        $model = GoodsModel::where([
                 //['store_count', '>', 0],
                 ['is_on_sale', '=', 1],
             ])
@@ -47,6 +47,12 @@ class Goods extends Service{
             ->select(DB::raw('goods_id,goods_name,shop_price,original_img'))
             ->orderBy($order, $asc?'asc':'desc')
             ->simplePaginate($limit);
+        if($random){
+            $list = $model->limit($limit)->inRandomOrder()->get();
+        }else{
+            $list = $model->simplePaginate($limit);
+        }
+        return $list;
     }
     
     public function getGoodsHotList($limit = 20){

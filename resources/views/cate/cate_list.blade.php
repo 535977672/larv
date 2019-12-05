@@ -14,13 +14,15 @@
             </label>
         </form>
     </div>
-    <div class="m-cate-base mt5 p5 weui-flex t-ac">
-        <div class="weui-flex__item" data-sex="0"><div class="c-cate-b c-cate-s">全部</div></div>
-        <div class="weui-flex__item" data-sex="1"><div class="c-cate-b">男装</div></div>
-        <div class="weui-flex__item" data-sex="2"><div class="c-cate-b">女装</div></div>
-        <div class="weui-flex__item" data-sex="3"><div class="c-cate-b">儿童</div></div>
+    <div class="swiper-container c-cate mt5 p5">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" data-sex="0"><div class="c-cate-b c-cate-s">全部</div></div>
+            <div class="swiper-slide" data-sex="1"><div class="c-cate-b">男装</div></div>
+            <div class="swiper-slide" data-sex="2"><div class="c-cate-b">女装</div></div>
+            <div class="swiper-slide" data-sex="3"><div class="c-cate-b">儿童</div></div>
+        </div>
     </div>
-    <div class="m-cate mt5 p5 m-cl">
+    <div class="m-cate mt5 p2 m-cl">
         @if (count($list) > 0)
         @foreach ($list as $g)
         <a href="/goods/search?cid={{ $g->id }}">{{ $g->name }}</a>
@@ -31,6 +33,7 @@
 </div>
 @endsection
 @section('script')
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/swiper.min.js"></script>
 <script>
     cate();
 </script>

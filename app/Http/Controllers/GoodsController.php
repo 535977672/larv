@@ -42,12 +42,18 @@ class GoodsController extends Controller
         $hot = $this->request->get('hot', 0);
         $order = $this->request->get('order', 'goods_id');
         $asc = $this->request->get('asc', 0);
+
+        $random = $this->request->get('random', 0);//是否随机
+        $limit = $this->request->get('limit', 20);
+        $limit = $random?$limit:20;
+        $limit = $limit<=20?$limit:20;
+
         $where = [];
         if($keywords) $where[] = ['goods_name', 'like', "%$keywords%"];
         if($cid) $where[] = ['cid', '=', $cid];
         if($sex) $where[] = ['sex', '=', $sex];
         if($hot) $where[] = ['hot', '=', $hot];
-        $goods = $this->goodsModel->getGoodsList(20, $where, $order, $asc);
+        $goods = $this->goodsModel->getGoodsList($limit, $where, $order, $asc, $random);
         return $this->successful('goods.search', ['list' => $goods, 'keywords' => $keywords]);
     }
     

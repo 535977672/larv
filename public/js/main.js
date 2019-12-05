@@ -183,7 +183,7 @@ function ajax(url, data = {}, callback = '', type = 'POST', load = 1, cache = 0,
             if(load === 1) closeAjaxLoading();
             loading = false;
             if(res.status == -1) winReload(1);
-            if(cache>0 && res.data.list.data.length>0){
+            if(cache>0 && ((res.data.list.hasOwnProperty("current_page") && res.data.list.data.length>0) || (!res.data.list.hasOwnProperty("current_page") && res.data.list.length>0))){
                 var c = [];
                 c.push(new Date().getTime()+exp*3600000);
                 c.push(res);
@@ -280,7 +280,7 @@ function loadDataMain(){
     loadData('/goods/search', data, function(goods){
         var html = '';
         $.each(goods, function(i, g){
-            html = html + '<li><div><a href="/goods/detail/'+g.goods_id+'"><img  src="'+g.original_img+'" alt=""><p class="goods-name m-name">'+g.goods_name+'</p></a></div></li>';
+            html = html + '<li><div><a href="/goods/detail/'+g.goods_id+'"><img  src="'+g.original_img+'" alt=""><p class="goods-name m-name">'+g.goods_name+'</p><p class="goods-price">¥'+(Number(g.shop_price)/100).toFixed(2)+'</p></a></div></li>';
         });
         $('#grid').append(html);
         animOnScrollLoad('grid');
@@ -972,7 +972,13 @@ function updateCartGoods($cartId, $num){
 }
 
 function cate(){
-    $('.weui-flex__item').on('click', function(){
+    $(".swiper-container").swiper({
+        pagination : '.swiper-pagination',
+        paginationClickable :true,
+        effect : 'slide',
+        slidesPerView :4
+    });
+    $('.swiper-slide').on('click', function(){
         if($(this).find('div').hasClass('c-cate-s')) return;
         var sex = $(this).attr('data-sex');
         var keywords = $('#searchInputs').val();
@@ -981,11 +987,11 @@ function cate(){
         if(sex>0){
             ajax('/cate/sex/'+sex, {keywords: keywords}, function(res){
                 $('.m-cate').html(cateHtml(res.data.list, sex));
-            }, 'GET', 0, 1);
+            }, 'GET', 0, 1, 1);
         }else{
             ajax('/cate/list/', {keywords: keywords}, function(res){
                 $('.m-cate').html(cateHtml(res.data.list, sex));
-            }, 'GET', 0, 1);
+            }, 'GET', 0, 1, 1);
         }
     });
 }

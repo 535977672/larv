@@ -138,5 +138,6 @@ a{color: #888; text-decoration: none; }
 
 /**分类*/
 .m-cate a{float: left; padding: 3px 8px;border: 1px solid #9e9e9e1a; margin: 3px;}
-.c-cate-b{background-color: #f1f6f9; padding: 5px 10px;}
+.c-cate-b{background-color: #f1f6f9; padding: 5px 10px;text-align: center;}
+.c-cate .swiper-slide:not(:last-child) .c-cate-b{border-right: white 1px solid;}
 .c-cate-s{background-color: #f70202; color: white;}

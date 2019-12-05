@@ -33,7 +33,8 @@
         <ul class="grid" id="grid">        
         @if (count($goods) > 0)
         @foreach ($goods as $g)
-        <li><div><a href="/goods/detail/{{ $g->goods_id }}"><img  src="{{ $g->original_img }}" alt=""><p class="goods-name m-name">{{ $g->goods_name }}</p></a></div></li>
+        <li><div><a href="/goods/detail/{{ $g->goods_id }}"><img  src="{{ $g->original_img }}" alt=""><p class="goods-name m-name">{{ $g->goods_name }}</p>
+                    <p class="goods-price">¥{{ price_format($g->shop_price) }}</p></a></div></li>
         @endforeach
         @endif
         </ul>
@@ -55,7 +56,11 @@ $(".swiper-container").swiper({
     pagination : '.swiper-pagination',
     paginationClickable :true,
     autoplayDisableOnInteraction : false,
-    effect : effect[Math.floor(Math.random()*effect.length)]
+    effect : effect[Math.floor(Math.random()*effect.length)],
+    cube: {
+        slideShadows: false,
+        shadow: false
+    }
 });
 loadDataMain();
 </script>

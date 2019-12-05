@@ -300,10 +300,10 @@ class GoodsController extends AdminController
                     if ($p) {
                         $temp2 = [];
                         $temp2['price_spec_name'] = $p->name;//name/img
-                        $temp2['price_spec_price'] = intval(floatval($p->price) * 100) + $item->cost + $bprice;
+                        $temp2['price_spec_price'] = intval(floatval($p->price) * 100);
                         $temp2['price_spec_alt'] = $p->alt;
                         $temp2['price_spec_count'] = intval($p->count);
-                        $temp2['price_spec_real_price'] = intval(floatval($p->price) * 100);
+                        $temp2['price_spec_real_price'] = intval(floatval($p->price) * 100) + $item->cost + $bprice;
                         $temp2['price_spec_real_count'] = intval($p->count);
                         $temp['spec'][] = $temp2;
                         $datas['store_count'] = $datas['store_count'] + $temp2['price_spec_count'];
@@ -360,12 +360,20 @@ class GoodsController extends AdminController
     /**************************************************************************/
     public function goodsList()
     {
-       return $this->successful(['list' => $this->goodsService->aGoodsList()]);
+        $data = $this->request->all();
+        $limit = FI($this->request->get('limit', 20));
+        $where = [];
+        isset($data['is_on_sale']) && $data['is_on_sale'] >= 0 &&  $where[] = ['is_on_sale', '=', $data['is_on_sale']];
+        isset($data['sex']) && $data['sex'] >= 0 &&  $where[] = ['sex', '=', $data['sex']];
+        isset($data['is_new']) && $data['is_new'] >= 0 &&  $where[] = ['is_new', '=', $data['is_new']];
+        isset($data['is_hot']) && $data['is_hot'] >= 0 &&  $where[] = ['is_hot', '=', $data['is_hot']];
+        isset($data['type']) && $data['type'] >= 1 &&  $where[] = ['type', '=', $data['type']];
+        return $this->successful(['list' => $this->goodsService->aGoodsList($where, $limit)]);
     }
     
     public function goodsTeamToAdd()
     {
-       return $this->successful(['list' => $this->goodsService->aGoodsAttrList([], 1000)]);
+        return $this->successful(['list' => $this->goodsService->aGoodsAttrList([], 1000)]);
     }
     
     public function goodsTeamAdd()
