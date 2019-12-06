@@ -23,8 +23,12 @@ class GoodsController extends AdminController
      */
     public function check()
     {
+        $data = $this->request->all();
+        $where = [];
+        isset($data['start']) && $data['start'] >= 0 &&  $where[] = ['prices', '>=', $data['start']];
+        isset($data['end']) && $data['end'] >= 0 &&  $where[] = ['prices', '<=', $data['end']];
         //$list = DB::select('select id,url,cover,title from tb_attr  where deleted = 0');
-        $list = DB::table('tb_attr')->where('deleted', '=', 0)->select('id', 'url', 'cover', 'title')->paginate(100);
+        $list = DB::table('tb_attr')->where('deleted', '=', 0)->where($where)->select('id', 'url', 'cover', 'title')->paginate(100);
         foreach ($list as $key => $value) {
             $value->cover = json_decode($value->cover);
         }
@@ -222,11 +226,13 @@ class GoodsController extends AdminController
     public function mulCheck()
     {
         $ids = $this->request->post('ids', '');
+        $ratio = FI($this->request->post('ratio', 30));
+        $ratio = $ratio<30?130:($ratio+100);
+        $ratio = bcdiv($ratio, 100, 2);
         if(!$ids) {
             return return_ajax(0, '请选择数据');
         }
         $list = DB::table('tb_attr')->where('deleted', '=', 0)->whereIn('id', explode(',', $ids))->get();
-        $bprice = 3000;//￥30
         $err = [];
         foreach ($list as $item) {
             $item->goods_name = $item->title;
@@ -259,7 +265,7 @@ class GoodsController extends AdminController
             }
             $item->cost = (is_float($item->cost) || is_numeric($item->cost)) ? bcmul($item->cost, 100) : 500;
             $item->cost_price = intval(floatval($item->price[0]->sku[0]->price)*100);
-            $item->shop_price = $item->cost_price+$item->cost+$bprice;
+            $item->shop_price = bcmul($item->cost_price+$item->cost, $ratio);
             $datas = [
                 'tb_id' => $item->id,
                 'goods_name' => $item->goods_name,
@@ -303,7 +309,8 @@ class GoodsController extends AdminController
                         $temp2['price_spec_price'] = intval(floatval($p->price) * 100);
                         $temp2['price_spec_alt'] = $p->alt;
                         $temp2['price_spec_count'] = intval($p->count);
-                        $temp2['price_spec_real_price'] = intval(floatval($p->price) * 100) + $item->cost + $bprice;
+                        $t = intval(floatval($p->price) * 100)+$item->cost;
+                        $temp2['price_spec_real_price'] = bcmul($t, $ratio);
                         $temp2['price_spec_real_count'] = intval($p->count);
                         $temp['spec'][] = $temp2;
                         $datas['store_count'] = $datas['store_count'] + $temp2['price_spec_count'];

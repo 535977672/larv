@@ -102,7 +102,7 @@ function getRandStr($length = 6, $type = 1){
  */
 function F($str, $type = 1){
     if(!$str){
-        return $str;
+        //return $str;
     }
     if ($type == 1 || $type == 'string') {
         $str = trim(strip_tags($str));

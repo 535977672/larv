@@ -66,7 +66,7 @@ class Goods extends Service{
     }
     
     public function getGoodsDetail($id = 0, $field = ''){
-        if(!$field) $field = 'goods_id,goods_name,store_count,comment_count,shop_price,original_img,type,ids,sales_sum,addr,video,is_on_sale';
+        if(!$field) $field = 'goods_id,goods_name,store_count,comment_count,shop_price,original_img,type,ids,sales_sum,addr,video,is_on_sale,sex,cid';
         $select = DB::raw($field);
         $goods = GoodsModel::where('goods_id', $id)->select($select)->first();
         if(!$goods) return false;

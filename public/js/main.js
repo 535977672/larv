@@ -1007,3 +1007,14 @@ function cateHtml(list, sex){
     });
     return html+'<div class="m-cl"></div>';
 }
+
+function getPuls(select, limit = 4, cid = '', sex = ''){
+    ajax('/goods/search', {cid: cid, sex: sex, random: 1, limit: limit}, function(res){
+        var goods = res.data.list;
+        var html = '';
+        $.each(goods, function(i, g){
+            html = html + '<div><a href="/goods/detail/'+g.goods_id+'"><img  src="'+g.original_img+'" alt=""><p class="goods-name m-name">'+g.goods_name+'</p><p class="goods-price">¥'+(Number(g.shop_price)/100).toFixed(2)+'</p></a></div>';
+        });
+        $('#'+select).html(html);
+    }, 'GET', 0);
+}

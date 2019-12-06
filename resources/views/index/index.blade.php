@@ -83,5 +83,5 @@
             historyUrl(2);
         });
     </script>
-</body>    
+</body>
 </html>

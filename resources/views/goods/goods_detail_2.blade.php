@@ -22,11 +22,6 @@
                 <span>{{ $goods->addr }}</span>
             </div>
         </div>
-        @if ($goods->is_on_sale == 0)
-            <div class="goods-items goods-prom pt5  f-12">
-                <span class="c-red f-10">商品已下架</span>
-            </div>
-        @endif
         @if ($goods->give_integral > 0)
         <div class="goods-items goods-prom pt5  f-12">
             <span class="c-888 mr5">促销</span>
@@ -37,7 +32,7 @@
         <div class="goods-items goods-sku">
             <div class="skuText">
                 <span class="c-888 mr5">选择</span>
-                <span class="mr5">请选择参数</span>
+                <span class="mr5">@if ($goods->is_on_sale == 1)请选择参数@else<span class="c-red">商品已下架</span>@endif</span>
                 <span class="m-fr svg"><embed src="/static/img/jt.svg" type="image/svg+xml" /></span>
             </div>
         </div>
