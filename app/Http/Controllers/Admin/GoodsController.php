@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Service\Goods as GoodsService;
 use App\Model\Category;
 use App\Model\SexCate;
+use App\Model\Goods as GoodsModel;
 
 class GoodsController extends AdminController
 {
@@ -28,7 +29,7 @@ class GoodsController extends AdminController
         isset($data['start']) && $data['start'] >= 0 &&  $where[] = ['prices', '>=', $data['start']];
         isset($data['end']) && $data['end'] >= 0 &&  $where[] = ['prices', '<=', $data['end']];
         //$list = DB::select('select id,url,cover,title from tb_attr  where deleted = 0');
-        $list = DB::table('tb_attr')->where('deleted', '=', 0)->where($where)->select('id', 'url', 'cover', 'title')->paginate(100);
+        $list = DB::table('tb_attr')->where('deleted', '=', 0)->where($where)->select('id', 'gid', 'url', 'cover', 'title', 'prices')->paginate(200);
         foreach ($list as $key => $value) {
             $value->cover = json_decode($value->cover);
         }
@@ -41,7 +42,7 @@ class GoodsController extends AdminController
      */
     public function checkDel()
     {
-        DB::update('update tb_attr set deleted = 1 where id in (?)', [$this->request->post('ids', 0)]);
+        DB::table('tb_attr')->where('deleted', 0)->whereIn('id', explode(',', $this->request->post('ids', 0)))->update(['deleted' => 1]);
         return return_ajax(200, '保存成功');
     }
     
@@ -237,13 +238,15 @@ class GoodsController extends AdminController
         foreach ($list as $item) {
             $item->goods_name = $item->title;
             if($this->goodsService->getGoodsByUrl($item->url)){
-                $err[] = $item->goods_name . '商品链接重复';
+                $err[] = $item->id . '商品链接重复';
+                DB::update('update tb_attr set deleted = 1 where id = ?', [$item->id]);
                 continue;
             }
             if(!empty($item->price)){
                 $item->price = json_decode($item->price);
             }else{
-                $err[] = $item->goods_name . '价格不存在';
+                $err[] = $item->id . '价格不存在';
+                DB::update('update tb_attr set deleted = 1 where id = ?', [$item->id]);
                 continue;
             }
             $item->cover = json_decode($item->cover, true);
@@ -328,13 +331,33 @@ class GoodsController extends AdminController
             }
             $goods = new GoodsService();
             if($goods->saveGoods($datas) === false){
-                $err[] = $item->goods_name . $goods->getErrorMsg();
+                $err[] = $item->id . $goods->getErrorMsg();
             }
         }
         return return_ajax(0, '保存成功', $err);
     }
-    
-    
+
+
+
+    /**
+     * 数据过期检查
+     * @return type
+     */
+    public function checkUrl()
+    {
+        $l = GoodsModel::with(['ext' => function ($query) {
+            $query->select('original_url', 'goods_id');
+        }])
+        ->where('goods_type', 4)
+        ->where('is_on_sale', 1)
+        ->select('goods_id')
+        ->get();
+        $list = [];
+        foreach ($l as $k){
+            $list[$k->goods_id] = $k->ext->original_url;
+        }
+        return $this->successful(['list'=>json_encode($list)]);
+    }
     
     /**
      * 验证goods参数

@@ -258,7 +258,7 @@ class OrderController extends Controller
                     'goods_name' => $goods->goods_name,
                     'goods_sn' => $param['order_sn'],
                     'goods_num' => $num,
-                    'goods_price' => $goods->shop_price,
+                    'goods_price' => $price,
                     'final_price' => $p['total'],
                     'arrt_id' => $attrId,
                     'spec_key' => $spec_key,
@@ -291,33 +291,11 @@ class OrderController extends Controller
             }
 
         }
-//        $goods = $goodsModel->getGoods($goodsId);
-//        if(!$goods || FI($goods->is_on_sale) != 1){
-//            return $this->failed('商品已下架');
-//        }
-//        if($goods->type == 1){
-//            $attr = $goodsModel->getGoodsAttr($attrId);
-//            if(!$attr || FI($attr->goods_id) != $goodsId){
-//                return $this->failed('参数错误');
-//            }
-//            if(FI($attr->num) < $num){
-//                return $this->failed('库存不足');
-//            }
-//            $price = FI($attr->attr_price);
-//        }else if($goods->type == 2){
-//            //套餐
-//            if(FI($goods->store_count) < $num){
-//                return $this->failed('库存不足');
-//            }
-//            $price = FI($goods->shop_price);
-//        }else{
-//            return $this->failed('参数错误');
-//        }
         
         $param['paytype'] = 1;
         $param['add_time'] = $time;
         $exp = $param['add_time'] + 5*60;
-        $param['goods_price'] = 0;//商品价格
+        $param['goods_price'] = 0;//商品总价格
         $param['total_amount'] = $total_amount;//订单总价
         $newPrice = $param['order_amount'] = $param['total_amount'];//支付=订单总价-积分-随机立减
         if(abs(FI($newPrice)-$oprice) > 200) return $this->failed('参数错误');
@@ -341,48 +319,6 @@ class OrderController extends Controller
         if(!$qrcode){
             return $this->failed('系统繁忙，请刷新重试', [], $code);
         }
-//        $spec_key = '';
-//        if($goods->type == 1){
-//            if($dataJson['colorname'] && $dataJson['attr']) $spec_key = $dataJson['colorname'].'-'.$dataJson['attr'];
-//            else $spec_key = $dataJson['colorname']?:$dataJson['attr'];
-//            $ourl = $goodsModel->getGoodsExt($goodsId)->original_url;
-//            $goodsParam = [
-//                'order_id' => 0,
-//                'goods_id' => $goods->goods_id,
-//                'goods_name' => $goods->goods_name,
-//                'goods_sn' => $param['order_sn'],
-//                'goods_num' => $num,
-//                'goods_price' => $param['goods_price'],
-//                'final_price' => $param['order_amount'],
-//                'arrt_id' => $attrId,
-//                'spec_key' => $spec_key,
-//                'goods_type' => $param['type'],
-//                'img' => $dataJson['img'],
-//                'o_url' => $ourl,
-//            ];
-//        }else{
-//            $subgoods = $dataJson['sub'];
-//            if(!$subgoods) return $this->failed('参数错误');
-//            $goodsParam = [];
-//            foreach ($subgoods as $v){
-//                if($v['colorname'] && $v['attr']) $spec_key = $v['colorname'].'-'.$v['attr'];
-//                else $spec_key = $v['colorname']?:$v['attr'];
-//                $goodsParam[] = [
-//                    'order_id' => 0,
-//                    'goods_id' => $v['goods_id'],
-//                    'goods_name' => $v['goods_name'],
-//                    'goods_sn' => $param['order_sn'],
-//                    'goods_num' => $num,
-//                    'goods_price' => $v['attr_price'],
-//                    'final_price' => '0.00',
-//                    'arrt_id' => $v['attr_id'],
-//                    'spec_key' => $spec_key,
-//                    'goods_type' => 2,
-//                    'img' => $v['img'],
-//                    'o_url' => $goodsModel->getGoodsExt($v['goods_id'])->original_url,
-//                ];
-//            }
-//        }
         $payParam = [
             'o_id' => 0,
             'money' => $param['order_amount'],

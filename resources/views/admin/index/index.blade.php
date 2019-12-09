@@ -41,6 +41,12 @@
                         </a>
                     </li>
                     <li>
+                        <a onclick="xadmin.add_tab('数据过期检查','/admin/g/checkurl')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>过期检查</cite>
+                        </a>
+                    </li>
+                    <li>
                         <a onclick="xadmin.add_tab('商品列表','/admin/g/goodslist')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>商品列表</cite>

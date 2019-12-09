@@ -93,6 +93,7 @@
                                 <th>
                                     <input type="checkbox" name="" lay-skin="primary">
                                 </th>
+                                <th>ID</th>
                                 <th>商品</th>
                                 <th>图片</th>
                                 <th>价格</th>
@@ -104,6 +105,7 @@
                             @foreach ($list as $l)
                             <tr>
                                 <td><input type="checkbox" name="" lay-skin="primary" id="checkboxall" data-id="{{ $l->goods_id	 }}"></td>
+                                <td>{{ $l->goods_id	 }}</td>
                                 <td>
                                     @if($l->type == 1)
                                     <a class="c-red" target="_blank" href="{{ $l->ext->original_url }}">{{ $l->goods_name }}</a>
