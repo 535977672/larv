@@ -138,7 +138,7 @@
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">原图</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="original_img"  style="width: 80%" placeholder="原图" class="layui-input" value="{{ $list->cover[0]->preview }}">
+                                        <input type="text" name="original_img"  style="width: 80%" placeholder="原图" class="layui-input" value="{{ $list->cover['0']->preview }}">
                                     </div>
                                 </div>
                                 <hr class="layui-bg-green">

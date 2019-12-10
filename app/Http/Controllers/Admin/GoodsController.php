@@ -29,7 +29,7 @@ class GoodsController extends AdminController
         isset($data['start']) && $data['start'] >= 0 &&  $where[] = ['prices', '>=', $data['start']];
         isset($data['end']) && $data['end'] >= 0 &&  $where[] = ['prices', '<=', $data['end']];
         //$list = DB::select('select id,url,cover,title from tb_attr  where deleted = 0');
-        $list = DB::table('tb_attr')->where('deleted', '=', 0)->where($where)->select('id', 'gid', 'url', 'cover', 'title', 'prices')->paginate(200);
+        $list = DB::table('tb_attr')->where('deleted', '=', 0)->where($where)->select('id', 'gid', 'url', 'cover', 'title', 'prices')->paginate(500);
         foreach ($list as $key => $value) {
             $value->cover = json_decode($value->cover);
         }
@@ -56,7 +56,7 @@ class GoodsController extends AdminController
         $list = DB::select('select * from tb_attr where id = :id', ['id' => $id]);
         foreach ($list as $key => $value) {
             $value->cover = json_decode($value->cover);
-            if($value->type == 4) array_pop($value->cover);
+            if($value->type == 4 && $value->video && count($value->cover)>1) array_pop($value->cover);
             $value->content = html_entity_decode($value->content, ENT_QUOTES);
             if(!empty($value->attr)){
                 $value->attr = json_decode($value->attr, true);
@@ -249,8 +249,13 @@ class GoodsController extends AdminController
                 DB::update('update tb_attr set deleted = 1 where id = ?', [$item->id]);
                 continue;
             }
+            if(empty($item->price[0]->sku)){
+                $err[] = $item->id . '价格不存在';
+                DB::update('update tb_attr set deleted = 1 where id = ?', [$item->id]);
+                continue;
+            }
             $item->cover = json_decode($item->cover, true);
-            if($item->type == 4) array_pop($item->cover);
+            if($item->type == 4 && $item->video && count($item->cover)>1) array_pop($item->cover);
             $item->content = html_entity_decode($item->content, ENT_QUOTES);
             if(!empty($item->attr)){
                 $item->attr = json_decode($item->attr, true);
