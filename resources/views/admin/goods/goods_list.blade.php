@@ -113,7 +113,7 @@
                                     {{ $l->goods_name }}
                                     @endif
                                 </td>
-                                <td><a class="c-red" target="_blank" href="{{ $l->original_img }}"><img src="{{ $l->original_img }}" height="100px" width="100px"></a></td>
+                                <td><a class="c-red" target="_blank" href="{{ $l->original_img }}"><img lay-src="{{ $l->original_img }}" height="100px" width="100px"></a></td>
                                 <td>本店价{{ price_format($l->shop_price) }}<br/>成本价{{ price_format($l->cost_price) }}</td>
                                 <td>{{ $l->is_on_sale_str }}</td>
                                 <td class="td-manage">
@@ -138,12 +138,14 @@
 @endsection
 @section('script')
 <script>
-layui.use(['comm', 'form', 'layer', 'jquery'], function(){
+layui.use(['comm', 'form', 'layer', 'jquery','flow'], function(){
     var form = layui.form
     ,comm = layui.comm
     ,layer = layui.layer
+    ,flow = layui.flow
     ,$ = layui.jquery;
     comm.checkbox();
+    flow.lazyimg({scrollElem: '.table-over'});
     $('.isonsale').on('click', function(){
         isonsale($(this));
     });

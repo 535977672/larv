@@ -56,8 +56,8 @@
                                 <td><input type="checkbox" name="" lay-skin="primary" data-id="{{ $l->id }}"></td>
                                 <td>{{ $l->id }}</td>
                                 <td>{{ $l->gid }}</td>
-                                <td>{{ $l->prices }}</td>
                                 <td><a class="c-red" href="/admin/g/cd/{{ $l->id }}">{{ $l->title }}</a></td>
+                                <td>{{ $l->prices }}</td>
                                 <td><a class="c-red" target="_blank" href="{{ $l->url }}">{{ $l->url }}</a></td>
                                 <td><img src="{{ $l->cover[0]->thumb }}" alt=""></td>
                             </tr>
@@ -79,12 +79,14 @@
 @endsection
 @section('script')
 <script>
-layui.use(['comm', 'form', 'jquery','layer'], function(){
+layui.use(['comm', 'form', 'jquery','layer','flow'], function(){
     var form = layui.form
     ,comm = layui.comm
     ,layer = layui.layer
+    ,flow = layui.flow
     ,$ = layui.jquery;
     comm.checkbox();
+    flow.lazyimg({scrollElem: '.table-over'});
     $('.mulYes').on('click', function () {
         var ids = comm.checkIds();
         if(!ids) return;

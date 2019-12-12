@@ -359,7 +359,7 @@ class GoodsController extends AdminController
         ->get();
         $list = [];
         foreach ($l as $k){
-            $list[$k->goods_id] = $k->ext->original_url;
+            $list[$k->goods_id] = substr($k->ext->original_url, strrpos($k->ext->original_url, '-')+1, -5);
         }
         return $this->successful(['list'=>json_encode($list)]);
     }
