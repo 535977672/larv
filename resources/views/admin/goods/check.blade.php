@@ -23,6 +23,17 @@
                         <div class="layui-input-inline layui-show-xs-block">
                             <input class="layui-input" placeholder="截止价格"  name="end" id="end"  @isset($requestes['end']) value="{{ $requestes['end'] }}" @endisset></div>
                         <div class="layui-input-inline layui-show-xs-block">
+                            <select name="sex">
+                                <option value="2" @isset($requestes['sex']) @if($requestes['sex'] == 2) selected @endif @endisset>女装</option>
+                                <option value="0" @isset($requestes['sex']) @if($requestes['sex'] === '0') selected @endif @endisset>不限</option>
+                                <option value="1" @isset($requestes['sex']) @if($requestes['sex'] == 1) selected @endif @endisset>男装</option>
+                                <option value="3" @isset($requestes['sex']) @if($requestes['sex'] == 3) selected @endif @endisset>儿童</option>
+                                <option value="4" @isset($requestes['sex']) @if($requestes['sex'] == 4) selected @endif @endisset>日韩女装</option>
+                                <option value="5" @isset($requestes['sex']) @if($requestes['sex'] == 5) selected @endif @endisset>男鞋</option>
+                                <option value="6" @isset($requestes['sex']) @if($requestes['sex'] == 6) selected @endif @endisset>女鞋</option>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline layui-show-xs-block">
                             <button class="layui-btn" lay-submit="" lay-filter="sreach">
                                 <i class="layui-icon">&#xe615;</i></button>
                         </div>
@@ -37,7 +48,7 @@
                         <i class="layui-icon layui-icon-template-1"></i>批量确认
                     </button>
                 </div>
-                <div class="layui-card-body ">
+                <div class="layui-card-body  table-over">
                     <table class="layui-table layui-form">
                         <thead>
                             <tr>

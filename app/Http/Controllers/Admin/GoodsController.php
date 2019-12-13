@@ -28,6 +28,8 @@ class GoodsController extends AdminController
         $where = [];
         isset($data['start']) && $data['start'] >= 0 &&  $where[] = ['prices', '>=', $data['start']];
         isset($data['end']) && $data['end'] >= 0 &&  $where[] = ['prices', '<=', $data['end']];
+        if(!(isset($data['sex']) && $data['sex'] >= 0)) $data['sex'] = 2;
+        $where[] = ['sex', '=', $data['sex']];
         //$list = DB::select('select id,url,cover,title from tb_attr  where deleted = 0');
         $list = DB::table('tb_attr')->where('deleted', '=', 0)->where($where)->select('id', 'gid', 'url', 'cover', 'title', 'prices')->paginate(500);
         foreach ($list as $key => $value) {
@@ -399,7 +401,9 @@ class GoodsController extends AdminController
         $limit = FI($this->request->get('limit', 20));
         $where = [];
         isset($data['is_on_sale']) && $data['is_on_sale'] >= 0 &&  $where[] = ['is_on_sale', '=', $data['is_on_sale']];
-        isset($data['sex']) && $data['sex'] >= 0 &&  $where[] = ['sex', '=', $data['sex']];
+        //isset($data['sex']) && $data['sex'] >= 0 &&  $where[] = ['sex', '=', $data['sex']];
+        if(!(isset($data['sex']) && $data['sex'] >= 0)) $data['sex'] = 2;
+        $where[] = ['sex', '=', $data['sex']];
         isset($data['is_new']) && $data['is_new'] >= 0 &&  $where[] = ['is_new', '=', $data['is_new']];
         isset($data['is_hot']) && $data['is_hot'] >= 0 &&  $where[] = ['is_hot', '=', $data['is_hot']];
         isset($data['type']) && $data['type'] >= 1 &&  $where[] = ['type', '=', $data['type']];
