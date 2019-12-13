@@ -1,24 +1,28 @@
 <?php
-
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Service\Goods;
 
-class CheckGoods extends Command
-{
+/**
+ * 批量检查商品
+ */
+class CheckGoods extends Command {
+
     /**
+     * command的名字
      * The name and signature of the console command.
-     *
+     * $schedule->command($signature)->everyMinute();
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'goods:check2';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'goods check';
 
     /**
      * Create a new command instance.
@@ -37,6 +41,11 @@ class CheckGoods extends Command
      */
     public function handle()
     {
-        //
+        $this->check();
+    }
+
+    private function check() {
+        $goods = new Goods();
+        return $goods->mulCheck();
     }
 }

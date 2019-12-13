@@ -238,6 +238,26 @@ class GoodsController extends AdminController
         $list = DB::table('tb_attr')->where('deleted', '=', 0)->whereIn('id', explode(',', $ids))->get();
         $err = [];
         foreach ($list as $item) {
+            $re = $this->goodsService->mulCheckEach($item, $ratio);
+            if($re !== true){
+                $err[] = $re;
+            }
+        }
+        return return_ajax(0, '保存成功', $err);
+    }
+
+    public function mulCheck2()
+    {
+        $ids = $this->request->post('ids', '');
+        $ratio = FI($this->request->post('ratio', 30));
+        $ratio = $ratio<20?120:($ratio+100);
+        $ratio = bcdiv($ratio, 100, 2);
+        if(!$ids) {
+            return return_ajax(0, '请选择数据');
+        }
+        $list = DB::table('tb_attr')->where('deleted', '=', 0)->whereIn('id', explode(',', $ids))->get();
+        $err = [];
+        foreach ($list as $item) {
             $item->goods_name = $item->title;
             if($this->goodsService->getGoodsByUrl($item->url)){
                 $err[] = $item->id . '商品链接重复';

@@ -8,6 +8,8 @@ use App\Model\GoodsExt;
 use App\Model\GoodsComment;
 use Illuminate\Support\Facades\DB;
 use \Exception;
+use App\Model\Category;
+use App\Model\SexCate;
 
 /**
  * 
@@ -256,7 +258,7 @@ class Goods extends Service{
             return false;
         }
     }
-    
+
     /**
      * 评论列表
      * @param type $limit
@@ -299,5 +301,143 @@ class Goods extends Service{
             $sql .= " and type=1";
         }
         return DB::update('update m_goods set is_on_sale = '.$status.' where '.$sql);
+    }
+
+    public function mulCheck($id_start = 0)
+    {
+        $list = DB::table('tb_attr')->where('deleted', '=', 0)->where('id', '>', $id_start)->orderBy('id', 'asc')->limit(20)->get();
+        $err = [];
+        foreach ($list as $item) {
+            $this->mulCheckEach($item);
+            $id_start = $item->id;
+        }
+        if(count($list) == 20){
+            $this->mulCheck($id_start);
+        }
+        return true;
+    }
+
+    public function mulCheckEach($item, $ratio = ''){
+        $err = '';
+        $item->goods_name = $item->title;
+        if($this->goodsService->getGoodsByUrl($item->url)){
+            $err = $item->id . '商品链接重复';
+            DB::update('update tb_attr set deleted = 1 where id = ?', [$item->id]);
+            return $err;
+        }
+        if(!empty($item->price)){
+            $item->price = json_decode($item->price);
+        }else{
+            $err = $item->id . '价格不存在';
+            DB::update('update tb_attr set deleted = 1 where id = ?', [$item->id]);
+            return $err;
+        }
+        if(empty($item->price[0]->sku)){
+            $err = $item->id . '价格不存在';
+            DB::update('update tb_attr set deleted = 1 where id = ?', [$item->id]);
+            return $err;
+        }
+        $item->cover = json_decode($item->cover, true);
+        if($item->type == 4 && $item->video && count($item->cover)>1) array_pop($item->cover);
+        $item->content = html_entity_decode($item->content, ENT_QUOTES);
+        if(!empty($item->attr)){
+            $item->attr = json_decode($item->attr, true);
+            foreach ($item->attr as $k => $v) {
+                if(in_array(mb_substr($v, 0, 2), ['主要','生产','保质','产地','保修','有可', ':&','主图'])){
+                    unset($item->attr[$k]);
+                }else if(mb_substr($v, 0, 4) == '品牌:&' && !$item->brand){
+                    $item->brand = mb_substr($v, 9);
+                }
+            }
+        }
+        $item->video = str_replace(array("\n","\r","\r\n"), '', $item->video);
+        if(!empty($item->video)){
+            $item->ex = substr($item->video, strrpos($item->video, '.'));
+        }
+        $item->cost = (is_float($item->cost) || is_numeric($item->cost)) ? bcmul($item->cost, 100) : 500;
+        $item->cost_price = intval(floatval($item->price[0]->sku[0]->price)*100);
+        $ratio = $ratio?$ratio:$this->getRatio($item->cost_price);
+        $item->shop_price = bcmul($item->cost_price+$item->cost, $ratio);
+        $datas = [
+            'tb_id' => $item->id,
+            'goods_name' => $item->goods_name,
+            'type' => $item->type,
+            'url' => $item->url,
+            'brand' => $item->brand,
+            'limit' => $item->limit,
+            'addr' => $item->addr,
+            'cost' => $item->cost,
+            'is_on_sale' => 0,
+            'is_hot' => $item->is_hot,
+            'is_new' => $item->is_new,
+            'is_recommend' => $item->is_recommend,
+            'give_integral' => 0,
+            'sort' => 0,
+            'original_img' => $item->cover[0]['preview'],
+            'content' => $item->content,
+            'shop_price' => $item->shop_price,
+            'cost_price' => $item->cost_price,
+            'store_count' => 0,
+            'video' => $item->video,
+            'ex' => isset($item->ex)?$item->ex:'',
+            'attr' => $item->attr,
+            'sex' => $item->sex,
+            'cate' => $item->cate,
+            'image_url' => $item->cover
+        ];
+
+        $spec = [];
+        foreach ($item->price as $k=>$color) {
+            $temp = [];
+            if ((isset($color->thumb) && $color->thumb) || (isset($color->alt) && $color->alt)) {
+                $temp['price_color_thumb'] = isset($color->thumb)?$color->thumb:'';
+                $temp['price_color_preview'] = isset($color->preview)?$color->preview:'';
+                $temp['price_color_alt'] = $color->alt;
+            }
+            foreach ($color->sku as $s => $p) {
+                if ($p) {
+                    $temp2 = [];
+                    $temp2['price_spec_name'] = $p->name;//name/img
+                    $temp2['price_spec_price'] = intval(floatval($p->price) * 100);
+                    $temp2['price_spec_alt'] = $p->alt;
+                    $temp2['price_spec_count'] = intval($p->count);
+                    $t = intval(floatval($p->price) * 100)+$item->cost;
+                    $temp2['price_spec_real_price'] = bcmul($t, $ratio);
+                    $temp2['price_spec_real_count'] = intval($p->count);
+                    $temp['spec'][] = $temp2;
+                    $datas['store_count'] = $datas['store_count'] + $temp2['price_spec_count'];
+                }
+            }
+            $spec[] = $temp;
+        }
+        $datas['spec'] = $spec;
+        if($item->cate){
+            $cated = Category::addFirstOrCreate(['name' => $item->cate], ['pid' => 0, 'sort' => 0, 'pic' => '', 'is_show' => 0, 'level' => 1]);
+            $datas['cid'] = $cated->id;
+            if($item->sex){
+                SexCate::addFirstOrCreate(['sex' => $item->sex, 'cid' => $cated->id], []);
+            }
+        }
+        if($this->saveGoods($datas) === false){
+            $err = $item->id . $this->getErrorMsg();
+            return $err;
+        }
+        return true;
+    }
+
+    function getRatio($price){
+        $ratio = 1.20;
+        if($price < 3000){
+            $ratio = 1.80;
+        }else if($price < 5000){
+            $ratio = 1.50;
+        }else if($price < 15000){
+            $ratio = 1.40;
+        }else if($price < 30000){
+            $ratio = 1.30;
+        }else if($price >= 30000){
+            $ratio = 1.20;
+        }
+        return $ratio;
     }
 }
