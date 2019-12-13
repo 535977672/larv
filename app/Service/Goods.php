@@ -247,7 +247,8 @@ class Goods extends Service{
             }
             
             if(isset($data['tb_id']) && $data['tb_id']){
-                DB::update('update tb_attr set deleted = 1,gid = ? where id = ?', [$goodsModel->goods_id, $data['tb_id']]);
+                //DB::update('update tb_attr set deleted = 1,gid = ? where id = ?', [$goodsModel->goods_id, $data['tb_id']]);
+                DB::delete('delete from tb_attr where id = ?', [$data['tb_id']]);
             }
             
             DB::commit();
