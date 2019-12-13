@@ -6,13 +6,14 @@ use App\Service\Goods;
 
 /**
  * 批量检查商品
+ * php artisan goods:check2
+ *
  */
 class CheckGoods extends Command {
 
     /**
      * command的名字
      * The name and signature of the console command.
-     * $schedule->command($signature)->everyMinute();
      * @var string
      */
     protected $signature = 'goods:check2';
