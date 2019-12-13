@@ -230,7 +230,7 @@ class GoodsController extends AdminController
     {
         $ids = $this->request->post('ids', '');
         $ratio = FI($this->request->post('ratio', 30));
-        $ratio = $ratio<30?130:($ratio+100);
+        $ratio = $ratio<20?120:($ratio+100);
         $ratio = bcdiv($ratio, 100, 2);
         if(!$ids) {
             return return_ajax(0, '请选择数据');

@@ -109,6 +109,7 @@ layui.use(['comm', 'form', 'jquery','layer','flow'], function(){
             content: '<form class="layui-form mt10  pl30 pr30">'
                 +'<div class="layui-input-inline layui-show-xs-block">'
                 +'<select name="ratio" id="ratio">'
+                    +'<option value="20">20%</option>'
                     +'<option value="30" selected="">30%</option>'
                     +'<option value="40">40%</option>'
                     +'<option value="50">50%</option>'
