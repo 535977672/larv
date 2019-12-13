@@ -31,7 +31,7 @@ class GoodsController extends AdminController
         if(!(isset($data['sex']) && $data['sex'] >= 0)) $data['sex'] = 2;
         $where[] = ['sex', '=', $data['sex']];
         //$list = DB::select('select id,url,cover,title from tb_attr  where deleted = 0');
-        $list = DB::table('tb_attr')->where('deleted', '=', 0)->where($where)->select('id', 'gid', 'url', 'cover', 'title', 'prices')->paginate(500);
+        $list = DB::table('tb_attr')->where('deleted', '=', 0)->where($where)->select('id', 'gid', 'url', 'cover', 'title', 'prices')->paginate(100);
         foreach ($list as $key => $value) {
             $value->cover = json_decode($value->cover);
         }
