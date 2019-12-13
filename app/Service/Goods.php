@@ -320,7 +320,7 @@ class Goods extends Service{
     public function mulCheckEach($item, $ratio = ''){
         $err = '';
         $item->goods_name = $item->title;
-        if($this->goodsService->getGoodsByUrl($item->url)){
+        if($this->getGoodsByUrl($item->url)){
             $err = $item->id . '商品链接重复';
             DB::update('update tb_attr set deleted = 1 where id = ?', [$item->id]);
             return $err;
