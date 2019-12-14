@@ -20,6 +20,10 @@
             <div class="swiper-slide" data-sex="1"><div class="c-cate-b">男装</div></div>
             <div class="swiper-slide" data-sex="2"><div class="c-cate-b">女装</div></div>
             <div class="swiper-slide" data-sex="3"><div class="c-cate-b">儿童</div></div>
+            <div class="swiper-slide" data-sex="4"><div class="c-cate-b">日韩女装</div></div>
+            <div class="swiper-slide" data-sex="5"><div class="c-cate-b">男鞋</div></div>
+            <div class="swiper-slide" data-sex="6"><div class="c-cate-b">女鞋</div></div>
+            <div class="swiper-slide" data-sex="99"><div class="c-cate-b">保健</div></div>
         </div>
     </div>
     <div class="m-cate mt5 p2 m-cl">

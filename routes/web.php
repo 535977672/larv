@@ -59,7 +59,7 @@ Route::prefix('member')->group(function () {
 });
 Route::prefix('cate')->group(function () {
     Route::get('list', 'CateController@cateList');
-    Route::get('sex/{sex}', 'CateController@cateListBySex')->where(['sex' => '[0-3]{1}']);
+    Route::get('sex/{sex}', 'CateController@cateListBySex')->where(['sex' => '[0-6]{1}|99']);
 });
 
 Route::view('/argee', 'guide.agreement');

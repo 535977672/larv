@@ -42,6 +42,7 @@
                                 <option value="4" @isset($requestes['sex']) @if($requestes['sex'] == 4) selected @endif @endisset>日韩女装</option>
                                 <option value="5" @isset($requestes['sex']) @if($requestes['sex'] == 5) selected @endif @endisset>男鞋</option>
                                 <option value="6" @isset($requestes['sex']) @if($requestes['sex'] == 6) selected @endif @endisset>女鞋</option>
+                                <option value="99" @isset($requestes['sex']) @if($requestes['sex'] == 99) selected @endif @endisset>保健</option>
                             </select>
                         </div>
                         <div class="layui-input-inline layui-show-xs-block">

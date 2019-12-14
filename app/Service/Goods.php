@@ -306,6 +306,7 @@ class Goods extends Service{
 
     public function mulCheck($id_start = 0)
     {
+		ini_set('memory_limit','512M');
         $list = DB::table('tb_attr')->where('deleted', '=', 0)->where('id', '>', $id_start)->orderBy('id', 'asc')->limit(20)->get();
         $err = [];
         foreach ($list as $item) {
@@ -320,6 +321,11 @@ class Goods extends Service{
 
     public function mulCheckEach($item, $ratio = ''){
         $err = '';
+		if($item->cate == '商品下架区'){
+            $err = $item->id . '商品下架区';
+            DB::update('update tb_attr set deleted = 1 where id = ?', [$item->id]);
+            return $err;
+        }
         $item->goods_name = $item->title;
         if($this->getGoodsByUrl($item->url)){
             $err = $item->id . '商品链接重复';
@@ -339,6 +345,11 @@ class Goods extends Service{
             return $err;
         }
         $item->cover = json_decode($item->cover, true);
+		if(empty($item->cover)) {
+            $err = $item->id . '没有封面';
+            DB::update('update tb_attr set deleted = 1 where id = ?', [$item->id]);
+            return $err;
+		}
         if($item->type == 4 && $item->video && count($item->cover)>1) array_pop($item->cover);
         $item->content = html_entity_decode($item->content, ENT_QUOTES);
         if(!empty($item->attr)){
