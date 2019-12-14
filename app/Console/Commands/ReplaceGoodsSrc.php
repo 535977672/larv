@@ -5,25 +5,26 @@ use Illuminate\Console\Command;
 use App\Service\Goods;
 
 /**
- * 批量检查商品
- * nohup php artisan goods:check2 &
+ * 批量替换商品src
+ * <img class="lazyload" data-original="" />
+ * nohup php artisan goodssrc:replace &
  *
  */
-class CheckGoods extends Command {
+class ReplaceGoodsSrc extends Command {
 
     /**
      * command的名字
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'goods:check2';
+    protected $signature = 'goodssrc:replace';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'goods check';
+    protected $description = 'goods src replace';
 
     /**
      * Create a new command instance.
@@ -46,8 +47,8 @@ class CheckGoods extends Command {
     }
 
     private function check() {
-        ini_set('memory_limit','512M');
+	ini_set('memory_limit','512M');
         $goods = new Goods();
-        return $goods->mulCheck();
+        return $goods->replaceGoodsSrc();
     }
 }

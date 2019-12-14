@@ -104,7 +104,9 @@
 @endsection
 @section('script')
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/swiper.min.js"></script>
+<script src="/static/plugs/lazyload1.9.3.js"></script>
 <script>
     initDetail();
+    $(".lazyload").lazyload({threshold: 200});
 </script>
 @endsection

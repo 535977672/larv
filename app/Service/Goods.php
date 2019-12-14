@@ -306,7 +306,6 @@ class Goods extends Service{
 
     public function mulCheck($id_start = 0)
     {
-		ini_set('memory_limit','512M');
         $list = DB::table('tb_attr')->where('deleted', '=', 0)->where('id', '>', $id_start)->orderBy('id', 'asc')->limit(20)->get();
         $err = [];
         foreach ($list as $item) {
@@ -314,6 +313,7 @@ class Goods extends Service{
             $id_start = $item->id;
         }
         if(count($list) == 20){
+            unset($list);
             $this->mulCheck($id_start);
         }
         return true;
@@ -321,7 +321,7 @@ class Goods extends Service{
 
     public function mulCheckEach($item, $ratio = ''){
         $err = '';
-		if($item->cate == '商品下架区'){
+	if($item->cate == '商品下架区'){
             $err = $item->id . '商品下架区';
             DB::update('update tb_attr set deleted = 1 where id = ?', [$item->id]);
             return $err;
@@ -451,5 +451,21 @@ class Goods extends Service{
             $ratio = 1.20;
         }
         return $ratio;
+    }
+    
+    public function replaceGoodsSrc($id_start = 0)
+    {
+        return DB::update("update m_goods_ext set content = replace(content, 'src=', 'class=&quot;lazyload&quot; data-original=')");
+//        $list = GoodsExt::where('goods_id', '>', $id_start)->select('goods_id', 'content')->orderBy('id', 'asc')->limit(100)->get();
+//        foreach ($list as $item) {
+//            $item->content = str_replace('', '', $item->content);
+//            $item->save();
+//            $id_start = $item->goods_id;
+//        }
+//        if(count($list) == 20){
+//            unset($list);
+//            $this->replaceGoodsSrc($id_start);
+//        }
+//        return true;
     }
 }
