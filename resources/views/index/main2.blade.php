@@ -28,40 +28,17 @@
         </div>
         <div class="swiper-pagination"></div>
     </div>
-    @endif       
-    @if (count($goods1) > 0)
-    <div class="main-img bgc-1 mt5 p5">
-        <div class="main-title">女装</div>
-        <ul class="grid" id="grid1"> 
-        @foreach ($goods1 as $g)
-        <li><div><a href="/goods/detail/{{ $g->goods_id }}"><img  src="{{ $g->original_img }}" alt=""><p class="goods-name m-name">{{ $g->goods_name }}</p>
-                    <p class="goods-price">¥{{ price_format($g->shop_price) }}</p></a></div></li>
-        @endforeach
-        </ul>
-    </div>
-    @endif     
-    @if (count($goods2) > 0)
-    <div class="main-img bgc-2 mt5 p5">
-        <div class="main-title">男装</div>
-        <ul class="grid" id="grid2"> 
-        @foreach ($goods2 as $g)
-        <li><div><a href="/goods/detail/{{ $g->goods_id }}"><img  src="{{ $g->original_img }}" alt=""><p class="goods-name m-name">{{ $g->goods_name }}</p>
-                    <p class="goods-price">¥{{ price_format($g->shop_price) }}</p></a></div></li>
-        @endforeach
-        </ul>
-    </div>
-    @endif 
-    @if (count($goods3) > 0)
-    <div class="main-img bgc-3 mt5 p5">
-        <div class="main-title">童装</div>
-        <ul class="grid" id="grid3"> 
-        @foreach ($goods3 as $g)
-        <li><div><a href="/goods/detail/{{ $g->goods_id }}"><img  src="{{ $g->original_img }}" alt=""><p class="goods-name m-name">{{ $g->goods_name }}</p>
-                    <p class="goods-price">¥{{ price_format($g->shop_price) }}</p></a></div></li>
-        @endforeach
-        </ul>
-    </div>
     @endif
+    <div class="main-img mt5 p5">
+        <ul class="grid" id="grid">        
+        @if (count($goods) > 0)
+        @foreach ($goods as $g)
+        <li><div><a href="/goods/detail/{{ $g->goods_id }}"><img  src="{{ $g->original_img }}" alt=""><p class="goods-name m-name">{{ $g->goods_name }}</p>
+                    <p class="goods-price">¥{{ price_format($g->shop_price) }}</p></a></div></li>
+        @endforeach
+        @endif
+        </ul>
+    </div>
     <div class="m-cl"></div>
 </div>
 @endsection
@@ -85,11 +62,6 @@ $(".swiper-container").swiper({
         shadow: false
     }
 });
-$('#grid1').addClass('effect-'+(Math.ceil(Math.random()*7)+1));
-$('#grid2').addClass('effect-'+(Math.ceil(Math.random()*7)+1));
-$('#grid3').addClass('effect-'+(Math.ceil(Math.random()*7)+1));
-animOnScrollLoad('grid1');
-animOnScrollLoad('grid2');
-animOnScrollLoad('grid3');
+loadDataMain();
 </script>
 @endsection
