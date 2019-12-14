@@ -4,8 +4,10 @@
 <div class="container">
     <div class="swiper-container mt2">
         <div class="swiper-wrapper">
-            @foreach ($goods->ext->image_url as $i)
+            @foreach ($goods->ext->image_url as $k=>$i)
+			@if($k<5)
             <div class="swiper-slide"><img class="m_mw" src="{{ $i['preview'] }}" alt="" style="width:100%"></div>
+			@endif
             @endforeach
         </div>
         <div class="swiper-pagination"></div>
