@@ -114,6 +114,12 @@ Route::prefix('admin')->group(function () {
         Route::post('isonsale', 'Admin\GoodsController@isOnSale');
         Route::post('mulcheck', 'Admin\GoodsController@mulCheck');
         Route::get('checkurl', 'Admin\GoodsController@checkUrl');
+        Route::get('menu', 'Admin\GoodsController@menu');
+        Route::get('menutoadd', 'Admin\GoodsController@menuToAdd');
+        Route::get('menugoods/{id}', 'Admin\GoodsController@menuGoods');
+        Route::post('menuadd', 'Admin\GoodsController@menuAdd');
+        Route::post('menudel', 'Admin\GoodsController@menuDel');
+        Route::post('menugoodsdel', 'Admin\GoodsController@menuGoodsDel');
     });
     Route::prefix('order')->group(function () {
         Route::match(['get', 'post'], 'orderlist', 'Admin\OrderController@orderList');

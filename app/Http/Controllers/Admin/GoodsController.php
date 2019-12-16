@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Service\Goods as GoodsService;
 use App\Model\Category;
 use App\Model\SexCate;
+use App\Model\GoodsHome;
+use App\Model\GoodsMenu;
 use App\Model\Goods as GoodsModel;
 
 class GoodsController extends AdminController
@@ -411,6 +413,27 @@ class GoodsController extends AdminController
         }
         return true;
     }
+
+    /**
+     * 验证menu参数
+     * @param type $data
+     * @return type
+     */
+    protected function validateAddMenu($data)
+    {
+        $validator =  Validator::make($data, [
+            'name' =>  "required",
+            'type' => "required",
+            'limit' => "required|int",
+            'sort' => "required|int",
+            'single' => "required|int",
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            return return_ajax(0, $errors[0]);
+        }
+        return true;
+    }
     
     
     
@@ -459,6 +482,45 @@ class GoodsController extends AdminController
         $data = $this->request->all();
         if(!$data['ids']) return $this->failed();
         if(!$this->goodsService->aIsOnSale($data['ids'], $data['status'])) return $this->failed();
+        return $this->successful();
+    }
+
+    public function menu()
+    {
+        return $this->successful(['list' => GoodsMenu::getAllMenu()]);
+    }
+
+    public function menuToAdd()
+    {
+        return $this->successful();
+    }
+
+    public function menuAdd()
+    {
+        $data = $this->request->all();
+        if (true !== $validator = $this->validateAddMenu($data)) {
+            return $validator;
+        }
+        if(!GoodsMenu::menuAdd($data)) return $this->failed();
+        return $this->successful();
+    }
+
+    public function menuDel()
+    {
+        $data = $this->request->all();
+        if(!GoodsMenu::delMenuById($data['ids'])) return $this->failed();
+        return $this->successful();
+    }
+
+    public function menuGoods($id)
+    {
+        return $this->successful(['list' => GoodsHome::getAllGoodsByMenu($id)]);
+    }
+
+    public function menuGoodsDel()
+    {
+        $data = $this->request->all();
+        if(!GoodsHome::delGoodsById($data['ids'])) return $this->failed();
         return $this->successful();
     }
 }

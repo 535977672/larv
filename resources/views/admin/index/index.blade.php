@@ -52,6 +52,12 @@
                             <cite>商品列表</cite>
                         </a>
                     </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('商品类目','/admin/g/menu')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>商品类目</cite>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li>
