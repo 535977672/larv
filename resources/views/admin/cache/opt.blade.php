@@ -33,7 +33,11 @@ layui.use(['comm', 'jquery'], function(){
     ,$ = layui.jquery;
     $('.m-clean').on('click', function () {
         comm.ajax($(this).attr('data-url'), {}, function(res){
-            comm.msg(res.msg, 2);
+            if(res.status !== 200){
+                comm.msg(res.msg, 2);
+            }else{
+                comm.msg(res.msg,  1);
+            }
         });
         return false;
     });
