@@ -134,6 +134,6 @@ Route::prefix('admin')->group(function () {
     });
     Route::prefix('cache')->group(function () {
         Route::get('opt', 'Admin\CacheController@opt');
-        Route::get('clean/{id}', 'Admin\OrderController@clean');
+        Route::post('clean/{id}', 'Admin\CacheController@clean');
     });
 });
