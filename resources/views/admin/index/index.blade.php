@@ -86,6 +86,20 @@
                     </li>
                 </ul>
             </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="设置">&#xe723;</i>
+                    <cite>设置</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('缓存清理','/admin/cache/opt')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>缓存清理</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </div>
 </div>

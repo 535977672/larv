@@ -468,10 +468,4 @@ class Goods extends Service{
 //        }
 //        return true;
     }
-
-    public static function clearCache()
-    {
-        Cache::store('redis')->tags('main')->flush();;
-        return true;
-    }
 }

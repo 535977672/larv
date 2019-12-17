@@ -132,4 +132,8 @@ Route::prefix('admin')->group(function () {
         Route::post('ordergoodssend/{id}', 'Admin\OrderController@orderGoodsSend');
         Route::post('ordergoodsship/{id}', 'Admin\OrderController@orderGoodsShip');
     });
+    Route::prefix('cache')->group(function () {
+        Route::get('opt', 'Admin\CacheController@opt');
+        Route::get('clean/{id}', 'Admin\OrderController@clean');
+    });
 });
