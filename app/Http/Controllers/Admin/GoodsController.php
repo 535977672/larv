@@ -449,7 +449,9 @@ class GoodsController extends AdminController
         isset($data['is_new']) && $data['is_new'] >= 0 &&  $where[] = ['is_new', '=', $data['is_new']];
         isset($data['is_hot']) && $data['is_hot'] >= 0 &&  $where[] = ['is_hot', '=', $data['is_hot']];
         isset($data['type']) && $data['type'] >= 1 &&  $where[] = ['type', '=', $data['type']];
-        return $this->successful(['list' => $this->goodsService->aGoodsList($where, $limit), 'menu'=>GoodsMenu::getAllMenu()]);
+        isset($data['cid']) && $data['cid'] >= 0 &&  $where[] = ['cid', '=', $data['cid']];
+        isset($data['key']) && $data['key'] &&  $where[] = ['goods_name', 'like', '%'.$data['key'].'%'];
+        return $this->successful(['list' => $this->goodsService->aGoodsList($where, $limit), 'menu'=>GoodsMenu::getAllMenu(), 'cate'=>Category::select('id','name')->get()]);
     }
     
     public function goodsTeamToAdd()

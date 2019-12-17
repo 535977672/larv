@@ -19,6 +19,9 @@
                 <div class="layui-card-body ">
                     <form class="layui-form layui-col-space5" method="get">
                         <div class="layui-input-inline layui-show-xs-block">
+                            <input class="layui-input" placeholder="商品名" name="key">
+                        </div>
+                        <div class="layui-input-inline layui-show-xs-block">
                             <select name="type">
                                 <option value="">商品类型</option>
                                 <option value="1" @isset($requestes['type']) @if($requestes['type'] == 1) selected @endif @endisset>普通商品</option>
@@ -43,6 +46,16 @@
                                 <option value="5" @isset($requestes['sex']) @if($requestes['sex'] == 5) selected @endif @endisset>男鞋</option>
                                 <option value="6" @isset($requestes['sex']) @if($requestes['sex'] == 6) selected @endif @endisset>女鞋</option>
                                 <option value="99" @isset($requestes['sex']) @if($requestes['sex'] == 99) selected @endif @endisset>保健</option>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <select name="cid">
+                                <option value="">分类</option>
+                                @if(count($cate)>0)
+                                @foreach($cate as $m)
+                                <option value="{{ $m->id }}">{{ $m->name }}</option>
+                                @endforeach
+                                @endif
                             </select>
                         </div>
                         <div class="layui-input-inline layui-show-xs-block">
