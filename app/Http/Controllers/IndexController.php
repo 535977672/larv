@@ -18,7 +18,8 @@ class IndexController extends Controller
     public function main()
     {
         $swiper = Cache::store('redis')->tags('main')->remember('index_main_swiper', 60, function () {
-            return GoodsMenu::getGoodsByType('1001')[0]->home;
+            $list = GoodsMenu::getGoodsByType('1001');
+            return count($list)>0?$list[0]->home:[];
         });
         $goods = Cache::store('redis')->tags('main')->remember('index_main_goods', 80, function ()  {
             return GoodsMenu::getGoodsByType('1002');
