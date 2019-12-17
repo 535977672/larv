@@ -10,6 +10,7 @@ use App\Model\SexCate;
 use App\Model\GoodsHome;
 use App\Model\GoodsMenu;
 use App\Model\Goods as GoodsModel;
+use App\Service\Cache as CacheService;
 
 class GoodsController extends AdminController
 {
@@ -450,7 +451,7 @@ class GoodsController extends AdminController
         isset($data['is_new']) && $data['is_new'] >= 0 &&  $where[] = ['is_new', '=', $data['is_new']];
         isset($data['is_hot']) && $data['is_hot'] >= 0 &&  $where[] = ['is_hot', '=', $data['is_hot']];
         isset($data['type']) && $data['type'] >= 1 &&  $where[] = ['type', '=', $data['type']];
-        return $this->successful(['list' => $this->goodsService->aGoodsList($where, $limit)]);
+        return $this->successful(['list' => $this->goodsService->aGoodsList($where, $limit), 'menu'=>GoodsMenu::getAllMenu()]);
     }
     
     public function goodsTeamToAdd()
@@ -510,6 +511,7 @@ class GoodsController extends AdminController
     {
         $data = $this->request->all();
         if(!GoodsMenu::delMenuById($data['ids'])) return $this->failed();
+        CacheService::clean(1);
         return $this->successful();
     }
 
@@ -518,10 +520,26 @@ class GoodsController extends AdminController
         return $this->successful(['list' => GoodsHome::getAllGoodsByMenu($id)]);
     }
 
+    public function menuGoodsAdd()
+    {
+        $data = $this->request->all();
+        if(!$data['ids'] || !$data['menu_id']) return $this->failed(’参数错误);
+        $list = GoodsModel::whereIn('goods_id', is_array($data['ids'])?$data['ids']:explode(',', $data['ids']))
+            ->select('goods_id', 'goods_name', 'shop_price', 'original_img', 'sex', 'cid')->get();
+        if($list->isEmpty()) return $this->failed(没有找到数据);
+        foreach($list as $l){
+            $l->menu_id = $data['menu_id'];
+        }
+        if(!GoodsHome::goodsAdd($list->toArray())) return $this->failed('保存失败');
+        CacheService::clean(1);
+        return $this->successful();
+    }
+
     public function menuGoodsDel()
     {
         $data = $this->request->all();
         if(!GoodsHome::delGoodsById($data['ids'])) return $this->failed();
+        CacheService::clean(1);
         return $this->successful();
     }
 }

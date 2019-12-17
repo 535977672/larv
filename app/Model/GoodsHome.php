@@ -9,6 +9,7 @@ class GoodsHome extends Model
     protected $table = 'm_goods_home';
     protected $primaryKey = 'id';
     public $timestamps = false;
+    protected  $guarded = [];//不想要被批量赋值的属性数组
 
     public function menu()
     {
@@ -30,5 +31,9 @@ class GoodsHome extends Model
 
     public static function delGoodsByMenu($menu_id){
         return self::whereIn('menu_id', is_array($menu_id)?$menu_id:explode(',', $menu_id))->delete();
+    }
+
+    public static function goodsAdd($data){
+        return self::insert($data);
     }
 }

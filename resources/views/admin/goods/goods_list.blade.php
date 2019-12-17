@@ -90,6 +90,7 @@
                     </button>
                     <button class="layui-btn layui-btn-normal isonsale" data-status="1" data-url="g/isonsale"><i class="layui-icon layui-icon-up"></i>上架</button>
                     <button class="layui-btn layui-btn-danger isonsale" data-status="0" data-url="g/isonsale"><i class="layui-icon layui-icon-down"></i>下架</button>
+                    <button class="layui-btn layui-btn-normal menuadd"  data-url="g/menugoodsadd"><i class="layui-icon layui-icon-align-left"></i>添加类目</button>
                 </div>
                 <div class="layui-card-body table-over">
                     <table class="layui-table layui-form">
@@ -177,6 +178,44 @@ layui.use(['comm', 'form', 'layer', 'jquery','flow'], function(){
             return false;
         });
     }
+
+    $('.menuadd').on('click', function () {
+        var ids = comm.checkIds();
+        if(!ids) return;
+        layer.open({
+            type: 1,
+            title: '添加类目',
+            shadeClose: true,
+            area: ['450px', '420px'], //宽高
+            content: '<form class="layui-form mt10  pl30 pr30">'
+            +'<div class="layui-input-inline layui-show-xs-block">'
+            +'<select name="menu_id" id="menu_id">'
+            @if(count($menu)>0)
+            @foreach($menu as $m)
+            +'<option value="{{ $m->menu_id }}">{{ $m->name }}</option>'
+            @endforeach
+            @endif
+            +'</select>'
+            +'</div>'
+            +'<div class="layui-input-inline layui-show-xs-block mt10 t-ac">'
+            +'<a class="layui-btn" id="ratio-btn">确认添加</a>'
+            +'</div>'
+            +'</form>'
+        });
+        form.render('select');
+        $('#ratio-btn').on('click', function () {
+            var ids = comm.checkIds();
+            if(!ids) return;
+            comm.ajax('/admin/'+$('.menuadd').attr('data-url'), {ids: ids, menu_id: $('#menu_id').val()}, function(res){
+                if(res.status !== 200){
+                    comm.msg(res.msg, 2);
+                }else{
+                    comm.winReload();
+                }
+            });
+            return false;
+        });
+    });
     
 });
 </script>

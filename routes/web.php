@@ -117,6 +117,7 @@ Route::prefix('admin')->group(function () {
         Route::get('menu', 'Admin\GoodsController@menu');
         Route::get('menutoadd', 'Admin\GoodsController@menuToAdd');
         Route::get('menugoods/{id}', 'Admin\GoodsController@menuGoods');
+        Route::post('menugoodsadd', 'Admin\GoodsController@menuGoodsAdd');
         Route::post('menuadd', 'Admin\GoodsController@menuAdd');
         Route::post('menudel', 'Admin\GoodsController@menuDel');
         Route::post('menugoodsdel', 'Admin\GoodsController@menuGoodsDel');

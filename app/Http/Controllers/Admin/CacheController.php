@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Facades\Cache;
+use App\Service\Cache;
 
 class CacheController extends AdminController
 {
@@ -13,9 +13,7 @@ class CacheController extends AdminController
     
     public function clean($id)
     {
-        if($id == 1){
-            $re1 = Cache::store('redis')->tags('main')->flush();
-        }
+        Cache::clean($id);
         return $this->successful('清除缓存成功');
     }
 }
