@@ -36,7 +36,6 @@
                                 <th>背景</th>
                                 <th>类型</th>
                                 <th>数量</th>
-                                <th>链接类型</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
@@ -49,7 +48,6 @@
                                 <td>@if($l->bg)<div style="margin: 5px; text-align: center; background-color: {{ $l->bg }}">{{ $l->bg }}</div>@endif</td>
                                 <td>{{ $l->type }}</td>
                                 <td>{{ $l->limit }}</td>
-                                <td>@if($l->single=='0')单品@elseif($l->single==1)分类@endif</td>
                                 <td class="td-manage">
                                 </td>
                             </tr>

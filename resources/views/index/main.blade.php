@@ -23,7 +23,7 @@
     <div class="swiper-container mt5">
         <div class="swiper-wrapper">
             @foreach ($swiper as $g)
-            <div class="swiper-slide"><a href="/goods/detail/{{ $g->goods_id }}"><img class="m_mw" src="{{ $g->original_img }}" alt=""></a></div>
+            <div class="swiper-slide"><a href="@if($g->single==1)/goods/search?cid={{ $g->cid }}&sex={{ $g->sex }}@else/goods/detail/{{ $g->goods_id }}"><img class="m_mw" src="{{ $g->original_img }}" alt=""></a></div>
             @endforeach
         </div>
         <div class="swiper-pagination"></div>
@@ -38,9 +38,9 @@
         @foreach ($gg->home as $g)
         <li>
             <div>
-                <a href="@if($gg->single==1)/goods/search?cid={{ $g->cid }}&sex={{ $g->sex }}@else/goods/detail/{{ $g->goods_id }}@endif">
+                <a href="@if($g->single==1)/goods/search?cid={{ $g->cid }}&sex={{ $g->sex }}@else/goods/detail/{{ $g->goods_id }}@endif">
                     <img  src="{{ $g->original_img }}" alt="">
-                    @if($gg->single=='0')
+                    @if($g->single=='0')
                     <p class="goods-name m-name">{{ $g->goods_name }}</p>
                     <p class="goods-price">¥{{ price_format($g->shop_price) }}</p>
                     @endif

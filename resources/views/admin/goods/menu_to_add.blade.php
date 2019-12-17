@@ -60,15 +60,6 @@
                                     <input type="text" name="sort" lay-verify="required" autocomplete="off" placeholder="排序" class="layui-input" value="0">
                                 </div>
                             </div>
-                            <div class="layui-inline">
-                                <label class="layui-form-label">链接类型</label>
-                                <div class="layui-input-inline">
-                                    <select name="single" lay-verify="required">
-                                        <option value="0" selected="">单商品</option>
-                                        <option value="1" >分类</option>
-                                    </select>
-                                </div>
-                            </div>
                         </div>
                         <div class="layui-form-item">
                             <div class="layui-input-block">

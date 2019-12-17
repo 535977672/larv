@@ -39,6 +39,7 @@
                                 <th>类目</th>
                                 <th>性别</th>
                                 <th>分类</th>
+                                <th>链接类型</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
@@ -55,6 +56,7 @@
                                 <td>{{ $l->menu->name }}</td>
                                 <td>@if($l->sex=='0')不限@elseif($l->sex==1)男装@elseif($l->sex==2)女装@elseif($l->sex==3)童装@elseif($l->sex==4)日韩女装@elseif($l->sex==5)男鞋@elseif($l->sex==6)女鞋@endif</td>
                                 <td>@if($l->cate){{ $l->cate->name }}@endif</td>
+                                <td>@if($l->single=='0')单品@elseif($l->single==1)分类@endif</td>
                                 <td class="td-manage">
                                 </td>
                             </tr>

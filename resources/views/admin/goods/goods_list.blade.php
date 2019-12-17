@@ -197,6 +197,12 @@ layui.use(['comm', 'form', 'layer', 'jquery','flow'], function(){
             @endif
             +'</select>'
             +'</div>'
+            +'<div class="layui-input-inline layui-show-xs-block">'
+            +'<select name="single" id="single">'
+            +'<option value="0">单商品</option>'
+            +'<option value="1">分类</option>'
+            +'</select>'
+            +'</div>'
             +'<div class="layui-input-inline layui-show-xs-block mt10 t-ac">'
             +'<a class="layui-btn" id="ratio-btn">确认添加</a>'
             +'</div>'
@@ -206,7 +212,7 @@ layui.use(['comm', 'form', 'layer', 'jquery','flow'], function(){
         $('#ratio-btn').on('click', function () {
             var ids = comm.checkIds();
             if(!ids) return;
-            comm.ajax('/admin/'+$('.menuadd').attr('data-url'), {ids: ids, menu_id: $('#menu_id').val()}, function(res){
+            comm.ajax('/admin/'+$('.menuadd').attr('data-url'), {ids: ids, menu_id: $('#menu_id').val(), single: $('#single').val()}, function(res){
                 if(res.status !== 200){
                     comm.msg(res.msg, 2);
                 }else{

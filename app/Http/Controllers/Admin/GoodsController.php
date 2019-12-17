@@ -427,7 +427,6 @@ class GoodsController extends AdminController
             'type' => "required",
             'limit' => "required|int",
             'sort' => "required|int",
-            'single' => "required|int",
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
@@ -435,9 +434,8 @@ class GoodsController extends AdminController
         }
         return true;
     }
-    
-    
-    
+
+
     /**************************************************************************/
     public function goodsList()
     {
@@ -529,6 +527,7 @@ class GoodsController extends AdminController
         if($list->isEmpty()) return $this->failed(没有找到数据);
         foreach($list as $l){
             $l->menu_id = $data['menu_id'];
+            $l->single = $data['single'];
         }
         if(!GoodsHome::goodsAdd($list->toArray())) return $this->failed('保存失败');
         CacheService::clean(1);
