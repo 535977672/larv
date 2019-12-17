@@ -36,8 +36,17 @@
         <div class="main-title">{{ $gg->name }}</div>
         <ul class="grid" id="grid{{ $k }}">
         @foreach ($gg->home as $g)
-        <li><div><a href="/goods/detail/{{ $g->goods_id }}"><img  src="{{ $g->original_img }}" alt=""><p class="goods-name m-name">{{ $g->goods_name }}</p>
-                    <p class="goods-price">¥{{ price_format($g->shop_price) }}</p></a></div></li>
+        <li>
+            <div>
+                <a href="@if($gg->single==1)/goods/search?cid={{ $g->cid }}&sex={{ $g->sex }}@else/goods/detail/{{ $g->goods_id }}@endif">
+                    <img  src="{{ $g->original_img }}" alt="">
+                    @if($gg->single=='0')
+                    <p class="goods-name m-name">{{ $g->goods_name }}</p>
+                    <p class="goods-price">¥{{ price_format($g->shop_price) }}</p>
+                    @endif
+                </a>
+            </div>
+        </li>
         @endforeach
         </ul>
     </div>

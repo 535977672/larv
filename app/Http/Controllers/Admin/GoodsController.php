@@ -501,6 +501,7 @@ class GoodsController extends AdminController
         if (true !== $validator = $this->validateAddMenu($data)) {
             return $validator;
         }
+        if(!$data['bg']) $data['bg'] = '';
         if(!GoodsMenu::menuAdd($data)) return $this->failed();
         return $this->successful();
     }

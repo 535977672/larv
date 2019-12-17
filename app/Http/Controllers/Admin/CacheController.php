@@ -15,7 +15,6 @@ class CacheController extends AdminController
     {
         if($id == 1){
             $re1 = Cache::store('redis')->tags('main')->flush();
-            if(!$re1) return $this->failed('未完全清除缓存');
         }
         return $this->successful('清除缓存成功');
     }

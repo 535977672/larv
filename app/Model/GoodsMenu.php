@@ -17,7 +17,7 @@ class GoodsMenu extends Model
     }
 
     public static function getGoodsByType($type){
-        $menu = self::where('type', $type)->select('menu_id','name','bg','limit')->orderBy('sort', 'asc')->get();
+        $menu = self::where('type', $type)->select('menu_id','name','bg','limit','single')->orderBy('sort', 'asc')->get();
         foreach ($menu as $item){
             $item->load(['home' => function($query) use ($item){
                 $query->limit($item->limit)->inRandomOrder();
