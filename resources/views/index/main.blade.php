@@ -22,8 +22,8 @@
     @if (count($swiper) > 0)
     <div class="swiper-container mt5">
         <div class="swiper-wrapper">
-            @foreach ($swiper as $g)
-            <div class="swiper-slide"><a href="@if($g->single==1)/goods/search?cid={{ $g->cid }}&sex={{ $g->sex }}@else/goods/detail/{{ $g->goods_id }}"><img class="m_mw" src="{{ $g->original_img }}" alt=""></a></div>
+            @foreach($swiper as $g)
+            <div class="swiper-slide"><a href="@if($g->single==1)/goods/search?cid={{ $g->cid }}&sex={{ $g->sex }}@else/goods/detail/{{ $g->goods_id }}@endif"><img class="m_mw" src="{{ $g->original_img }}" alt=""></a></div>
             @endforeach
         </div>
         <div class="swiper-pagination"></div>
