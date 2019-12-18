@@ -46,12 +46,12 @@ class Goods extends Service{
                 ['is_on_sale', '=', 1],
             ])
             ->where($where)
-            ->select(DB::raw('goods_id,goods_name,shop_price,original_img'))
-            ->orderBy($order, $asc?'asc':'desc');
+            ->select(DB::raw('goods_id,goods_name,shop_price,original_img'));
         if($random){
             $list = $model->limit($limit)->inRandomOrder()->get();
         }else{
-            $list = $model->simplePaginate($limit);
+            $list = $model->orderBy($order, $asc?'asc':'desc')
+                ->simplePaginate($limit);
         }
         return $list;
     }

@@ -14,6 +14,9 @@ class Cache extends Service{
         if ($type == 1 || $type == 99) {
             $re1 = CacheFace::store('redis')->tags('main')->flush();
         }
+        if ($type == 2 || $type == 99) {
+            $re2 = CacheFace::store('file')->flush();
+        }
         return true;
     }
 }

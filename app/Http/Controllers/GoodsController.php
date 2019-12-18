@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Service\Goods;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Cache;
 
 class GoodsController extends Controller
 {
@@ -53,7 +54,10 @@ class GoodsController extends Controller
         if($cid) $where[] = ['cid', '=', $cid];
         if($sex) $where[] = ['sex', '=', $sex];
         if($hot) $where[] = ['hot', '=', $hot];
-        $goods = $this->goodsModel->getGoodsList($limit, $where, $order, $asc, $random);
+        $key = md5('goods_search_'.$limit.$order.$asc.$random.json_encode($where));
+        $goods = Cache::remember($key, 60*23, function () use ($limit, $where, $order, $asc, $random) {
+            return (new Goods())->getGoodsList($limit, $where, $order, $asc, $random);
+        });
         return $this->successful('goods.search', ['list' => $goods, 'keywords' => $keywords]);
     }
     

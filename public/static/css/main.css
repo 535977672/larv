@@ -1,4 +1,4 @@
-@media screen and (min-width: 500px) { body {position: relative; max-width: 500px; overflow-x: hidden; margin: 0 auto;border: 1px solid #f5f2f2ed;}  }
+@media screen and (min-width: 425px) { body {position: relative; max-width: 500px; overflow-x: hidden; margin: 0 auto;border: 1px solid #f5f2f2ed;}  }
 a{color: #888; text-decoration: none; }
 .weui-photo-browser-modal{bottom: 50px; z-index: 10;}
 .main-title{line-height: 30px; padding: 0 5px;color: #666; margin: 5px;}

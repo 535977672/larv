@@ -16,10 +16,25 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">
-                    <button class="layui-btn layui-btn-danger m-clean" data-url="/admin/cache/clean/1">
-                        <i class="layui-icon"></i>清理数据缓存
-                    </button>
+                <div class="layui-card-body">
+                    <div class="mt15">
+                        <button class="layui-btn layui-btn-danger m-clean" data-url="/admin/cache/clean/99">
+                            <i class="layui-icon"></i>所有数据缓存
+                        </button>
+                        <span class="ml5 c-gray">清除所有数据缓存</span>
+                    </div>
+                    <div class="mt15">
+                        <button class="layui-btn layui-btn-danger m-clean" data-url="/admin/cache/clean/1">
+                            <i class="layui-icon"></i>首页数据缓存
+                        </button>
+                        <span class="ml5 c-gray">清除首页类目数据缓存</span>
+                    </div>
+                    <div class="mt15">
+                        <button class="layui-btn layui-btn-danger m-clean" data-url="/admin/cache/clean/2">
+                            <i class="layui-icon"></i>搜索数据缓存
+                        </button>
+                        <span class="ml5 c-gray">清除商品列表搜索数据缓存</span>
+                    </div>
                 </div>
             </div>
         </div>
