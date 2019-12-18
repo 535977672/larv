@@ -19,7 +19,7 @@
                 <div class="layui-card-body ">
                     <form class="layui-form layui-col-space5" method="get">
                         <div class="layui-input-inline layui-show-xs-block">
-                            <input class="layui-input" placeholder="商品名" name="key">
+                            <input class="layui-input" placeholder="商品名" name="key" @isset($requestes['key']) value="{{ $requestes['key'] }}" @endisset>
                         </div>
                         <div class="layui-input-inline layui-show-xs-block">
                             <select name="type">
@@ -30,7 +30,6 @@
                         </div>
                         <div class="layui-input-inline layui-show-xs-block">
                             <select name="is_on_sale">
-                                <option value="">是否上架</option>
                                 <option value="1" @isset($requestes['is_on_sale']) @if($requestes['is_on_sale'] == 1) selected @endif @endisset>上架</option>
                                 <option value="0" @isset($requestes['is_on_sale']) @if($requestes['is_on_sale'] === '0') selected @endif @endisset>下架</option>
                             </select>
@@ -53,7 +52,7 @@
                                 <option value="">分类</option>
                                 @if(count($cate)>0)
                                 @foreach($cate as $m)
-                                <option value="{{ $m->id }}">{{ $m->name }}</option>
+                                <option value="{{ $m->id }}" @isset($requestes['cid']) @if($requestes['cid'] == $m->id) selected @endif @endisset>{{ $m->name }}</option>
                                 @endforeach
                                 @endif
                             </select>

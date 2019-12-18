@@ -442,7 +442,8 @@ class GoodsController extends AdminController
         $data = $this->request->all();
         $limit = FI($this->request->get('limit', 20));
         $where = [];
-        isset($data['is_on_sale']) && $data['is_on_sale'] >= 0 &&  $where[] = ['is_on_sale', '=', $data['is_on_sale']];
+        if(!(isset($data['is_on_sale']) && $data['is_on_sale'] >= 0)) $data['is_on_sale'] = 1;
+        $where[] = ['is_on_sale', '=', $data['is_on_sale']];
         //isset($data['sex']) && $data['sex'] >= 0 &&  $where[] = ['sex', '=', $data['sex']];
         if(!(isset($data['sex']) && $data['sex'] >= 0)) $data['sex'] = 2;
         $where[] = ['sex', '=', $data['sex']];

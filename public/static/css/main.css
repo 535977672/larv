@@ -6,7 +6,8 @@ a{color: #888; text-decoration: none; }
 .main-img img{max-width: 100%;}
 .m-name{color: #666;text-align:left;height: 40px;line-height: 20px;overflow:hidden;display: -webkit-box;-webkit-line-clamp:2;-webkit-box-orient: vertical;word-break: break-all;white-space: normal;}
 .goods-name{height: auto;}
-#m-top{display: block;position: fixed;z-index:10; right: 10px; bottom: 100px; width: 48px;height: 48px;opacity: .7; background: url(/static/img/top.png) no-repeat;background-size: cover;}
+#m-top{display: block;position: fixed;z-index:11; right: 10px; bottom: 100px; width: 48px;height: 48px;opacity: .7; background: url(/static/img/top.png) no-repeat;background-size: cover;}
+#m-toke{display: block;position: fixed;z-index:10; right: 10px; bottom: 50px; width: 48px;height: 48px;opacity: .7; background: url(/static/img/kefu.png) no-repeat;background-size: cover;}
 .svg embed{margin-bottom: -2px;}
 .m-goods>div{padding: 5px; margin: 5px 0px; background-color: #FFF}
 .m-goods .goods-price,.goods-price{color: #FF0036;}
